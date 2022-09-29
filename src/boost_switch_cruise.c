@@ -9,6 +9,8 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
+ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
+
 /*Headers include by specifying -include option for gcc*/
 
 /* Hack to make compiler produce mow.l instead of mov.w */
@@ -29,7 +31,6 @@ const table_3d_t tblTargetBoost2 = {
 	.offset = 0
 };
 
-
 void boost_switch_hack (){
 	
 	/* Push to stack */
@@ -38,7 +39,7 @@ void boost_switch_hack (){
 	asm("mov.l   r3, @-r15");
 	asm("mov.l   r5, @-r15");
 	/* Push PR register because we will JSR later*/
-	asm("sts.l   pr, @-r15");
+	//asm("sts.l   pr, @-r15"); //Not needed if we do function call
 	
 	/* Init prevCruiseBtnState and boostHackEnable 
 	 * It can be 0 or 1
@@ -56,35 +57,35 @@ void boost_switch_hack (){
 #if defined CRUISE_FLAG_IS_BUTTON_FLAG
 
 		/* When cruise system is not enabled yet or is not good, 8th bit is set to 0 */
-		if ((*P_CRUISE_FLAG & P_CRUISE_MASK_CRUISE_ENABLED) == 0) {
+		if (pCruiseBtnEnabled() == 0) {
 			/* Ignition is just turned on or something is wrong with cruise system */
 			/* Anyway, disabling boost hack */ 
 			RAM_VARIABLES->boostHackEnable = 0;
 		} else {
 			/* Cruise system is OK */
 			/* If button was not pressed, but now is pressed */
-			if (((*P_CRUISE_FLAG & P_CRUISE_MASK_BUTTON_PRESSED) == 1) && (RAM_VARIABLES->prevCruiseBtnState == 0)) {
+			if ((pCruiseBtnPressed() == 1) && (RAM_VARIABLES->prevCruiseBtnState == 0)) {
 				/* Toggle boostHackEnable switch */
 				RAM_VARIABLES->boostHackEnable ^= 1;
 			}
 		}
 
 		/* Save previous cruise button state */
-		RAM_VARIABLES->prevCruiseBtnState = *P_CRUISE_FLAG & P_CRUISE_MASK_BUTTON_PRESSED;
-		
-#elif defined CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
+		RAM_VARIABLES->prevCruiseBtnState = pCruiseBtnPressed();
 
-		/* When cruise system is not enabled yet or is not good, 4th bit is set to 1 */
-		if ((*P_CRUISE_FLAG & P_CRUISE_MASK_CRUISE_DISABLED) != 0) {
+#endif
+		
+#if defined CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
+
+		/* When cruise system is not enabled or is not good, 4th bit is set to 1 */
+		if (pCruiseStateEnabled() == 0) {
 			/* Cruise is disabled */
 			/* Disable boost hack */ 
 			RAM_VARIABLES->boostHackEnable = 0;
-		} else if ((*P_CRUISE_FLAG & P_CRUISE_MASK_CRUISE_DISABLED) == 0) {
+		} else if (pCruiseStateEnabled() == 1) {
 			/* Cruise is enabled */
 			RAM_VARIABLES->boostHackEnable = 1;
 		}
-#else
-#error CRUISE_FLAG_IS_BUTTON_FLAG or CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE must be defined
 #endif
 		
 		/* If hack enabled, switch the table*/
@@ -105,9 +106,13 @@ void boost_switch_hack (){
 	asm("nop");
 	
 	/* Pop from stack*/
-	asm("lds.l   @r15+, pr"); //-V779
-	asm("mov.l   @r15+, r5");
+	//asm("lds.l   @r15+, pr"); //Not needed if we do function call
+	asm("mov.l   @r15+, r5");	//-V779
 	asm("mov.l   @r15+, r3");
 	asm("mov.l   @r15+, r2");
 	asm("mov.l   @r15+, r1");
 }
+
+//Well, it's dirty, but it works
+//Just add necesary functions
+#include "functions.c"

@@ -6,7 +6,7 @@
 
 BIN="C:\Program Files (x86)\Renesas\Hew\Tools\KPIT\GNUSH-ELF\v13.01\sh-elf\bin"
 CC=$(BIN)\"sh-elf-gcc.exe"
-CFLAGS=-g -c -m4 -mrenesas
+CFLAGS=-g -c -m4 -mrenesas -m4-single-only
 LD=$(BIN)\"sh-elf-ld.exe"
 READELF=$(BIN)\"sh-elf-readelf.exe"
 OBJCOPY=$(BIN)\"sh-elf-objcopy.exe"
@@ -15,7 +15,7 @@ BUILD=".\build"
 ROM=".\ROM"
 INCLUDE=".\include"
 #Exclude common.h
-EXCLUDE=common
+EXCLUDE="common functions"
 
 #Patching with help of Swiss File Knife
 SFK="sfkx64.exe"
@@ -52,6 +52,7 @@ all-targets:=$(shell for %%f in ("$(INCLUDE)\*.h") do @echo %%~nf | findstr /v $
 help:
 	@echo make all	- Build all CAL IDs. Specify DOPATCH=-yes to patch your ROM.
 	@echo make analyze	- Do static analysis with PVS-Studio (must be installed).
+	@echo			  Specify CALID=CALID.
 	@echo make CALID	- Specify CALID to build only that target,
 	@echo 		  for example 'make A2WC420F' will build
 	@echo 		  files only for A2WC420F. Specify DOPATCH=-yes to patch your ROM.

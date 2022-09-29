@@ -9,6 +9,24 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
+#if defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE) && defined(CRUISE_FLAG_IS_BUTTON_FLAG)
+#error Only one of CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE and CRUISE_FLAG_IS_BUTTON_FLAG must be defined
+#endif
+
+#if !defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE) && !defined(CRUISE_FLAG_IS_BUTTON_FLAG)
+#error CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE or CRUISE_FLAG_IS_BUTTON_FLAG must be defined
+#endif
+
+#if defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE)
+#pragma message "CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE is defined"
+#endif
+
+#if defined(CRUISE_FLAG_IS_BUTTON_FLAG)
+#pragma message "CRUISE_FLAG_IS_BUTTON_FLAG is defined"
+#endif
+
+#include "functions.h"
+
 typedef struct {
 	unsigned char prevCruiseBtnState;
 	unsigned char boostHackEnable;
@@ -25,11 +43,12 @@ typedef struct {
 	float offset;
 } table_3d_t;
 
-ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
+//ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
+extern ram_variables_t *RAM_VARIABLES;
 
 /* If you want to use non-standard sized tables
  * that will be incompatible with existing definitions,
  * please set last two digits of version to something different from zero.
 */
 
-static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.00.00";
+static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.01.00";
