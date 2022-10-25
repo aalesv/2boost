@@ -17,14 +17,17 @@
 #define P_DEFOG_SWITCH_ADDRESS (0xFFFF6A43) /* Defog button state variable RAM address */
 #define P_DEFOG_SWITCH ((unsigned char*)P_DEFOG_SWITCH_ADDRESS)
 
-#define P_CRUISE_BTN_FLAG_AADDRESS (0xFFFF6508) /* Cruise button flag variable RAM address */
-#define P_CRUISE_BTN_FLAG ((unsigned char*)P_CRUISE_BTN_FLAG_AADDRESS)
+#define P_CRUISE_BTN_FLAG_ADDRESS (0xFFFF6508) /* Cruise button flag variable RAM address */
+#define P_CRUISE_BTN_FLAG ((unsigned char*)P_CRUISE_BTN_FLAG_ADDRESS)
+#define P_CRUISE_BTN_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise system state variable RAM address */
+#define P_CRUISE_BTN_OK_FLAG ((unsigned char*)P_CRUISE_BTN_OK_FLAG_ADDRESS)
+
 /* Cruise flag reflects state of cruise control buttons - whether they are pressed or not */
 //#define CRUISE_FLAG_IS_BUTTON_FLAG
 
 //Alternate cruise system status
-#define P_CRUISE_STATE_AADDRESS (0xFFFF6662) /* Cruise system flag variable RAM address */
-#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_AADDRESS)
+#define P_CRUISE_STATE_ADDRESS (0xFFFF6662) /* Cruise system flag variable RAM address */
+#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
 /* Cruise flag reflects status of cruise system - whether cruise mode is enabled or it is disabled*/
 #define CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
 

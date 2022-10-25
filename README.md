@@ -10,3 +10,9 @@ For static analysis you'll need PVS-Studio
 
 **ROMs not included**
 
+#### Caveats
+
+- AZ1G900P
+
+ Table switch works correctly only when engine runnig. It's because
+ cruise mode not always turns on when engine is stopped.

@@ -25,6 +25,22 @@
 #pragma message "CRUISE_FLAG_IS_BUTTON_FLAG is defined"
 #endif
 
+#if defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE) && defined(P_CRUISE_STATE_MASK_CRUISE_ENABLED) && defined(P_CRUISE_STATE_MASK_CRUISE_DISABLED)
+#error Only one of P_CRUISE_STATE_MASK_CRUISE_ENABLED and P_CRUISE_STATE_MASK_CRUISE_DISABLED must be defined
+#endif
+
+#if defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE) && !defined(P_CRUISE_STATE_MASK_CRUISE_ENABLED) && !defined(P_CRUISE_STATE_MASK_CRUISE_DISABLED)
+#error P_CRUISE_STATE_MASK_CRUISE_ENABLED or P_CRUISE_STATE_MASK_CRUISE_DISABLED must be defined
+#endif
+
+#if defined(P_CRUISE_STATE_MASK_CRUISE_ENABLED) && defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE)
+#pragma message "P_CRUISE_STATE_MASK_CRUISE_ENABLED is defined, using straight cruise logic"
+#endif
+
+#if defined(P_CRUISE_STATE_MASK_CRUISE_DISABLED) && defined(CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE)
+#pragma message "P_CRUISE_STATE_MASK_CRUISE_DISABLED is defined, using reverse cruise logic"
+#endif
+
 #include "functions.h"
 
 typedef struct {
@@ -51,4 +67,4 @@ extern ram_variables_t *RAM_VARIABLES;
  * please set last two digits of version to something different from zero.
 */
 
-static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.01.00";
+static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.02.00";

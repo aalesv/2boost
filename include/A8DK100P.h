@@ -14,8 +14,8 @@
 #define ORIG_CALC_3D_FUNCTION_ADDRESS (0x00002160)
 #define ORIG_TABLE_TARGET_BOOST_ADRESS (0x0008996C)
 
-#define P_CRUISE_STATE_AADDRESS (0xFFFF66DA) /* Cruise system flag variable RAM address */
-#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_AADDRESS)
+#define P_CRUISE_STATE_ADDRESS (0xFFFF66DA) /* Cruise system flag variable RAM address */
+#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
 /* Cruise flag reflects status of cruise system - whether cruise mode is enabled or it is disabled*/
 #define CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
 
