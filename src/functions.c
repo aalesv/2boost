@@ -31,13 +31,13 @@ char pCruiseBtnPressed (){
 //Straight cruise logic
 char pCruiseStateEnabled (){
 	if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_ENABLED) == P_CRUISE_STATE_MASK_CRUISE_ENABLED) {
-		//Cruise system is enabled
+		//Cruise mode is enabled
 		return 1;
 	} else if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_ENABLED) == 0) {
-		//Cruise system is disabled
+		//Cruise mode is disabled
 		return 0;
 	} else {
-		//Think cruise system is disabled
+		//Think cruise mode is disabled
 		return 0;
 	}
 }
@@ -47,13 +47,13 @@ char pCruiseStateEnabled (){
 //Reverse cruise logic
 char pCruiseStateEnabled (){
 	if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_DISABLED) == P_CRUISE_STATE_MASK_CRUISE_DISABLED) {
-		//Cruise system is disabled
+		//Cruise mode is disabled
 		return 0;
 	} else if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_DISABLED) == 0) {
-		//Cruise system is enabled
+		//Cruise mode is enabled
 		return 1;
 	} else {
-		//Think cruise system is disabled
+		//Think cruise mode is disabled
 		return 0;
 	}
 }

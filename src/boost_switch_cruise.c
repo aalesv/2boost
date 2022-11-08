@@ -56,14 +56,14 @@ void boost_switch_hack (){
 		
 #if defined CRUISE_FLAG_IS_BUTTON_FLAG
 
-		/* When cruise system is not enabled yet or is not good, 8th bit is set to 0 */
+		/* Let's check if cruise can be enabled */
 		if (pCruiseBtnEnabled() == 0) {
 			/* Ignition is just turned on or something is wrong with cruise system */
 			/* Anyway, disabling boost hack */ 
 			RAM_VARIABLES->boostHackEnable = 0;
 		} else {
 			/* Cruise system is OK */
-			/* If button was not pressed, but now is pressed */
+			/* If cruise button was not pressed, but now is pressed */
 			if ((pCruiseBtnPressed() == 1) && (RAM_VARIABLES->prevCruiseBtnState == 0)) {
 				/* Toggle boostHackEnable switch */
 				RAM_VARIABLES->boostHackEnable ^= 1;
@@ -77,13 +77,14 @@ void boost_switch_hack (){
 		
 #if defined CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
 
-		/* When cruise system is not enabled or is not good, 4th bit is set to 1 */
+		/* Let's check if cruise is turned on */
 		if (pCruiseStateEnabled() == 0) {
 			/* Cruise is disabled */
 			/* Disable boost hack */ 
 			RAM_VARIABLES->boostHackEnable = 0;
 		} else if (pCruiseStateEnabled() == 1) {
 			/* Cruise is enabled */
+			/* Enable boost hack */ 
 			RAM_VARIABLES->boostHackEnable = 1;
 		}
 #endif
