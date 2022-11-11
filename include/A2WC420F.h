@@ -16,8 +16,10 @@
 
 #define P_CRUISE_BTN_FLAG_ADDRESS (0xFFFFAF70) /* Cruise button flag variable RAM address */
 #define P_CRUISE_BTN_FLAG ((unsigned char*)P_CRUISE_BTN_FLAG_ADDRESS)
-#define P_CRUISE_BTN_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise system state variable RAM address */
+#define P_CRUISE_BTN_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise buttons state variable RAM address */
 #define P_CRUISE_BTN_OK_FLAG ((unsigned char*)P_CRUISE_BTN_OK_FLAG_ADDRESS)
+#define P_CRUISE_BTN_SYSTEM_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise system state variable RAM address */
+#define P_CRUISE_BTN_SYSTEM_OK_FLAG ((unsigned char*)P_CRUISE_BTN_SYSTEM_OK_FLAG_ADDRESS)
 /* Cruise flag reflects state of cruise control buttons - whether they are pressed or not */
 #define CRUISE_FLAG_IS_BUTTON_FLAG
 
@@ -30,6 +32,7 @@
 #define P_DEFOG_MASK ((unsigned char)0x20)
 #define P_CRUISE_BTN_MASK_BUTTON_PRESSED ((unsigned char)0x1)
 #define P_CRUISE_BTN_MASK_CRUISE_ENABLED ((unsigned char)0x80)
+#define P_CRUISE_BTN_SYSTEM_MASK_CRUISE_DISABLED ((unsigned char)0x40)
 /* 4-th bit set when cruise disabled cleared when enabled */
 #define P_CRUISE_STATE_MASK_CRUISE_DISABLED ((unsigned char)8)
 

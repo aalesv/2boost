@@ -1,7 +1,12 @@
 #if defined CRUISE_FLAG_IS_BUTTON_FLAG
 //Returns cruise system state
+#if defined P_CRUISE_BTN_SYSTEM_MASK_CRUISE_ENABLED
+//Straight cruise logic
 char pCruiseBtnEnabled (){
-	if ((*P_CRUISE_BTN_OK_FLAG & P_CRUISE_BTN_MASK_CRUISE_ENABLED) == 0) {
+	if ((*P_CRUISE_BTN_SYSTEM_OK_FLAG & P_CRUISE_BTN_SYSTEM_MASK_CRUISE_ENABLED) == 0) {
+		//Cruise system is disabled
+		return 0;
+	} else if ((*P_CRUISE_BTN_OK_FLAG & P_CRUISE_BTN_MASK_CRUISE_ENABLED) == 0) {
 		// Ignition is just turned on or something is wrong with cruise system
 		return 0;
 	} else if ((*P_CRUISE_BTN_OK_FLAG & P_CRUISE_BTN_MASK_CRUISE_ENABLED) == P_CRUISE_BTN_MASK_CRUISE_ENABLED) {
@@ -12,6 +17,26 @@ char pCruiseBtnEnabled (){
 		return 0;
 	}
 }
+#endif //P_CRUISE_BTN_SYSTEM_MASK_CRUISE_ENABLED
+
+#if defined P_CRUISE_BTN_SYSTEM_MASK_CRUISE_DISABLED
+//Reverse cruise logic
+char pCruiseBtnEnabled (){
+	if ((*P_CRUISE_BTN_SYSTEM_OK_FLAG & P_CRUISE_BTN_SYSTEM_MASK_CRUISE_DISABLED) == P_CRUISE_BTN_SYSTEM_MASK_CRUISE_DISABLED) {
+		//Cruise system is disabled
+		return 0;
+	} else if ((*P_CRUISE_BTN_OK_FLAG & P_CRUISE_BTN_MASK_CRUISE_ENABLED) == 0) {
+		// Ignition is just turned on or something is wrong with cruise system
+		return 0;
+	} else if ((*P_CRUISE_BTN_OK_FLAG & P_CRUISE_BTN_MASK_CRUISE_ENABLED) == P_CRUISE_BTN_MASK_CRUISE_ENABLED) {
+		//Cruise system is OK
+		return 1;
+	} else {
+		//Think cruise system is disabled
+		return 0;
+	}
+}
+#endif //P_CRUISE_BTN_SYSTEM_MASK_CRUISE_DISABLED
 
 //Returns cruise button state
 char pCruiseBtnPressed (){
@@ -23,7 +48,7 @@ char pCruiseBtnPressed (){
 		return 0;
 	}
 }
-#endif
+#endif //CRUISE_FLAG_IS_BUTTON_FLAG
 
 #if defined CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
 //Returns cruise system state

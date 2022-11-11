@@ -19,8 +19,11 @@
 
 #define P_CRUISE_BTN_FLAG_ADDRESS (0xFFFF6508) /* Cruise button flag variable RAM address */
 #define P_CRUISE_BTN_FLAG ((unsigned char*)P_CRUISE_BTN_FLAG_ADDRESS)
-#define P_CRUISE_BTN_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise system state variable RAM address */
+#define P_CRUISE_BTN_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise buttons state variable RAM address */
 #define P_CRUISE_BTN_OK_FLAG ((unsigned char*)P_CRUISE_BTN_OK_FLAG_ADDRESS)
+#define P_CRUISE_BTN_SYSTEM_OK_FLAG_ADDRESS P_CRUISE_BTN_FLAG_ADDRESS /* Cruise system state variable RAM address */
+#define P_CRUISE_BTN_SYSTEM_OK_FLAG ((unsigned char*)P_CRUISE_BTN_SYSTEM_OK_FLAG_ADDRESS)
+
 
 /* Cruise flag reflects state of cruise control buttons - whether they are pressed or not */
 //#define CRUISE_FLAG_IS_BUTTON_FLAG

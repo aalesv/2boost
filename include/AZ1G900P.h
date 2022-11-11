@@ -9,6 +9,9 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
+//BROKEN - WON'T WORK
+#error At this time definitions are incomplete. Compilation is impossible.
+
 #define CALID "AZ1G900P"
 
 #define ORIG_CALC_3D_FUNCTION_ADDRESS (0x000BE8F8)
