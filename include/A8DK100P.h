@@ -16,17 +16,14 @@
 
 #define P_CRUISE_STATE_ADDRESS (0xFFFF66DA) /* Cruise system flag variable RAM address */
 #define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
-/* Cruise flag reflects status of cruise system - whether cruise mode is enabled or it is disabled*/
-#define CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
 
-#define P_DEFOG_MASK ((unsigned char)0x20)
 /* 4-th bit set when cruise disabled cleared when enabled */
 #define P_CRUISE_STATE_MASK_CRUISE_DISABLED ((unsigned char)8)
-#define P_CRUISE_BTN_MASK_BUTTON_PRESSED ((unsigned char)0x1)
-#define P_CRUISE_BTN_MASK_CRUISE_ENABLED ((unsigned char)0x80)
 
-/* Our variables */
+//Where to place binary in ROM
+//Not used in code, but needed by linker
 #define ROM_HOLE (0x0008F000)
+//RAM address for our variables
 #define RAM_HOLE (0xFFFF9900)
 
 /* Tables */

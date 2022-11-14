@@ -9,33 +9,21 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
-//BROKEN - WON'T WORK
-#error At this time definitions are incomplete. Compilation is impossible.
-
 #define CALID "AZ1G900P"
 
 #define ORIG_CALC_3D_FUNCTION_ADDRESS (0x000BE8F8)
 #define ORIG_TABLE_TARGET_BOOST_ADRESS (0x00084BB4)
 
-#define P_CRUISE_BTN_FLAG_ADDRESS (0xFFFF6209) /* Cruise button flag variable RAM address */
-#define P_CRUISE_BTN_OK_FLAG_ADDRESS (0xFFFF6210) /* Cruise system state variable RAM address */
-#define P_CRUISE_BTN_FLAG ((unsigned char*)P_CRUISE_BTN_FLAG_ADDRESS)
-#define P_CRUISE_BTN_OK_FLAG ((unsigned char*)P_CRUISE_BTN_OK_FLAG_ADDRESS)
-/* Cruise flag reflects state of cruise control buttons - whether they are pressed or not */
-#define CRUISE_FLAG_IS_BUTTON_FLAG
+#define P_CRUISE_STATE_ADDRESS (0xFFFF6212) /* Cruise system flag variable RAM address */
+#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
 
-//#define P_CRUISE_STATE_ADDRESS ( ) /* Cruise system flag variable RAM address */
-//#define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
-/* Cruise flag reflects status of cruise system - whether cruise mode is enabled or it is disabled*/
-//#define CRUISE_FLAG_IS_CRUISE_SYSTEM_STATE
+/* 1st bit set when cruise enabled cleared when disabled */
+#define P_CRUISE_STATE_MASK_CRUISE_ENABLED ((unsigned char)1)
 
-/* 4-th bit set when cruise disabled cleared when enabled */
-//#define P_CRUISE_STATE_MASK_CRUISE_DISABLED ((unsigned char)8)
-#define P_CRUISE_BTN_MASK_BUTTON_PRESSED ((unsigned char)0x1)
-#define P_CRUISE_BTN_MASK_CRUISE_ENABLED ((unsigned char)0x1)
-
-/* Our variables */
+//Where to place binary in ROM
+//Not used in code, but needed by linker
 #define ROM_HOLE (0x0008F000)
+//RAM address for our variables
 #define RAM_HOLE (0xFFFFA900)
 
 /* Tables */
