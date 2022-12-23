@@ -57,9 +57,15 @@ calc_3d_t calc_3d;
 //RAM variables. Address is set in boost_switch_cruise.c
 ram_variables_t *RAM_VARIABLES;
 
+//float boost_switch_hack (const float x, const float y, const table_3d_t *tablePointer) __attribute__((optimize("O")));
+//char globalMapSwitch() __attribute__((optimize("O")));
+//char pCruiseStateEnabled () __attribute__((optimize("O")));
+
 /* If you want to use non-standard sized tables
  * that will be incompatible with existing definitions,
  * please set last two digits of version to something different from zero.
 */
 
-static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.03.F0";
+static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.03.F1";
+//Needed for definitions compatibility since version 1.04 . Remove in ver 2
+static const int COMPAT_FILL __attribute__((used)) = 0xBEEF;
