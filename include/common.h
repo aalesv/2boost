@@ -44,11 +44,17 @@ typedef struct {
 	void *y_axis_ptr;
 	void *data_ptr;
 	long data_type;
-	float miltiplier;
+	float multiplier;
 	float offset;
 } table_3d_t;
 
-//ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
+//Type for calc 3D fuction
+typedef float (*calc_3d_t)(float, float, const table_3d_t *);
+
+//Calc 3D function. Address is set in boost_switch_cruise.c
+calc_3d_t calc_3d;
+
+//RAM variables. Address is set in boost_switch_cruise.c
 ram_variables_t *RAM_VARIABLES;
 
 /* If you want to use non-standard sized tables
@@ -56,4 +62,4 @@ ram_variables_t *RAM_VARIABLES;
  * please set last two digits of version to something different from zero.
 */
 
-static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.03.00";
+static const char VERSION[] __attribute__((used)) __attribute__ ((aligned (0x200))) = "2Boost " CALID " 0001.03.F0";

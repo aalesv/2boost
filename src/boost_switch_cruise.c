@@ -14,8 +14,8 @@ ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
 
 /*Headers include by specifying -include option for gcc*/
 
-/* Hack to make compiler produce mow.l instead of mov.w */
-const int orig_calc_3d_function_address = ORIG_CALC_3D_FUNCTION_ADDRESS;
+//Calc 3D function is located at ORIG_CALC_3D_FUNCTION_ADDRESS
+calc_3d_t calc_3d = ((calc_3d_t)ORIG_CALC_3D_FUNCTION_ADDRESS); //-V566
 
 //Define Target Boost map 2 table
 const float tblTargetBoost2_x_axis [TARGET_BOOST_X_COUNT] = TBL_TARGET_BOOST2_X_AXIS;
@@ -30,50 +30,31 @@ const table_3d_t tblTargetBoost2 = {
 	.y_axis_ptr = &tblTargetBoost2_y_axis,
 	.data_ptr = &tblTargetBoost2_data,
 	.data_type = 0x08000000,
-	.miltiplier = 1.0,
+	.multiplier = 1.0,
 	.offset = 0
 };
 
 //This function replaces original calc 3D table function
-void boost_switch_hack (){
-	
-	/* Push to stack */
-	asm("mov.l   r1, @-r15");
-	asm("mov.l   r2, @-r15");
-	asm("mov.l   r3, @-r15");
-	asm("mov.l   r5, @-r15");
-	/* Push PR register because we will JSR later*/
-	//asm("sts.l   pr, @-r15"); //Not needed if we do function call
-	
-	/* R4 contains 1st map table structure address */
-	//Also this code should keep r4 unchanged
-	register int R4 __asm("r4");
+//According to SH CPU ABI specification, 
+//registers R4-R7, FR4-FR11 are used for parameter passing.
+//Thus x stored in FR4, y stored in FR5, tablePointer stored in R4
+//the same as original function.
+float boost_switch_hack (const float x, const float y, const table_3d_t *tablePointer){
 	
 	/* Proceed only if it's original Target Boost table */
-	if (R4==ORIG_TABLE_TARGET_BOOST_ADRESS) {
+	if ((int)tablePointer==ORIG_TABLE_TARGET_BOOST_ADRESS) {
 		
 		/* If map switch enabled, switch the table*/
 		if (globalMapSwitch() == 1) {
-			//Put Target Boost map 2 table address into r4 register
-			R4=(int)&tblTargetBoost2;
+			//Switch to Target Boost map 2 table
+			tablePointer=&tblTargetBoost2;
 		}
 	}
 
-	//Real calc 3D table function will be called via r5 register
-	register int R5 __asm("r5");
-	
-	//Put address for calc 3D table function into r5 register
-	R5=orig_calc_3d_function_address;
-	/* JSR changes PR register, so we must save it at procedure begin*/
-	asm("jsr @r5");
-	asm("nop");
-	
-	/* Pop from stack*/
-	//asm("lds.l   @r15+, pr"); //Not needed if we do function call
-	asm("mov.l   @r15+, r5");	//-V779
-	asm("mov.l   @r15+, r3");
-	asm("mov.l   @r15+, r2");
-	asm("mov.l   @r15+, r1");
+	//Call calc 3D function and return result
+	//x passes through FR4, y passes through FR5, tablePointer passes through R4
+	//as original function expects
+	return calc_3d(x, y, tablePointer);
 }
 
 //Returns 0 if must use 1st map, 1 if must use 2nd map

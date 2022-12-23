@@ -90,6 +90,7 @@ help:
 	@echo make all	- Build all CAL IDs. Specify DOPATCH=-yes to patch your ROM.
 	@echo make analyze	- Do static analysis with PVS-Studio (must be installed).
 	@echo			  Specify CALID=CALID.
+	@echo make analyze-clean - Delete files needed for static analysis
 	@echo make CALID	- Specify CALID to build only that target,
 	@echo 		  for example 'make A8DK100P' will build
 	@echo 		  files only for A8DK100P. Specify DOPATCH=-yes to patch your ROM.
