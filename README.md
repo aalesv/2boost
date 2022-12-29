@@ -10,6 +10,8 @@ For static analysis you'll need PVS-Studio
 
 **ROMs not included**
 
+For more details please see [2Boost Wiki](https://github.com/aalesv/2boost/wiki)
+
 #### Caveats
 
 - AZ1G900P
