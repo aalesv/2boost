@@ -1,0 +1,23 @@
+ENTRY(ROM_HOLE);
+
+SECTIONS
+{
+	ROM_HOLE_CODE ROM_HOLE :
+	{
+		*(RomHole_Code)
+		*(RomHole_Data)
+		*(RomHole_LUT)
+	}
+	ROM_HOLE_DATA ALIGN(0x200) :
+	{
+		*(RomHole_Metadata)
+		*(RomHole_Config)
+		*(RomHole_TableData)
+		*(RomHole_TablePtr)
+	}
+	ROM_HOLE_TESTS ALIGN(0x4) :
+	{
+		*(RomHole_TestsCode)
+		*(RomHole_TestsData)
+	}
+}
