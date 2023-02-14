@@ -42,7 +42,7 @@ const table_3d_t tblTargetBoost2 = {
 float boost_switch_hack (const float x, const float y, const table_3d_t *tablePointer){
 	
 	/* Proceed only if it's original Target Boost table */
-	if ((int)tablePointer==ORIG_TABLE_TARGET_BOOST_ADRESS) {
+	if ((int)tablePointer==ORIG_TABLE_TARGET_BOOST_ADDRESS) {
 		
 		/* If map switch enabled, switch the table*/
 		if (globalMapSwitch() == 1) {

@@ -1,5 +1,9 @@
 # Patch to Subaru ROMs based on SuperH CPU
 
+### Version 1 branch is frozen.
+
+No new features and tables will be added, only bug fixes and new CAL IDs.
+
 ### Target Boost map switching by pressing Cruise button
 
 To build you'll need GNUSH toolchain https://llvm-gcc-renesas.com/
