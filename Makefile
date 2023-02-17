@@ -49,7 +49,9 @@ else
 endif
 
 CC=$(BIN)$(PATHSEP)sh-elf-gcc
-CFLAGS=-g -c -m4 -mrenesas -m4-single-only
+#Variables INCLUDE and TARGET_INCLUDE defined later
+#Set additional compiler flags in command line with USERCFLAGS variable
+CFLAGS=-g -c -m4 -mrenesas -m4-single-only -I$(INCLUDE) -I$(TARGET_INCLUDE) $(USERCFLAGS)
 LD=$(BIN)$(PATHSEP)sh-elf-ld
 #LD script for linking ROM
 LD_COMMON_SCRIPT=$(SRC)$(PATHSEP)2boost.txt
@@ -57,6 +59,7 @@ LDFLAGS=-T $(LD_COMMON_SCRIPT)
 READELF=$(BIN)$(PATHSEP)sh-elf-readelf
 OBJCOPY=$(BIN)$(PATHSEP)sh-elf-objcopy
 #Copy to bin file only specified sections
+#Section names must correspond sections in LD_COMMON_SCRIPT file
 OBJCOPYFLAGS=-O binary --only-section=ROM_HOLE_CODE --only-section=ROM_HOLE_DATA --only-section=ROM_HOLE_TESTS
 SORT=sort
 
@@ -64,9 +67,9 @@ SORT=sort
 BUILD=.$(PATHSEP)build
 ROM=.$(PATHSEP)ROM
 INCLUDE=.$(PATHSEP)include
+#Target specific includes only - headers and linker scripts
+TARGET_INCLUDE=$(INCLUDE)$(PATHSEP)target
 SRC=.$(PATHSEP)src
-#Exclude common.h
-EXCLUDE="common$(FINDSEP)functions"
 
 #PVS-Studio
 PVS=$(PVSDIR)$(PATHSEP)x64$(PATHSEP)PVS-Studio
@@ -104,21 +107,21 @@ ALL-I-FILES=$(ALL-C-FILES:.c=.i)
 # Take offset from linker script .txt file
 ifeq ($(WINDOWS), 1)
 define find-rom-hole-addr
-$(shell for /f "tokens=2 delims='=;'" %%i in ('findstr ROM_HOLE $(INCLUDE)$(PATHSEP)$@.txt') do echo %%i)
+$(shell for /f "tokens=2 delims='=;'" %%i in ('findstr ROM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$@.txt') do echo %%i)
 endef
 else
 define find-rom-hole-addr
-$(shell grep ROM_HOLE $(INCLUDE)$(PATHSEP)$@.txt | awk -F"=|\;" '{print $$2}')
+$(shell grep ROM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$@.txt | awk -F"=|\;" '{print $$2}')
 endef
 endif
 
 # Find all possible targets
-# List all include\*.h files,
-# remove .h extension, remove unnecessary names
+# List all include\target\*.h files,
+# remove .h extension
 ifeq ($(WINDOWS), 1)
-	all-targets:=$(shell for %%f in ("$(INCLUDE)$(PATHSEP)*.h") do @echo %%~nf | findstr /v $(EXCLUDE))
+	all-targets:=$(shell for %%f in ("$(TARGET_INCLUDE)$(PATHSEP)*.h") do @echo %%~nf)
 else
-	all-targets:=$(shell basename -a $(INCLUDE)$(PATHSEP)*.h | awk -F"." '{print $$1}' | $(GREP) -v $(EXCLUDE))
+	all-targets:=$(shell basename -a $(TARGET_INCLUDE)$(PATHSEP)*.h | awk -F"." '{print $$1}')
 endif
 
 # Default target to build
@@ -136,7 +139,7 @@ help:
 	@echo make help	- This message.
 	@echo make list	- List for possible CAL IDs.
 	@echo make tests	- Test build for emulator testing only.
-	@echo			  Specify CALID=CALID for building CALID or all for build all ROMs.
+	@echo			  Specify CALID=CALID for building CALID or CALID=all for build all ROMs.
 
 #Build .o file
 #Call make recursive to build file every time
@@ -160,11 +163,11 @@ $(all-targets): orig-rom=$(ROM)$(PATHSEP)$@.bin
 #Patched ROM file
 $(all-targets): patched-rom=$(BUILD)$(PATHSEP)$@-patched.bin
 #LD script for particular target
-$(all-targets): ld-script-target=$(INCLUDE)$(PATHSEP)$@.txt
+$(all-targets): ld-script-target=$(TARGET_INCLUDE)$(PATHSEP)$@.txt
 #Add `.\build\` directory and rename .o file to correspond current target
 $(all-targets): all-o-files-with-dir=$(addprefix $(BUILD)$(PATHSEP)2Boost-$@-, $(ALL-O-FILES))
 #Target CALID header file
-$(all-targets): target-header-file=$(INCLUDE)$(PATHSEP)$@.h
+$(all-targets): target-header-file=$@.h
 #No prerequisites because target list made of existing files
 $(all-targets):
 	@echo =====================================================================================
@@ -205,7 +208,7 @@ clean:
 # CALID=your-cal-id must be specified on command line
 analyze: logfile=$(CALID).log
 analyze: pvs-logfile=$(PVS-WORK-DIR)$(PATHSEP)$(logfile)
-analyze: $(INCLUDE)$(PATHSEP)$(CALID).h
+analyze: $(TARGET_INCLUDE)$(PATHSEP)$(CALID).h
 	$(RM) $(pvs-logfile)
 # Call make recursively
 	$(MAKE) $(ALL-I-FILES) TARGET=$(CALID) ADDITIONAL-CFLAGS="-include $<" pvs-logfile=$(pvs-logfile)
@@ -215,13 +218,14 @@ analyze: $(INCLUDE)$(PATHSEP)$(CALID).h
 analyze-clean:
 	$(RM) $(BUILD)$(PATHSEP)*.i $(PVS-WORK-DIR)$(PATHSEP)*.log $(PVS-WORK-DIR)$(PATHSEP)*.plog
 
+#List all targets
 list:
 	@echo Can build for CAL IDs:
 	@echo $(all-targets)
 
 #Build with tests. Specify CALID=all to build all targets
 #Define tests symbol and overwrite CFLAGS variable
-tests: cflags_testing="$(CFLAGS) -DBUILD_TESTS"
+tests: cflags_testing="$(USERCFLAGS) -DBUILD_TESTS"
 tests:
 	@echo Building test build for $(CALID)
-	@$(MAKE) $(CALID) CFLAGS=$(cflags_testing) DOPATCH=$(DOPATCH)
+	@$(MAKE) $(CALID) USERCFLAGS=$(cflags_testing) DOPATCH=$(DOPATCH)

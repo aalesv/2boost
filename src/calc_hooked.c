@@ -9,23 +9,10 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
-/* If you want to use non-standard sized tables
- * that will be incompatible with existing definitions,
- * please set last two digits of version to something different from zero.
-*/
+#include "calc_hooked.h"
 
-//Version string
-volatile const char VERSION[] __attribute__((used)) ROM_METADATA = "2Boost " CALID " 0002.00.00";
-//Map switch source (no switching / cruise button / Si-Srive switch) option. Can be modified by tuner.
-volatile const unsigned char CFG_GLOBAL_MAP_SWITCH_SOURCE ROM_CONFIG = MAP_SWITCH_SOURCE_NONE;
-
-//Declare RAM variables and place them at RAM hole
-ram_variables_t *RAM_VARIABLES = ((ram_variables_t*)RAM_HOLE);
-
-/*Headers include by specifying -include option for gcc*/
-
-//Calc 3D function is located at ORIG_CALC_3D_FUNCTION_ADDRESS
-calc_3d_float_t calc_3d_float = ((calc_3d_float_t)ORIG_CALC_3D_FUNCTION_ADDRESS); //-V566
+//NUMBER_OF_TABLES - number of tables for each hack section
+//Defined in macros.h
 
 #if defined ORIG_TABLE_TARGET_BOOST_ADDRESS
  //Create table and table pointer structure for Target Boost tables
@@ -100,7 +87,7 @@ CREATE_TABLE_3D_FLOAT(NUMBER_OF_TABLES, tblTargetThrPosB, TABLE_THROTTLE_POSITIO
 //[][2] element contains table 2 address
 //[][3] element contains table 3 address
 //Array of pointers
-static const table_3d_float_t * const FLOAT_3D_LUT[][NUMBER_OF_TABLES+1] ROM_LUT = {
+static const table_3d_float_t * const FLOAT_3D_LUT[][NUMBER_OF_TABLES+1] = {
 	#if defined ORIG_TABLE_TARGET_BOOST_ADDRESS
 	CREATE_LUT_ENTRY(NUMBER_OF_TABLES, table_3d_float_t, ORIG_TABLE_TARGET_BOOST_ADDRESS, &tblTargetBoost),
 	#endif
@@ -150,8 +137,13 @@ static const table_3d_float_t * const FLOAT_3D_LUT[][NUMBER_OF_TABLES+1] ROM_LUT
 };
 
 //This function replaces original calc 3D table function
+//x - X axis value
+//y - Y axis value
+//*tablePointer - pointer to structure that desctibes 3D table
+//Returns Z axis value
+//
 //According to SH CPU ABI specification, 
-//registers R4-R7, FR4-FR11 are used for parameter passing.
+//registers R4-R7, FR4-FR11 used for parameter passing.
 //Thus x stored in FR4, y stored in FR5, tablePointer stored in R4
 //the same as original function.
 float calc_3d_float_hooked (const float x, const float y, const table_3d_float_t *tablePointer){
@@ -164,6 +156,12 @@ float calc_3d_float_hooked (const float x, const float y, const table_3d_float_t
 		if (FLOAT_3D_LUT[i][0] == tablePointer) {
 			//If table is in LUT, do the lookup
 			unsigned char j = globalMapSwitch();
+			#if defined(LUT_CHECK_OVERRUN)
+				//Just in case let's do additional check to prevent array overrun.
+				j = sanitizeLutSecondIndex(j);
+			#endif //LUT_CHECK_OVERRUN
+			//Current selected map number
+			RAM_VARIABLES -> mapSelected = j;
 			//Careful, array overrun may occur
 			tablePointer = FLOAT_3D_LUT[i][j];
 			//GNUSH v13.01 GCC produces strange code if break is uncommented
@@ -183,228 +181,13 @@ float calc_3d_float_hooked (const float x, const float y, const table_3d_float_t
 	return calc_3d_float(x, y, tablePointer);
 }
 
-//Returns 1 if must use 1st map, 2 if must use 2nd map, 3 if must use 3d map
-//This function is used as array index and can produce array overrun
-unsigned char globalMapSwitch(){
-	unsigned char res;
-	
-	switch (globalMapSwitchSource()) {
-		//Map switching is disabled
-		case MAP_SWITCH_SOURCE_NONE:
-			res = 0;
-			break;
-		#if defined(P_CRUISE_STATE)
-		//Cruise on/off based map switching
-		//When Si-Drive support in enabled, 2boost switches between Intelligent and Sport maps in this case
-		case MAP_SWITCH_SOURCE_CRUISE:
-			//cruiseStateEnabled returns 0 or 1
-			//Set map switch if cruise is enabled
-			res = cruiseStateEnabled() + 1;
-			break;
-		#endif //P_CRUISE_STATE
-		#if defined(P_SI_DRVIE_STATE)
-		//Si-Drive based map switching 
-		case MAP_SWITCH_SOURCE_SI_DRIVE:
-			res = siDriveState();
-			break;
-		#endif //P_SI_DRVIE_STATE
-		//In case of misconfiguration don't do map switching.
-		default:
-			res = 0;
-			break;
+//Prevent LUT array overrun condition
+static inline unsigned char sanitizeLutSecondIndex (unsigned char index) {
+	if (index > NUMBER_OF_TABLES) {
+		//This should never happen!
+		//Zeroing second LUT index will disable all hacks
+		index = 0;
 	}
 	
-	//Place map number in RAM so it can be read with logger
-	RAM_VARIABLES->globalMapSwitch = res;
-	return res;
+	return index;
 }
-
-#if defined P_CRUISE_STATE_MASK_CRUISE_ENABLED
-//Returns 1 if cruise is enabled, 0 otherwise
-//Straight cruise logic
-unsigned char cruiseStateEnabled (){
-	if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_ENABLED) == P_CRUISE_STATE_MASK_CRUISE_ENABLED) {
-		//Cruise mode is enabled
-		return 1;
-	} else if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_ENABLED) == 0) {
-		//Cruise mode is disabled
-		return 0;
-	} else {
-		//Think cruise mode is disabled
-		return 0;
-	}
-}
-#endif //P_CRUISE_STATE_MASK_CRUISE_ENABLED
-
-#if defined P_CRUISE_STATE_MASK_CRUISE_DISABLED
-//Returns 1 if cruise is enabled, 0 otherwise
-//Reverse cruise logic
-unsigned char cruiseStateEnabled (){
-	if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_DISABLED) == P_CRUISE_STATE_MASK_CRUISE_DISABLED) {
-		//Cruise mode is disabled
-		return 0;
-	} else if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_DISABLED) == 0) {
-		//Cruise mode is enabled
-		return 1;
-	} else {
-		//Think cruise mode is disabled
-		return 0;
-	}
-}
-#endif //P_CRUISE_STATE_MASK_CRUISE_DISABLED
-
-//How to switch between maps
-//do not switch - stock map will be used
-//use Cruise On/Off switch
-//or use Si-Drive switch (if supported by ROM)
-unsigned char globalMapSwitchSource () {
-	//This const is defined earlier
-	return CFG_GLOBAL_MAP_SWITCH_SOURCE;
-}
-
-#if defined P_SI_DRVIE_STATE
-//Return Si-Drive switch state
-//Return SI_DRIVE_STATE_NONE if Si-Drive error
-unsigned char siDriveState () {
-	unsigned char res;
-	
-	switch (*P_SI_DRVIE_STATE) {
-		case 3:
-		case 16:
-			res = SI_DRIVE_STATE_INTELLIGENT;
-			break;
-		case 1:
-			res = SI_DRIVE_STATE_SPORT;
-			break;
-		case 2:
-		case 8:
-			res = SI_DRIVE_STATE_SPORT_SHARP;
-			break;
-		default:
-			res = SI_DRIVE_STATE_NONE;
-			break;
-	}
-	
-	return res;
-}
-#endif //P_SI_DRVIE_STATE
-
-#if defined(BUILD_TESTS)
-//This is test suite
-//It emulates Cruise on/off and Si-Drive switching
-//Results placed in RAM
-//Use with emulator
-//Safe for production ROM but not accessible
-
-typedef struct {
-	//Number of tests done
-	int count;
-	//Test each table with two parameters sets
-	float	testA1,
-			testA2,
-			testB1,
-			testB2,
-			testC1,
-			testC2,
-			testD1,
-			testD2;
-} debug_variables_t;
-
-//Declare debug output
-debug_variables_t *DEBUG_VARIABLES ROM_TESTS_DATA;
-debug_variables_t *DEBUG_VARIABLES = ((debug_variables_t*)(int)RAM_HOLE+sizeof(ram_variables_t));
-
-//Set proper cruise on/off flags
-#if defined(P_CRUISE_STATE_ADDRESS)
- #if defined(P_CRUISE_STATE_MASK_CRUISE_DISABLED)
-  #define CRUISE_DISABLED P_CRUISE_STATE_MASK_CRUISE_DISABLED
-  #define CRUISE_ENABLED 0
- #elif defined(P_CRUISE_STATE_MASK_CRUISE_ENABLED) //P_CRUISE_STATE_MASK_CRUISE_DISABLED
-  #define CRUISE_DISABLED 0
-  #define CRUISE_ENABLED P_CRUISE_STATE_MASK_CRUISE_ENABLED
- #endif //P_CRUISE_STATE_MASK_CRUISE_ENABLED
-#endif //P_CRUISE_STATE_ADDRESS
-
-//Test calc_3d_float_hooked() call for all defined tables
-//and modes - Cruise on/off, all Si-Drive modes
-void test_calc_3d_float_hooked_all_tables_and_modes() {
-
- //Test Base Timing tables if defined
- #if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
-  //Test cruise on/off if defined
-  #if defined(P_CRUISE_STATE_ADDRESS)
-	*P_CRUISE_STATE = CRUISE_DISABLED;
-	test_calc_3d_float_hooked_timing();
-	*P_CRUISE_STATE = CRUISE_ENABLED;
-	test_calc_3d_float_hooked_timing();
-  #endif //P_CRUISE_STATE_ADDRESS
-  
-  //Test Si-Drive if supported
-  #if defined(P_SI_DRVIE_STATE)
-	//Intelligent
-	*P_SI_DRVIE_STATE = 3;
-	test_calc_3d_float_hooked_timing();
-	*P_SI_DRVIE_STATE = 16;
-	test_calc_3d_float_hooked_timing();
-
-	//Sport
-	*P_SI_DRVIE_STATE = 1;
-	test_calc_3d_float_hooked_timing();
-
-	//Sport Sharp
-	*P_SI_DRVIE_STATE = 2;
-	test_calc_3d_float_hooked_timing();
-	*P_SI_DRVIE_STATE = 8;
-	test_calc_3d_float_hooked_timing();
-
-	//Garbage, must choose orig table 
-	*P_SI_DRVIE_STATE = 0;
-	test_calc_3d_float_hooked_timing();
-  #endif //P_SI_DRVIE_STATE
- #endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
-
-}
-
-//Test Base Timing tables if defined
-#if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
-//Test calc_3d_float_hooked() for timing tables
-void test_calc_3d_float_hooked_timing() {
-	//Test sets
-	const float x_min = 0;
-	const float y_min = 0;
-	const float x_max = 4;
-	const float y_max = 7000;
-	
-	//Reset counter
-	DEBUG_VARIABLES->count=0;
-	
-	//Call calc_3d_float_hooked with first set
-	DEBUG_VARIABLES->testA1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
-	//Increment counter
-	DEBUG_VARIABLES->count++;
-	//Call calc_3d_float_hooked with second set
-	DEBUG_VARIABLES->testA2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
-	//Increment counter
-	DEBUG_VARIABLES->count++;
-	//And so on...
- #if defined(ORIG_TABLE_BASE_TIMING_B_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testB1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testB2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
- #endif //ORIG_TABLE_BASE_TIMING_B_ADDRESS
- #if defined(ORIG_TABLE_BASE_TIMING_C_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testC1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testC2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
- #endif //ORIG_TABLE_BASE_TIMING_C_ADDRESS
- #if defined(ORIG_TABLE_BASE_TIMING_D_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testD1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testD2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
- #endif //ORIG_TABLE_BASE_TIMING_D_ADDRESS
-}
-#endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
-#endif //BUILD_TESTS

@@ -5955,7 +5955,7 @@
    <state name="Disabled" data="00" />
    <state name="Cruise On/Off" data="01" />
    <state name="Si-Drive Switch" data="02" />
-   <description>When Disabled selected, 2Boost maps not used. When Cruise On/Off selected, 2Boost SI-Drive Intelligent map used when cruise is off, SI-Drive Sport map used when cruise is on. When SI-Drive Switch selected, 2Boost map used according to selected SI-Drive mode - Intellignt, Sport or Sport Sharp</description>
+   <description>When Disabled selected, 2Boost maps not used. When Cruise On/Off selected, 2Boost SI-Drive Intelligent map used when cruise is off, SI-Drive Sport map used when cruise is on. When SI-Drive Switch selected, 2Boost map used according to selected SI-Drive mode - Intelligent, Sport or Sport Sharp</description>
  </table>
  
   <table type="Switch" name="Boost Hack" category="2Boost" sizey="4">
