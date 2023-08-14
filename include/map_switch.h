@@ -28,15 +28,22 @@
 #pragma message "P_CRUISE_STATE_MASK_CRUISE_DISABLED is defined, using reverse cruise logic"
 #endif
 
-//Returns 0 if must use original ROM map, 1 if must use 1st map, 2 if must use 2nd map, 3 if must use 3d map
-unsigned char globalMapSwitch() OPTIMIZE("O") ROM_CODE;
+//Returns 0 if must use original ROM map, 1 if must use 1st map, 2 if must use 2nd map, 3 if must use 3d map, 4 if must use 4th map
+uint8 globalMapSwitch(void) ROM_CODE;
 //Returns 1 if cruise is enabled, 0 otherwise
-unsigned char cruiseStateEnabled () OPTIMIZE("O") ROM_CODE;
+uint8 cruiseStateEnabled (void) ROM_CODE;
 //Returns 1 if I, 2 if S, 3 if S#, 0 otherwise
-unsigned char siDriveState () OPTIMIZE("O") ROM_CODE;
+uint8 siDriveState (void) ROM_CODE;
 //Returns map switch source defined in MAP_SWITCH_SOURCE enum
 //As function will always be inlined, do not specify linker section and it will be stripped
-inline static unsigned char globalMapSwitchSource () ALWAYS_INLINE OPTIMIZE("O");
+inline static uint8 globalMapSwitchSource (void) ALWAYS_INLINE;
 
-extern unsigned char CFG_GLOBAL_MAP_SWITCH_SOURCE;
+//Returns overtake map column number if overtake conditions are met and 0 otherwise
+uint8 overtakeMapSwitch(void) ROM_CODE;
+//Returns 1 if cruise cancel button is pressed, 0 otherwise
+uint8 cruiseCancelPressed(void) ROM_CODE;
+
+extern uint8 CFG_GLOBAL_MAP_SWITCH_SOURCE;
+extern uint8 CFG_OVERTAKE_BUTTON_SWITCH_SOURCE;
+extern float CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE;
 extern ram_variables_t *RAM_VARIABLES;

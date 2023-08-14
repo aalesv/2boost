@@ -1,3 +1,7 @@
+#### 2boost.c
+
+Functions that are entry points for Calc 2D/3D and Mass Airflow Calc routines
+
 #### 2boost.txt
 
 Main linker script
@@ -13,6 +17,10 @@ Global variables, constants etc.
 #### map_switch.c
 
 Map switching related functions. Cruise and Si-Drive state functions also located here.
+
+#### speed_density.c
+
+Speed density related functions and tables.
 
 #### tests.c
 

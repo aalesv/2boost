@@ -12,30 +12,97 @@
 #include "macros.h"
 #include "types.h"
 
-//Lookup table for 3D tables
+//Lookup table for 3D UINT tables
 //[][0] element contains orig table address
 //[][1] element contains table 1 address
 //[][2] element contains table 2 address
 //[][3] element contains table 3 address
+//[][last] element contains overtake table address
 //Array of pointers
-static const table_3d_float_t * const FLOAT_3D_LUT[][NUMBER_OF_TABLES+1] ROM_LUT;
+static const table_3d_uint_t * const LUT_3D_UINT[][LUT_COLUMN_COUNT] ROM_LUT;
+
+//Lookup table for 2D UINT tables
+//[][0] element contains orig table address
+//[][1] element contains table 1 address
+//[][2] element contains table 2 address
+//[][3] element contains table 3 address
+//[][last] element contains overtake table address
+//Array of pointers
+static const table_2d_uint_t * const LUT_2D_UINT[][LUT_COLUMN_COUNT] ROM_LUT;
 
 //This function replaces original calc 3D table function
 //x - X axis value
 //y - Y axis value
-//*tablePointer - pointer to structure that desctibes 3D table
-//Returns Z axis value
-float calc_3d_float_hooked (const float x, const float y, const table_3d_float_t *tablePointer) OPTIMIZE("O") ROM_CODE;
+//*tablePointer - pointer to structure that describes 3D table. uint only
+//Returns Z axis value converted to float
+float calc_3d_uint_to_float_hooked (const float x, const float y, 
+									const table_3d_uint_t *tablePointer) ROM_CODE;
+
+//This function replaces original calc 2D table function
+//x - X axis value
+//*tablePointer - pointer to structure that describes 2D table. uint only
+//Returns Y axis value converted to float
+float calc_2d_uint_to_float_hooked (const float x, 
+									const table_2d_uint_t *tablePointer) ROM_CODE;
+
+//Lookup universal function
+//LUT - two-dimensional array with LUT_COLUMN_COUNT rows
+//lutRowCount - LUT row count
+//elementToFind - what it needs to find in zero column
+//Returns row index if element is found and -1 otherwise
+//
+//I found that GCC 4.7 from GNUSH v13.01 toolchain
+//sometimes produces incorrect code when getLutRowNumber is inlined.
+//GCC 12.2 that I compiled from sources does not have this issue.
+#if __GNUC__ >= GNUC_MIN_ACTUAL_VERSION
+	//New GCC, inline
+ inline
+#endif //__GNUC__
+	static int getLutRowNumber (const int LUT[][LUT_COLUMN_COUNT], 
+								int lutRowCount, 
+								int elementToFind) OPTIMIZE("O3") ROM_CODE
+#if __GNUC__ >= GNUC_MIN_ACTUAL_VERSION
+	//New GCC, inline always
+	//Test build won't inline this function without this attribute
+		ALWAYS_INLINE
+#else
+	//Old GCC, never inline
+		NOINLINE
+#endif //__GNUC__
+;
+
+//Lookup universal function
+//LUT - two-dimensional array with LUT_COLUMN_COUNT rows
+//lutRowCount - LUT row count
+//elementToFind - what it needs to find in zero column
+//Returns LUT element if elementToFind is present in LUT's first column
+//or unchanged elementToFind
+static int getPointerFromLut (const int LUT[][LUT_COLUMN_COUNT], 
+							int lutRowCount, 
+							int elementToFind) OPTIMIZE("O3") ROM_CODE;
 
 //Prevent LUT array overrun condition
 //Function always will inlined
-static inline unsigned char sanitizeLutSecondIndex (unsigned char index) ALWAYS_INLINE OPTIMIZE("O") ROM_CODE;
+static inline uint8 sanitizeLutSecondIndex (uint8 index) ALWAYS_INLINE ROM_CODE;
 
-//Calc 3D function.
-extern calc_3d_float_t calc_3d_float;
+//Calc 3D function, data type uint only
+extern calc_3d_uint_to_float_t calc_3d_uint_to_float;
 
+//Calc 2D function, data type uint only
+extern calc_2d_uint_to_float_t calc_2d_uint_to_float;
 //RAM variables.
 extern ram_variables_t *RAM_VARIABLES;
 
 //What map to use
-extern unsigned char globalMapSwitch();
+extern uint8 globalMapSwitch(void);
+
+#if defined(BUILD_TESTS)
+	//Test LUT 3D lookup
+	void test_getLutRowNumber_3d(void) ROM_TESTS_CODE;
+	//Test LUT 2D lookup
+	void test_getLutRowNumber_2d(void) ROM_TESTS_CODE;
+	//Test LUT 3D lookup
+	void test_getPointerFromLut_3d(void) ROM_TESTS_CODE;
+
+    extern debug_variables_t *DEBUG_VARIABLES;
+#endif

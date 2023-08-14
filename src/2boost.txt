@@ -4,20 +4,29 @@ SECTIONS
 {
 	ROM_HOLE_CODE ROM_HOLE :
 	{
-		*(RomHole_Code)
-		*(RomHole_Data)
-		*(RomHole_LUT)
+		*(ROM_ENTRY_POINT_CALC_3D)
+		*(ROM_ENTRY_POINT_CALC_2D)
+		*(ROM_ENTRY_POINT_SPEED_DENSITY)
+		*(ROM_CODE)
+		*(ROM_DATA)
+		*(ROM_DATA_CONST)
+		*(ROM_LUT)
 	}
-	ROM_HOLE_DATA ALIGN(0x200) :
+	ROM_HOLE_DATA ALIGN(0x100) :
 	{
-		*(RomHole_Metadata)
-		*(RomHole_Config)
-		*(RomHole_TableData)
-		*(RomHole_TablePtr)
+		*(ROM_METADATA)
+		*(ROM_CONFIG)
+		*(ROM_TABLE_DATA)
+		*(ROM_TABLE_PTR)
+		*(ROM_OTHER_DATA)
+	}
+	ROM_HOLE_EXTERNAL_LIB ALIGN(0x4) :
+	{
+		*libgcc.a:*(.text*)
 	}
 	ROM_HOLE_TESTS ALIGN(0x4) :
 	{
-		*(RomHole_TestsCode)
-		*(RomHole_TestsData)
+		*(ROM_TESTS_CODE)
+		*(ROM_TESTS_DATA)
 	}
 }

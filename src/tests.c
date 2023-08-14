@@ -11,30 +11,16 @@
 
 #include "tests.h"
 
+#if defined __INTELLISENSE__
+#define BUILD_TESTS
+#endif
+
 #if defined(BUILD_TESTS)
 //This is test suite
-//It emulates Cruise on/off and Si-Drive switching
+//Tests LUT lookup
+//Emulates Cruise on/off, Si-Drive switching, pressing the Overtake button
 //Results placed in RAM
-//Use with emulator
-//Safe for production ROM but not accessible
-
-typedef struct {
-	//Number of tests done
-	int count;
-	//Test each table with two parameters sets
-	float	testA1,
-			testA2,
-			testB1,
-			testB2,
-			testC1,
-			testC2,
-			testD1,
-			testD2;
-} debug_variables_t;
-
-//Declare debug output
-debug_variables_t *DEBUG_VARIABLES ROM_TESTS_DATA;
-debug_variables_t *DEBUG_VARIABLES = ((debug_variables_t*)(int)RAM_HOLE+sizeof(ram_variables_t));
+//For emulator testing only
 
 //Set proper cruise on/off flags
 #if defined(P_CRUISE_STATE_ADDRESS)
@@ -47,86 +33,402 @@ debug_variables_t *DEBUG_VARIABLES = ((debug_variables_t*)(int)RAM_HOLE+sizeof(r
  #endif //P_CRUISE_STATE_MASK_CRUISE_ENABLED
 #endif //P_CRUISE_STATE_ADDRESS
 
-//Test calc_3d_float_hooked() call for all defined tables
-//and modes - Cruise on/off, all Si-Drive modes
-void test_calc_3d_float_hooked_all_tables_and_modes() {
+//Declare debug output
+//Place debug vars right after RAM vars
+debug_variables_t *DEBUG_VARIABLES 
+			= ((debug_variables_t*)((int)RAM_HOLE+sizeof(ram_variables_t)));
 
+//Set defaults
+void
+test_set_default_ram_vars(void)
+{
+	#if defined(P_CRUISE_STATE)
+		*P_CRUISE_STATE = CRUISE_DISABLED;
+	#endif //P_CRUISE_STATE
+
+	#if defined(P_SI_DRVIE_STATE)
+		*P_SI_DRVIE_STATE = 3; //Intelligent
+	#endif //P_SI_DRVIE_STATE
+
+	#if defined(P_CRUISE_CANCEL_SWITCH)
+		*P_CRUISE_CANCEL_SWITCH = 0;
+	#endif //P_CRUISE_CANCEL_SWITCH
+
+	#if defined(P_ACCELERATOR_PEDAL_ANGLE)
+		*P_ACCELERATOR_PEDAL_ANGLE=0;
+	#endif //P_ACCELERATOR_PEDAL_ANGLE
+}
+
+//Test everything
+void
+test_everything()
+{
+	test_set_default_ram_vars();
+
+	test_getLutRowNumber_3d();
+
+	test_getLutRowNumber_2d();
+
+	test_globalMapSwitch();
+
+	//Not comfortable to test
+	//Must step in this function
+	test_getPointerFromLut_all_modes();
+	
+	test_set_default_ram_vars();
+	DEBUG_VARIABLES->count = 0;
+
+	#if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
+		test_calc_3d_uint_to_float_entry_point_all_tables_and_modes();
+	#endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
+	
+	test_set_default_ram_vars();
+	DEBUG_VARIABLES->count = 0;
+
+	//Test calc_2d_uint_to_float for Tip-in table
+	#if defined(ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS)
+		test_calc_2d_uint_to_float_entry_point_tip_in();
+	#endif
+
+	test_set_default_ram_vars();
+	DEBUG_VARIABLES->count = 0;
+
+	#if defined(SPEED_DENSITY)
+		test_massAirflow_entry_point();
+	#endif //SPEED_DENSITY
+
+	test_set_default_ram_vars();
+
+	#if defined(P_CRUISE_CANCEL_SWITCH)
+		test_cruiseCancelPressed();
+	#endif //P_CRUISE_CANCEL_SWITCH
+
+	test_set_default_ram_vars();
+
+	test_overtakeMapSwitch();
+
+	test_set_default_ram_vars();
+
+	//Test globalMapSwitch() with Overtake button on/off
+	test_globalMapSwitch_overtake();
+}
+
+//Test globalMapSwitch()
+void
+test_globalMapSwitch()
+{
+	#if defined(P_CRUISE_STATE)
+		*P_CRUISE_STATE = CRUISE_DISABLED;
+		DEBUG_VARIABLES->A = globalMapSwitch();
+
+		*P_CRUISE_STATE = CRUISE_ENABLED;
+		DEBUG_VARIABLES->B = globalMapSwitch();
+	#endif //P_CRUISE_STATE
+
+	#if defined(P_SI_DRVIE_STATE)
+		*P_SI_DRVIE_STATE = 1; //Sport
+		DEBUG_VARIABLES->C = globalMapSwitch();
+		
+		*P_SI_DRVIE_STATE = 8; //Sport Sharp
+		DEBUG_VARIABLES->D = globalMapSwitch();
+	#endif //P_SI_DRVIE_STATE
+}
+
+//Test getPointerFromLut()
+//for all modes - Cruise on/off, all Si-Drive modes
+void
+test_getPointerFromLut_all_modes()
+{
  //Test Base Timing tables if defined
  #if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
   //Test cruise on/off if defined
   #if defined(P_CRUISE_STATE_ADDRESS)
 	*P_CRUISE_STATE = CRUISE_DISABLED;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 	*P_CRUISE_STATE = CRUISE_ENABLED;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
   #endif //P_CRUISE_STATE_ADDRESS
   
   //Test Si-Drive if supported
   #if defined(P_SI_DRVIE_STATE)
 	//Intelligent
 	*P_SI_DRVIE_STATE = 3;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 	*P_SI_DRVIE_STATE = 16;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 
 	//Sport
 	*P_SI_DRVIE_STATE = 1;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 
 	//Sport Sharp
 	*P_SI_DRVIE_STATE = 2;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 	*P_SI_DRVIE_STATE = 8;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
 
 	//Garbage, must choose orig table 
 	*P_SI_DRVIE_STATE = 0;
-	test_calc_3d_float_hooked_timing();
+	test_getPointerFromLut_3d();
+  #endif //P_SI_DRVIE_STATE
+ #endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
+}
+
+//Test calc_3d_uint_to_float_entry_point() call for all defined tables
+//and modes - Cruise on/off, all Si-Drive modes
+void
+test_calc_3d_uint_to_float_entry_point_all_tables_and_modes()
+{
+ //Test Base Timing tables if defined
+ #if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
+  //Test cruise on/off if defined
+  #if defined(P_CRUISE_STATE_ADDRESS)
+	*P_CRUISE_STATE = CRUISE_DISABLED;
+	test_calc_3d_uint_to_float_entry_point_timing();
+	*P_CRUISE_STATE = CRUISE_ENABLED;
+	test_calc_3d_uint_to_float_entry_point_timing();
+  #endif //P_CRUISE_STATE_ADDRESS
+  
+  //Test Si-Drive if supported
+  #if defined(P_SI_DRVIE_STATE)
+	//Intelligent
+	*P_SI_DRVIE_STATE = 3;
+	test_calc_3d_uint_to_float_entry_point_timing();
+	*P_SI_DRVIE_STATE = 16;
+	test_calc_3d_uint_to_float_entry_point_timing();
+
+	//Sport
+	*P_SI_DRVIE_STATE = 1;
+	test_calc_3d_uint_to_float_entry_point_timing();
+
+	//Sport Sharp
+	*P_SI_DRVIE_STATE = 2;
+	test_calc_3d_uint_to_float_entry_point_timing();
+	*P_SI_DRVIE_STATE = 8;
+	test_calc_3d_uint_to_float_entry_point_timing();
+
+	//Garbage, must choose orig table 
+	*P_SI_DRVIE_STATE = 0;
+	test_calc_3d_uint_to_float_entry_point_timing();
   #endif //P_SI_DRVIE_STATE
  #endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
 
+ #if defined(ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS)
+  //Test cruise on/off if defined
+  #if defined(P_CRUISE_STATE_ADDRESS)
+	*P_CRUISE_STATE = CRUISE_DISABLED;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+	*P_CRUISE_STATE = CRUISE_ENABLED;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+  #endif //P_CRUISE_STATE_ADDRESS
+  
+  //Test Si-Drive if supported
+  #if defined(P_SI_DRVIE_STATE)
+	//Intelligent
+	*P_SI_DRVIE_STATE = 3;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+	*P_SI_DRVIE_STATE = 16;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+
+	//Sport
+	*P_SI_DRVIE_STATE = 1;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+
+	//Sport Sharp
+	*P_SI_DRVIE_STATE = 2;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+	*P_SI_DRVIE_STATE = 8;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+
+	//Garbage, must choose orig table 
+	*P_SI_DRVIE_STATE = 0;
+	test_calc_3d_uint_to_float_entry_point_req_torque();
+  #endif //P_SI_DRVIE_STATE
+ #endif //ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS
 }
+
+#if defined(ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS)
+//Test calc_2d_uint_to_float for Tip-in table
+void
+test_calc_2d_uint_to_float_entry_point_tip_in()
+{
+	//Test sets
+	const float x_min = 0;
+	const float x_max = 30;
+
+	#if defined(P_CRUISE_STATE)
+		*P_CRUISE_STATE = CRUISE_DISABLED;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		*P_CRUISE_STATE = CRUISE_ENABLED;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+	#endif //P_CRUISE_STATE
+
+	//Test Si-Drive if supported
+	#if defined(P_SI_DRVIE_STATE)
+		//Intelligent
+		*P_SI_DRVIE_STATE = 3;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+
+		//Sport
+		*P_SI_DRVIE_STATE = 1;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+
+		//Sport Sharp
+		*P_SI_DRVIE_STATE = 2;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+
+		//Garbage, must choose orig table 
+		*P_SI_DRVIE_STATE = 0;
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
+
+	#endif //P_SI_DRVIE_STATE
+
+}
+#endif //ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS
+
+#if defined(SPEED_DENSITY)
+void
+test_massAirflow_entry_point()
+{
+	float mafVoltage=1.8f;
+	int tablePointerMAF=ORIG_TABLE_MAF_ADDRESS;
+	*P_MANIFOLD_PRESSURE=0.5f*750.0f; //-0.5 bar relative = 0.5 bar absolute, convert to mmHg
+	*P_ENGINE_SPEED=1800.0f;
+	*P_IAT=20.0f;
+	*P_THROTTLE_ANGLE_CHANGE=5.0f;
+
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = massAirflow_entry_point(mafVoltage, (table_2d_noconv_t *)ORIG_TABLE_MAF_ADDRESS);
+}
+#endif //SPEED_DENSITY
 
 //Test Base Timing tables if defined
 #if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
-//Test calc_3d_float_hooked() for timing tables
-void test_calc_3d_float_hooked_timing() {
+//Test calc_3d_uint_to_float_entry_point() for timing tables
+void
+test_calc_3d_uint_to_float_entry_point_timing()
+{
 	//Test sets
-	const float x_min = 0;
-	const float y_min = 0;
-	const float x_max = 4;
-	const float y_max = 7000;
+	const float x_min = 0.0f;
+	const float y_min = 0.0f;
+	const float x_max = 4.0f;
+	const float y_max = 7000.0f;
 	
-	//Reset counter
-	DEBUG_VARIABLES->count=0;
-	
-	//Call calc_3d_float_hooked with first set
-	DEBUG_VARIABLES->testA1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
+	//Call calc_3d_uint_to_float_entry_point with first set
 	//Increment counter
-	DEBUG_VARIABLES->count++;
-	//Call calc_3d_float_hooked with second set
-	DEBUG_VARIABLES->testA2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
+	//Call calc_3d_uint_to_float_entry_point with second set
 	//Increment counter
-	DEBUG_VARIABLES->count++;
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
 	//And so on...
  #if defined(ORIG_TABLE_BASE_TIMING_B_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testB1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testB2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_B_ADDRESS);
  #endif //ORIG_TABLE_BASE_TIMING_B_ADDRESS
  #if defined(ORIG_TABLE_BASE_TIMING_C_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testC1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testC2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_C_ADDRESS);
  #endif //ORIG_TABLE_BASE_TIMING_C_ADDRESS
  #if defined(ORIG_TABLE_BASE_TIMING_D_ADDRESS)
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testD1 = calc_3d_float_hooked(x_min, y_min, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
-	DEBUG_VARIABLES->count++;
-	DEBUG_VARIABLES->testD2 = calc_3d_float_hooked(x_max, y_max, (table_3d_float_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_D_ADDRESS);
  #endif //ORIG_TABLE_BASE_TIMING_D_ADDRESS
 }
 #endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
+
+//Test Requested Torque (Accelerato Pedal) tables if defined
+#if defined(ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS)
+//Test calc_3d_uint_to_float_entry_point() for requested torque tables
+void
+test_calc_3d_uint_to_float_entry_point_req_torque()
+{
+	//Test sets
+	const float x_min = 0.0f;
+	const float y_min = 0.0f;
+	const float x_max = 100.0f;
+	const float y_max = 6800.0f;
+	
+	//Call calc_3d_uint_to_float_entry_point with first set
+	//Increment counter
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS);
+	//Call calc_3d_uint_to_float_entry_point with second set
+	//Increment counter
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS);
+	//And so on...
+ #if defined(ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_B_ADDRESS)
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_B_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_B_ADDRESS);
+ #endif //ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_B_ADDRESS
+ #if defined(ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_C_ADDRESS)
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_C_ADDRESS);
+	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_max, y_max, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_C_ADDRESS);
+ #endif //ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_C_ADDRESS
+}
+#endif //ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS
+
+//Test overtake button if enabled
+#if defined(P_CRUISE_CANCEL_SWITCH)
+//Test cruiseCancelPressed()
+void
+test_cruiseCancelPressed()
+{
+	
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	DEBUG_VARIABLES->A = cruiseCancelPressed();
+
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	DEBUG_VARIABLES->B = cruiseCancelPressed();
+}
+#endif //P_CRUISE_CANCEL_SWITCH
+
+void test_overtakeMapSwitch(){
+	float 	accLo=10.0f, //Accelerator slightly pressed
+			accHi=50.0f; //Accelerator strongly pressed
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->A = overtakeMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->B = overtakeMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->C = overtakeMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->D = overtakeMapSwitch();
+}
+
+void
+test_globalMapSwitch_overtake()
+{
+		float 	accLo=10.0f, //Accelerator slightly pressed
+				accHi=50.0f; //Accelerator strongly pressed
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->A = globalMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->B = globalMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->C = globalMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->D = globalMapSwitch();
+
+}
+
 #endif //BUILD_TESTS

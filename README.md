@@ -2,7 +2,7 @@
 
 ### Target Boost map switching by pressing Cruise button
 
-To build you'll need GNUSH toolchain https://llvm-gcc-renesas.com/
+To build you'll need GCC 12.2.0 (preferred) https://gcc.gnu.org/ and Binutils 2.4.0 (preferred) https://www.gnu.org/software/binutils/ or GNUSH toolchain (not recommended, but supported) https://llvm-gcc-renesas.com/
 
 To patch you'll need Swiss File Knife https://sourceforge.net/projects/swissfileknife/
 

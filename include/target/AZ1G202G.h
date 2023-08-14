@@ -11,7 +11,26 @@
 
 #define CALID "AZ1G202G"
 
-#define ORIG_CALC_3D_FUNCTION_ADDRESS (0x000BE8B8)
+//Calc 3D function ROM address.
+//X     - float
+//Y     - float
+//Data  - uint only.
+//Converts to float.
+#define ORIG_CALC_3D_UINT_TO_FLOAT_FUNCTION_ADDRESS (0x000BE8B8)
+
+//Calc 2D function ROM address.
+//X     - float
+//Data  - float only.
+//No conversion, returns float
+#define ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS (0x000BE804)
+
+//Calc 2D function ROM address.
+//X     - float
+//Data  - uint only.
+//Converts to float.
+#define ORIG_CALC_2D_UINT_TO_FLOAT_FUNCTION_ADDRESS ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS
+
+//3D Tables
 
 //Target Boost
 #define ORIG_TABLE_TARGET_BOOST_ADDRESS (0x00086C50)
@@ -20,7 +39,7 @@
 #define TABLE_TARGET_BOOST_Y_COUNT 14
 
 #define TABLE_TARGET_BOOST_DATA_TYPE 0x8000000
-#define TABLE_TARGET_BOOST_MULTIPLIER 1.0
+#define TABLE_TARGET_BOOST_MULTIPLIER 1.0f
 #define TABLE_TARGET_BOOST_OFFSET 0
 
 //Initial WGDC
@@ -30,7 +49,7 @@
 #define TABLE_INIT_WGDC_Y_COUNT 10
 
 #define TABLE_INIT_WGDC_DATA_TYPE 0x8000000
-#define TABLE_INIT_WGDC_MULTIPLIER 0.00390625
+#define TABLE_INIT_WGDC_MULTIPLIER 0.00390625f
 #define TABLE_INIT_WGDC_OFFSET 0
 
 //Max WGDC
@@ -40,7 +59,7 @@
 #define TABLE_MAX_WGDC_Y_COUNT 10
 
 #define TABLE_MAX_WGDC_DATA_TYPE 0x8000000
-#define TABLE_MAX_WGDC_MULTIPLIER 0.00390625
+#define TABLE_MAX_WGDC_MULTIPLIER 0.00390625f
 #define TABLE_MAX_WGDC_OFFSET 0
 
 //Primary Open Loop Fueling
@@ -50,7 +69,7 @@
 #define TABLE_PRIMARY_OL_Y_COUNT 18
 
 #define TABLE_PRIMARY_OL_DATA_TYPE 0x4000000
-#define TABLE_PRIMARY_OL_MULTIPLIER 0.0078125
+#define TABLE_PRIMARY_OL_MULTIPLIER 0.0078125f
 #define TABLE_PRIMARY_OL_OFFSET 0
 
 //Base Timing
@@ -63,7 +82,7 @@
 #define TABLE_BASE_TIMING_Y_COUNT 18
 
 #define TABLE_BASE_TIMING_DATA_TYPE 0x4000000
-#define TABLE_BASE_TIMING_MULTIPLIER 0.3515625
+#define TABLE_BASE_TIMING_MULTIPLIER 0.3515625f
 #define TABLE_BASE_TIMING_OFFSET -20.0
 
 //Intake AVCS
@@ -74,7 +93,7 @@
 #define TABLE_INTAKE_AVCS_Y_COUNT 18
 
 #define TABLE_INTAKE_AVCS_DATA_TYPE 0x8000000
-#define TABLE_INTAKE_AVCS_MULTIPLIER 0.0054931641
+#define TABLE_INTAKE_AVCS_MULTIPLIER 0.0054931641f
 #define TABLE_INTAKE_AVCS_OFFSET 0
 
 //Exhaust AVCS
@@ -85,14 +104,90 @@
 #define TABLE_EXHAUST_AVCS_Y_COUNT 18
 
 #define TABLE_EXHAUST_AVCS_DATA_TYPE 0x8000000
-#define TABLE_EXHAUST_AVCS_MULTIPLIER 0.0054931641
+#define TABLE_EXHAUST_AVCS_MULTIPLIER 0.0054931641f
 #define TABLE_EXHAUST_AVCS_OFFSET 0
+
+//Requested Torque (Accelerator Pedal)
+//Because it's Si-Drive ROM, no tables will be defined
+//except Overtake table 
+
+//Requested Torque (Accelerator Pedal) Sport
+#define ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS (0x0008A9D8) 
+//Requested Torque (Accelerator Pedal) Sport Sharp
+#define ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_B_ADDRESS (0x0008A9F4)
+//Requested Torque (Accelerator Pedal) Intelligent
+#define ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_C_ADDRESS (0x0008AA10)
+
+#define TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_X_COUNT 16
+#define TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_Y_COUNT 17
+
+#define TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_DATA_TYPE 0x8000000
+#define TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_MULTIPLIER 0.0078125f
+#define TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_OFFSET 0
+
+//2D tables
+
+//Throttle Tip-in Enrichment
+#define ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS (0x00088D24)
+#define ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_B_ADDRESS (0x00088D38)
+
+#define TABLE_THROTTLE_TIP_IN_X_COUNT 18
+
+#define TABLE_THROTTLE_TIP_IN_DATA_TYPE 0x800
+#define TABLE_THROTTLE_TIP_IN_MULTIPLIER 4.0f
+#define TABLE_THROTTLE_TIP_IN_OFFSET 0
+
+//Speed Density
+
+//MAF table address
+#define ORIG_TABLE_MAF_ADDRESS (0x0008AB64)
+
+//Manifold absolute pressure address
+//SSM Routine P7
+#define P_MANIFOLD_PRESSURE_ADDRESS (0xFFFF63FC)
+//Manifold absolute pressure, mmHg
+#define P_MANIFOLD_PRESSURE ((float*)P_MANIFOLD_PRESSURE_ADDRESS)
+
+//Engine speed address
+//SSM Routine P8
+#define P_ENGINE_SPEED_ADDRESS (0xFFFF6810)
+//Engine speed, RPM
+#define P_ENGINE_SPEED ((float*)P_ENGINE_SPEED_ADDRESS)
+
+//Intake air temperature address
+//SSM Routine P11
+#define P_IAT_ADDRESS (0xFFFF4124)
+//Intake air temperature, Celsius
+#define P_IAT ((float*)P_IAT_ADDRESS)
+
+//Throttle plate angle change address
+//Tip-in routine
+#define P_THROTTLE_ANGLE_CHANGE_ADDRESS (0xFFFF64D4)
+//Throttle plate angle change, degrees
+#define P_THROTTLE_ANGLE_CHANGE ((float*)P_THROTTLE_ANGLE_CHANGE_ADDRESS)
+
+//Enable Speed Density
+#define SPEED_DENSITY
+
+//Overtake Button
+
+//Cruise Cancel switch
+//SSM Routine S154
+#define P_CRUISE_CANCEL_SWITCH_ADDRESS (0xFFFF61CA)
+#define P_CRUISE_CANCEL_SWITCH ((unsigned char*)P_CRUISE_CANCEL_SWITCH_ADDRESS)
+//Cruise Cancel switch mask
+#define P_CRUISE_CANCEL_SWITCH_MASK (1)
+
+//Accelerator pedal angle
+//SSM Routine P30
+#define P_ACCELERATOR_PEDAL_ANGLE_ADDRESS (0xFFFF66C4)
+#define P_ACCELERATOR_PEDAL_ANGLE ((float *)P_ACCELERATOR_PEDAL_ANGLE_ADDRESS)
 
 //Cruise state
 #define P_CRUISE_STATE_ADDRESS (0xFFFF61BE) /* Cruise system flag variable RAM address */
 #define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
 
-/* 1st bit set when cruise enabled cleared when disabled */
+/* 0th bit set when cruise enabled cleared when disabled */
 #define P_CRUISE_STATE_MASK_CRUISE_ENABLED ((unsigned char)1)
 
 //Si-Drive state
