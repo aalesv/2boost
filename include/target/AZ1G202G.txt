@@ -1,1 +1,10 @@
 ROM_HOLE = 0x8f000;
+
+/*Put GCC tree switch optimization to right section*/
+SECTIONS
+{
+	ROM_HOLE_CODE ALIGN(0x4) :
+    {
+        *(.rodata*)
+    }
+}

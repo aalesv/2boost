@@ -5883,7 +5883,7 @@
 
   <table type="2D" name="Wastegate Solenoid Frequency" category="ALPHA Boost Control - Wastegate" storagetype="uint16" endian="big" sizey="1" userlevel="4">
    <scaling units="Hz" expression="250000/x" to_byte="250000/x" format="0.00" fineincrement="1" coarseincrement="10" />
-   <table type="Static Y Axis" name="Wastegate Solenoid Frequency" sizey="1">
+   <table type="Static Y Axis" name="Wastegate Solenoid Frequency" sizey="2">
     <data>Frequency</data>
    </table>
    <description>Wastegate Solenoid Frequency</description>
@@ -9681,7 +9681,7 @@
     <state name="Enable"  data="00 08 f0 0c" />
   </table>
 
- <table name="Map Switch Input" storageaddress="0008f51c"/>
+ <table name="Map Switch Input " storageaddress="0008f51c"/>
 
  <table name="Boost Target Hack" storageaddress="0001862C">
    <state name="Disable" data="00 00 21 60" />
