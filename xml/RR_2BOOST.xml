@@ -11746,7 +11746,7 @@
     <state name="Enable"  data="00 08 f0 0c" />
   </table>
 
-<table name="Map Switch Input" storageaddress="0008f61c" />
+<table name="Map Switch Input " storageaddress="0008f61c" />
 
  <table name="Boost Target Hack" storageaddress="00014134">
    <state name="Disable" data="00 0B E8 B8" />
