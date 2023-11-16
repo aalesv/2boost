@@ -11,6 +11,7 @@ SECTIONS
 		*(ROM_DATA)
 		*(ROM_DATA_CONST)
 		*(ROM_LUT)
+		*(.rodata*)
 	}
 	ROM_HOLE_DATA ALIGN(0x100) :
 	{
