@@ -7079,10 +7079,17 @@
    <table type="Switch" name="Overtake Button Input" category="2Boost - Overtake button" sizey="1">
    <state name="Disabled" data="00" />
    <state name="Cruise Cancel button" data="01" />
-   <description>When Disabled selected, Overtake button not used. When Cruise Cancel button selected, pressing Cruise cancel together with the accelerator pedal switches to separate Overtake map set. Accelerator pedal minimum level can be set. Releasing Overtake button switches back to previously active map set.</description>
+   <description>When Disabled selected, Overtake button not used. When Cruise Cancel button selected, pressing Cruise cancel together with the accelerator pedal switches to separate Overtake map set. Accelerator pedal minimum level can be set. Releasing Overtake button or Accelerator pedal switches back to previously active map set.</description>
  </table>
 
-   <table type="2D" name="Minimum Accelerator pedal angle" category="2Boost - Overtake button" storagetype="float" endian="little" sizey="1" userlevel="4">
+ <table type="Switch" name="Overtake Button Input " category="2Boost - Overtake button" sizey="1">
+   <state name="Disabled" data="00" />
+   <state name="Cruise Cancel button, Press-and-Hold" data="01" />
+   <state name="Cruise Cancel button, Press-and-Release" data="02" />
+   <description>When Disabled selected, Overtake button not used. When Cruise Cancel button, Press-and-Hold selected, pressing Cruise cancel together with the accelerator pedal switches to separate Overtake map set. Accelerator pedal minimum level can be set. Releasing Overtake button or Accelerator pedal switches back to previously active map set. When Cruise Cancel button, Press-and-Release selected, pressing Cruise cancel together with the accelerator pedal switches to separate Overtake map set. Accelerator pedal minimum level can be set. Pressing Brake pedal switches back to previously active map set.</description>
+ </table>
+
+  <table type="2D" name="Minimum Accelerator pedal angle" category="2Boost - Overtake button" storagetype="float" endian="little" sizey="1" userlevel="4">
    <scaling units="%" expression="x" to_byte="x" format="0.00"/>
    <table type="Static Y Axis" name="" sizey="1">
     <data>Accelerator pedal</data>
@@ -7255,6 +7262,55 @@
    <scaling units="Engine Speed (RPM)" expression="x*.1953125" to_byte="x/.1953125" format="#" fineincrement="50" coarseincrement="100" />
    <table type="Y Axis" name="Coolant Temperature" storagetype="float" endian="little" logparam="P2">
     <scaling units="Degrees C" expression="x" to_byte="x" format="#" fineincrement="1" coarseincrement="5" />
+   </table>
+  </table>
+
+  <table type="Switch" name="CEL Flash Hack #1" category="2Boost - CEL Flash" sizey="4">
+   <description>Enable CEL Flash hack. If you enable this hack you must also enable CEL Flash Hack #2.</description>
+  </table>
+
+  <table type="Switch" name="CEL Flash Hack #2" category="2Boost - CEL Flash" sizey="4">
+   <description>Enable CEL Flash hack. If you enable this hack you must also enable CEL Flash Hack #1.</description>
+  </table>
+
+ <table type="Switch" name="CEL Flash Enable" category="2Boost - CEL Flash" sizey="1">
+   <state name="Enabled" data="01" />
+   <state name="Disabled" data="00" />
+   <description>When Disabled selected, 2Boost does not flash with CEL.</description>
+ </table>
+
+  <table type="2D" name="Overtake CEL Flash Parameters" category="2Boost - CEL Flash" storagetype="uint8" endian="big" sizey="3" userlevel="3">
+   <scaling units="counter" expression="x" to_byte="x" format="#" fineincrement="1" coarseincrement="10" />
+   <table type="Static Y Axis" name="Parameter Name" sizey="3">
+    <data>On count</data>
+    <data>Off count</data>
+    <data>Number of cycles</data>
+   </table>
+   <description>Set any of this parameters to 0 to disable CEL flashing when Overtake mode is active.</description>
+  </table>
+
+  <table type="2D" name="FBKC CEL Flash Parameters" category="2Boost - CEL Flash" storagetype="uint8" endian="big" sizey="3" userlevel="3">
+   <scaling units="counter" expression="x" to_byte="x" format="#" fineincrement="1" coarseincrement="10" />
+   <table type="Static Y Axis" name="Parameter Name" sizey="3">
+    <data>On count</data>
+    <data>Off count</data>
+    <data>Number of cycles</data>
+   </table>
+   <description>Set any of this parameters to 0 to disable CEL flashing when FBKC is over limits.</description>
+  </table>
+
+  <table type="2D" name="FBKC CEL Flash Maximum Degrees" category="2Boost - CEL Flash" storagetype="float" endian="little" sizey="1" userlevel="3">
+   <scaling units="degrees" expression="x" to_byte="x" format="0.00" fineincrement=".2" coarseincrement="1" />
+   <table type="Static Y Axis" name="FBKC limit" sizey="1">
+    <data>FBKC limit</data>
+   </table>
+   <description>If FBKC is lower this limit, CEL flash occurs.</description>
+  </table>
+
+  <table type="2D" name="FBKC CEL Flash Minimum Load" category="2Boost - CEL Flash" storagetype="float" endian="little" sizey="1" userlevel="3">
+   <scaling units="degrees" expression="x" to_byte="x" format="0.00" fineincrement=".2" coarseincrement="1" />
+   <table type="Static Y Axis" name="Minimum load" sizey="1">
+    <data>Minimum Load</data>
    </table>
   </table>
 
@@ -8079,6 +8135,251 @@
  <table name="Overtake Button Input" storageaddress="0007c11e" />
 
  <table name="Minimum Accelerator pedal angle" storageaddress="0007c124" />
+
+</rom>
+
+ <rom base="2Boost A2WC420F">
+  <romid>
+   <xmlid>2Boost A2WC420F 0004</xmlid>
+   <internalidaddress>0007bd30</internalidaddress>
+   <internalidstring>2Boost A2WC420F 0004</internalidstring>
+   <ecuid>3B42584116</ecuid>
+   <year>04</year>
+   <market>EDM</market>
+   <make>Subaru</make>
+   <model>Forester</model>
+   <submodel>XT</submodel>
+   <transmission>MT</transmission>
+   <memmodel>SH7055</memmodel>
+   <flashmethod>sti04</flashmethod>
+   <filesize>512kb</filesize>
+  </romid>
+  
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 07 bd 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 07 bd 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 07 bd 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 07 bd 24" />
+ </table>
+
+<table name="CEL Flash Hack #2" storageaddress="00051D4C">
+   <state name="Enable"  data="FF FF 9B 03" />
+   <state name="Disable" data="FF FF CC EA" />
+ </table>
+
+<table name="Map Switch Input" storageaddress="0007bd4c" />
+ 
+ <table name="Boost Target Hack" storageaddress="13B1C">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+
+<table name="Target Boost Overtake map" storageaddress="0007bdb8" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007bd68" />
+ <table type="Y Axis" storageaddress="0007bd88" />
+</table>
+
+<table name="Target Boost map 1" storageaddress="0007bec8" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007be78" />
+ <table type="Y Axis" storageaddress="0007be98" />
+</table>
+
+<table name="Target Boost map 2" storageaddress="0007bfd8" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007bf88" />
+ <table type="Y Axis" storageaddress="0007bfa8" />
+</table>
+
+ <table name="Wastegate Hack" storageaddress="00013FB4">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+ 
+<table name="Initial Wastegate Duty Overtake map" storageaddress="0007c0e8" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007c098" />
+ <table type="Y Axis" storageaddress="0007c0b8" />
+</table>
+
+<table name="Initial Wastegate Duty map 1" storageaddress="0007c1f8" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007c1a8" />
+ <table type="Y Axis" storageaddress="0007c1c8" />
+</table>
+
+<table name="Initial Wastegate Duty map 2" storageaddress="0007c308" sizex="8" sizey="12">
+ <table type="X Axis" storageaddress="0007c2b8" />
+ <table type="Y Axis" storageaddress="0007c2d8" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map" storageaddress="0007c408" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0007c3c8" />
+ <table type="Y Axis" storageaddress="0007c3e8" />
+</table>
+
+<table name="Max Wastegate Duty map 1" storageaddress="0007c4c8" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0007c488" />
+ <table type="Y Axis" storageaddress="0007c4a8" />
+</table>
+
+<table name="Max Wastegate Duty map 2" storageaddress="0007c588" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0007c548" />
+ <table type="Y Axis" storageaddress="0007c568" />
+</table>
+
+ <table name="Fueling Hack" storageaddress="00028D34">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="0007c68c" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0007c608" />
+ <table type="Y Axis" storageaddress="0007c644" />
+</table>
+
+<table name="Primary Open Loop Fueling map 1" storageaddress="0007c820" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0007c79c" />
+ <table type="Y Axis" storageaddress="0007c7d8" />
+</table>
+
+<table name="Primary Open Loop Fueling map 2" storageaddress="0007c9b4" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0007c930" />
+ <table type="Y Axis" storageaddress="0007c96c" />
+</table>
+  
+ <table name="Timing Hack" storageaddress="2F1B8">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+
+<table name="Base Timing Overtake map" storageaddress="0007cb54" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0007cac4" />
+ <table type="Y Axis" storageaddress="0007cb0c" />
+</table>
+
+<table name="Base Timing map 1" storageaddress="0007cd28" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0007cc98" />
+ <table type="Y Axis" storageaddress="0007cce0" />
+</table>
+
+<table name="Base Timing map 2" storageaddress="0007cefc" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0007ce6c" />
+ <table type="Y Axis" storageaddress="0007ceb4" />
+</table>
+
+ <table name="AVCS Hack" storageaddress="00045CD0">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="0007d0c0" sizex="14" sizey="18">
+ <table type="X Axis" storageaddress="0007d040" />
+ <table type="Y Axis" storageaddress="0007d078" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 1" storageaddress="0007d338" sizex="14" sizey="18">
+ <table type="X Axis" storageaddress="0007d2b8" />
+ <table type="Y Axis" storageaddress="0007d2f0" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 2" storageaddress="0007d5b0" sizex="14" sizey="18">
+ <table type="X Axis" storageaddress="0007d530" />
+ <table type="Y Axis" storageaddress="0007d568" />
+</table>
+
+ <table name="Target Throttle Plate Position Hack" storageaddress="00037B90">
+   <state name="Disable" data="00 00 21 10" />
+ </table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" storageaddress="0007d82c" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="0007d7a8" />
+ <table type="Y Axis" storageaddress="0007d7ec" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 1" storageaddress="0007dad0" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="0007da4c" />
+ <table type="Y Axis" storageaddress="0007da90" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 2" storageaddress="0007dd74" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="0007dcf0" />
+ <table type="Y Axis" storageaddress="0007dd34" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="00007898">
+   <state name="Disable" data="00 00 20 9C" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0007bd4d" />
+
+<table name="Engine Displacement" storageaddress="0007bd60" />
+
+<table name="Volumetric Efficiency" storageaddress="0007e08c" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="0007df94" />
+ <table type="Y Axis" storageaddress="0007e014" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="0007e88c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="0007e80c" />
+ <table type="Y Axis" storageaddress="0007e84c" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="0007eb0c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="0007ea8c" />
+ <table type="Y Axis" storageaddress="0007eacc" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Hack" storageaddress="0002AEFC">
+   <state name="Disable" data="00 00 20 9C" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="0007ed54" sizex="18">
+ <table type="Y Axis" storageaddress="0007ed0c" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" storageaddress="0007edc0" sizex="18">
+ <table type="Y Axis" storageaddress="0007ed78" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" storageaddress="0007ee2c" sizex="18">
+ <table type="Y Axis" storageaddress="0007ede4" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0007bd4e" />
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0007bd64" />
+
+<table name="CEL Flash Hack #1" storageaddress="0001137C">
+   <state name="Disable" data="00 05 16 14" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0007bd4f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0007bd50" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0007bd53" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0007bd58" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0007bd5c" />
 
 </rom>
 
@@ -8978,6 +9279,251 @@
 
 </rom>
 
+ <rom base="2Boost A8DH100P">
+  <romid>
+   <xmlid>2Boost A8DH100P 0004</xmlid>
+   <internalidaddress>0008f030</internalidaddress>
+   <internalidstring>2Boost A8DH100P 0004</internalidstring>
+   <ecuid>4242504106</ecuid>
+   <year>06</year>
+   <market>EDM</market>
+   <make>Subaru</make>
+   <model>Forester</model>
+   <submodel>XT</submodel>
+   <transmission>AT</transmission>
+   <memmodel>SH7058</memmodel>
+   <flashmethod>sti05</flashmethod>
+   <filesize>1024kb</filesize>
+  </romid>
+
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 08 f0 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 08 f0 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 08 f0 24" />
+ </table>
+
+<table name="CEL Flash Hack #2" storageaddress="0007CD64">
+   <state name="Enable"  data="FF FF 99 03" />
+   <state name="Disable" data="FF FF 8D 3E" />
+ </table>
+
+<table name="Map Switch Input" storageaddress="0008f04c" />
+
+ <table name="Boost Target Hack" storageaddress="00017F8C">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+
+<table name="Target Boost Overtake map" storageaddress="0008f0b4" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f068" />
+ <table type="Y Axis" storageaddress="0008f088" />
+</table>
+
+<table name="Target Boost map 1" storageaddress="0008f1b0" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f164" />
+ <table type="Y Axis" storageaddress="0008f184" />
+</table>
+
+<table name="Target Boost map 2" storageaddress="0008f2ac" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f260" />
+ <table type="Y Axis" storageaddress="0008f280" />
+</table>
+  
+ <table name="Wastegate Hack" storageaddress="00018408">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+ 
+<table name="Initial Wastegate Duty Overtake map" storageaddress="0008f39c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f35c" />
+ <table type="Y Axis" storageaddress="0008f37c" />
+</table>
+
+<table name="Initial Wastegate Duty map 1" storageaddress="0008f45c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f41c" />
+ <table type="Y Axis" storageaddress="0008f43c" />
+</table>
+
+<table name="Initial Wastegate Duty map 2" storageaddress="0008f51c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f4dc" />
+ <table type="Y Axis" storageaddress="0008f4fc" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map" storageaddress="0008f5dc" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f59c" />
+ <table type="Y Axis" storageaddress="0008f5bc" />
+</table>
+
+<table name="Max Wastegate Duty map 1" storageaddress="0008f69c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f65c" />
+ <table type="Y Axis" storageaddress="0008f67c" />
+</table>
+
+<table name="Max Wastegate Duty map 2" storageaddress="0008f75c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f71c" />
+ <table type="Y Axis" storageaddress="0008f73c" />
+</table>
+  
+ <table name="Fueling Hack" storageaddress="0003067C">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="0008f860" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008f7dc" />
+ <table type="Y Axis" storageaddress="0008f818" />
+</table>
+
+<table name="Primary Open Loop Fueling map 1" storageaddress="0008f9f4" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008f970" />
+ <table type="Y Axis" storageaddress="0008f9ac" />
+</table>
+
+<table name="Primary Open Loop Fueling map 2" storageaddress="0008fb88" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008fb04" />
+ <table type="Y Axis" storageaddress="0008fb40" />
+</table>
+  
+ <table name="Timing Hack" storageaddress="00037894">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+
+<table name="Base Timing Overtake map" storageaddress="0008fd28" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0008fc98" />
+ <table type="Y Axis" storageaddress="0008fce0" />
+</table>
+
+<table name="Base Timing map 1" storageaddress="0008fefc" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0008fe6c" />
+ <table type="Y Axis" storageaddress="0008feb4" />
+</table>
+
+<table name="Base Timing map 2" storageaddress="000900d0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090040" />
+ <table type="Y Axis" storageaddress="00090088" />
+</table>
+
+ <table name="AVCS Hack" storageaddress="00052DBC">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="00090290" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00090214" />
+ <table type="Y Axis" storageaddress="00090250" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 1" storageaddress="000904ec" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00090470" />
+ <table type="Y Axis" storageaddress="000904ac" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 2" storageaddress="00090748" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="000906cc" />
+ <table type="Y Axis" storageaddress="00090708" />
+</table>
+
+ <table name="Target Throttle Plate Position Hack" storageaddress="000BE72C">
+   <state name="Disable" data="00 00 21 50" />
+ </table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" storageaddress="000909ac" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090928" />
+ <table type="Y Axis" storageaddress="0009096c" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 1" storageaddress="00090c50" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090bcc" />
+ <table type="Y Axis" storageaddress="00090c10" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 2" storageaddress="00090ef4" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090e70" />
+ <table type="Y Axis" storageaddress="00090eb4" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="00008314" >
+   <state name="Disable" data="00 00 20 9C" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d" />
+
+<table name="Engine Displacement" storageaddress="0008f060" />
+
+<table name="Volumetric Efficiency" storageaddress="0009120c" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="00091114" />
+ <table type="Y Axis" storageaddress="00091194" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="00091a0c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="0009198c" />
+ <table type="Y Axis" storageaddress="000919cc" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="00091c8c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00091c0c" />
+ <table type="Y Axis" storageaddress="00091c4c" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Hack" storageaddress="00032D70">
+   <state name="Disable" data="00 00 20 9C" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="00091ed4" sizex="18">
+ <table type="Y Axis" storageaddress="00091e8c" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" storageaddress="00091f40" sizex="18">
+ <table type="Y Axis" storageaddress="00091ef8" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" storageaddress="00091fac" sizex="18">
+ <table type="Y Axis" storageaddress="00091f64" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e" />
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
+
+<table name="CEL Flash Hack #1" storageaddress="000147BC">
+   <state name="Disable" data="00 07 C6 12" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c" />
+
+</rom>
+
 <rom base="2BOOST BASE">
   <romid>
    <xmlid>2Boost A8DK100P</xmlid>
@@ -9854,6 +10400,252 @@
  <table name="Overtake Button Input" storageaddress="0008f51e" />
 
  <table name="Minimum Accelerator pedal angle" storageaddress="0008f524" />
+
+</rom>
+
+  <rom base="2Boost A8DK100P">
+  <romid>
+   <xmlid>2Boost A8DK100P 0004</xmlid>
+   <internalidaddress>0008f030</internalidaddress>
+   <internalidstring>2Boost A8DK100P 0004</internalidstring>
+   <ecuid>4E42504007</ecuid>
+   <year>07</year>
+   <market>EDM</market>
+   <make>Subaru</make>
+   <model>Forester</model>
+   <submodel>XT</submodel>
+   <transmission>AT</transmission>
+   <memmodel>SH7058</memmodel>
+   <flashmethod>subarucan</flashmethod>
+   <filesize>1024kb</filesize>
+  </romid>
+
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 08 f0 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 08 f0 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 08 f0 24" />
+ </table>
+
+<table name="CEL Flash Hack #2" storageaddress="0007D150">
+   <state name="Enable"  data="FF FF 99 03" />
+   <state name="Disable" data="FF FF 8F 5A" />
+ </table>
+
+<table name="Map Switch Input" storageaddress="0008f04c" />
+
+ <table name="Boost Target Hack" storageaddress="0001862C">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+ 
+<table name="Target Boost Overtake map" storageaddress="0008f0b4" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f068" />
+ <table type="Y Axis" storageaddress="0008f088" />
+</table>
+
+<table name="Target Boost map 1" storageaddress="0008f1b0" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f164" />
+ <table type="Y Axis" storageaddress="0008f184" />
+</table>
+
+<table name="Target Boost map 2" storageaddress="0008f2ac" sizex="8" sizey="11">
+ <table type="X Axis" storageaddress="0008f260" />
+ <table type="Y Axis" storageaddress="0008f280" />
+</table>
+  
+ <table name="Wastegate Hack" storageaddress="00018ACC">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+ 
+<table name="Initial Wastegate Duty Overtake map" storageaddress="0008f39c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f35c" />
+ <table type="Y Axis" storageaddress="0008f37c" />
+</table>
+
+<table name="Initial Wastegate Duty map 1" storageaddress="0008f45c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f41c" />
+ <table type="Y Axis" storageaddress="0008f43c" />
+</table>
+
+<table name="Initial Wastegate Duty map 2" storageaddress="0008f51c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f4dc" />
+ <table type="Y Axis" storageaddress="0008f4fc" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map" storageaddress="0008f5dc" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f59c" />
+ <table type="Y Axis" storageaddress="0008f5bc" />
+</table>
+
+<table name="Max Wastegate Duty map 1" storageaddress="0008f69c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f65c" />
+ <table type="Y Axis" storageaddress="0008f67c" />
+</table>
+
+<table name="Max Wastegate Duty map 2" storageaddress="0008f75c" sizex="8" sizey="8">
+ <table type="X Axis" storageaddress="0008f71c" />
+ <table type="Y Axis" storageaddress="0008f73c" />
+</table>
+  
+ <table name="Fueling Hack" storageaddress="0003157C">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="0008f860" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008f7dc" />
+ <table type="Y Axis" storageaddress="0008f818" />
+</table>
+
+<table name="Primary Open Loop Fueling map 1" storageaddress="0008f9f4" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008f970" />
+ <table type="Y Axis" storageaddress="0008f9ac" />
+</table>
+
+<table name="Primary Open Loop Fueling map 2" storageaddress="0008fb88" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0008fb04" />
+ <table type="Y Axis" storageaddress="0008fb40" />
+</table>
+  
+ <table name="Timing Hack" storageaddress="000389BC">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+
+<table name="Base Timing Overtake map" storageaddress="0008fd28" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0008fc98" />
+ <table type="Y Axis" storageaddress="0008fce0" />
+</table>
+
+<table name="Base Timing map 1" storageaddress="0008fefc" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="0008fe6c" />
+ <table type="Y Axis" storageaddress="0008feb4" />
+</table>
+
+<table name="Base Timing map 2" storageaddress="000900d0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090040" />
+ <table type="Y Axis" storageaddress="00090088" />
+</table>
+
+ <table name="AVCS Hack" storageaddress="00054394">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="00090290" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00090214" />
+ <table type="Y Axis" storageaddress="00090250" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 1" storageaddress="000904ec" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00090470" />
+ <table type="Y Axis" storageaddress="000904ac" />
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) map 2" storageaddress="00090748" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="000906cc" />
+ <table type="Y Axis" storageaddress="00090708" />
+</table>
+
+ <table name="Target Throttle Plate Position Hack" storageaddress="000BE72C">
+   <state name="Disable" data="00 00 21 60" />
+ </table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" storageaddress="000909ac" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090928" />
+ <table type="Y Axis" storageaddress="0009096c" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 1" storageaddress="00090c50" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090bcc" />
+ <table type="Y Axis" storageaddress="00090c10" />
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) map 2" storageaddress="00090ef4" sizex="17" sizey="16">
+ <table type="X Axis" storageaddress="00090e70" />
+ <table type="Y Axis" storageaddress="00090eb4" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="00008468" >
+   <state name="Disable" data="00 00 20 AC" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d" />
+
+<table name="Engine Displacement" storageaddress="0008f060" />
+
+<table name="Volumetric Efficiency" storageaddress="0009120c" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="00091114" />
+ <table type="Y Axis" storageaddress="00091194" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="00091a0c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="0009198c" />
+ <table type="Y Axis" storageaddress="000919cc" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="00091c8c" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00091c0c" />
+ <table type="Y Axis" storageaddress="00091c4c" />
+</table>
+
+<table type="Switch" name="Throttle Tip-in Enrichment Hack" storageaddress="00033CC4">
+   <state name="Disable" data="00 00 20 AC" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="00091ed4" sizex="18">
+ <table type="Y Axis" storageaddress="00091e8c" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" storageaddress="00091f40" sizex="18">
+ <table type="Y Axis" storageaddress="00091ef8" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" storageaddress="00091fac" sizex="18">
+ <table type="Y Axis" storageaddress="00091f64" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e" />
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
+
+<table name="CEL Flash Hack #1" storageaddress="00014D74">
+   <state name="Disable" data="00 07 C9 FE" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c" />
+
 
 </rom>
 
@@ -10869,6 +11661,300 @@
 <table name="Overtake Button Input" storageaddress="0008f51e" />
 
 <table name="Minimum Accelerator pedal angle" storageaddress="0008f524" />
+
+ </rom>
+
+ <rom base="2Boost AZ1G101M">
+    <romid>
+      <xmlid>2Boost AZ1G101M 0004</xmlid>
+      <internalidaddress>0008f030</internalidaddress>
+      <internalidstring>2Boost AZ1G101M 0004</internalidstring>
+   <ecuid>5C42584007</ecuid>
+   <year>09/10</year>
+   <market>EDM</market>
+   <make>Subaru</make>
+   <model>Forester</model>
+   <submodel>XT</submodel>
+   <transmission>MT</transmission>
+   <memmodel>SH7058</memmodel>
+   <flashmethod>subarucan</flashmethod>
+   <filesize>1024kb</filesize>
+    </romid>
+
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 08 f0 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 08 f0 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 08 f0 24" />
+ </table>
+<table name="CEL Flash Hack #2" storageaddress="0007AB8C">
+   <state name="Enable"  data="FF FF A9 03" />
+   <state name="Disable" data="FF FF 99 7E" />
+ </table>
+
+<table name="Map Switch Input" storageaddress="0008f04c" />
+
+ <table name="Boost Target Hack" storageaddress="00014218">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Target Boost Overtake map " storageaddress="0008f0d0" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f068" />
+ <table type="Y Axis" storageaddress="0008f094" />
+</table>
+
+<table name="Target Boost map 1 " storageaddress="0008f284" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f21c" />
+ <table type="Y Axis" storageaddress="0008f248" />
+</table>
+
+<table name="Target Boost map 2 " storageaddress="0008f438" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f3d0" />
+ <table type="Y Axis" storageaddress="0008f3fc" />
+</table>
+  
+ <table name="Wastegate Hack" storageaddress="000146FC">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+ 
+<table name="Initial Wastegate Duty Overtake map " storageaddress="0008f5f4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f584" />
+ <table type="Y Axis" storageaddress="0008f5c0" />
+</table>
+
+<table name="Initial Wastegate Duty map 1 " storageaddress="0008f7ec" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f77c" />
+ <table type="Y Axis" storageaddress="0008f7b8" />
+</table>
+
+<table name="Initial Wastegate Duty map 2 " storageaddress="0008f9e4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f974" />
+ <table type="Y Axis" storageaddress="0008f9b0" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map " storageaddress="0008fbdc" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008fb6c" />
+ <table type="Y Axis" storageaddress="0008fba8" />
+</table>
+
+<table name="Max Wastegate Duty map 1 " storageaddress="0008fdd4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008fd64" />
+ <table type="Y Axis" storageaddress="0008fda0" />
+</table>
+
+<table name="Max Wastegate Duty map 2 " storageaddress="0008ffcc" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008ff5c" />
+ <table type="Y Axis" storageaddress="0008ff98" />
+</table>
+  
+ <table name="Fueling Hack" storageaddress="00030300">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="000901d8" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="00090154" />
+ <table type="Y Axis" storageaddress="00090190" />
+</table>
+
+<table name="Primary Open Loop Fueling map 1" storageaddress="0009036c" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="000902e8" />
+ <table type="Y Axis" storageaddress="00090324" />
+</table>
+
+<table name="Primary Open Loop Fueling map 2" storageaddress="00090500" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0009047c" />
+ <table type="Y Axis" storageaddress="000904b8" />
+</table>
+  
+ <table name="Timing Hack" storageaddress="000394C4">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Base Timing Overtake map" storageaddress="000906a0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090610" />
+ <table type="Y Axis" storageaddress="00090658" />
+</table>
+
+<table name="Base Timing Primary Cruise map 1" storageaddress="00090874" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000907e4" />
+ <table type="Y Axis" storageaddress="0009082c" />
+</table>
+
+<table name="Base Timing Primary Cruise map 2" storageaddress="00090a48" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000909b8" />
+ <table type="Y Axis" storageaddress="00090a00" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 1" storageaddress="00090c1c" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090b8c" />
+ <table type="Y Axis" storageaddress="00090bd4" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 2" storageaddress="00090df0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090d60" />
+ <table type="Y Axis" storageaddress="00090da8" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 1" storageaddress="00090fc4" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090f34" />
+ <table type="Y Axis" storageaddress="00090f7c" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 2" storageaddress="00091198" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00091108" />
+ <table type="Y Axis" storageaddress="00091150" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 1" storageaddress="0009136c" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000912dc" />
+ <table type="Y Axis" storageaddress="00091324" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 2" storageaddress="00091540" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000914b0" />
+ <table type="Y Axis" storageaddress="000914f8" />
+</table>
+
+ <table name="AVCS Hack" storageaddress="000582C4">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="00091700" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091684" />
+ <table type="Y Axis" storageaddress="000916c0" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 1" storageaddress="0009195c" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="000918e0" />
+ <table type="Y Axis" storageaddress="0009191c" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 2" storageaddress="00091bb8" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091b3c" />
+ <table type="Y Axis" storageaddress="00091b78" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 1" storageaddress="00091e14" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091d98" />
+ <table type="Y Axis" storageaddress="00091dd4" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 2" storageaddress="00092070" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091ff4" />
+ <table type="Y Axis" storageaddress="00092030" />
+</table>
+
+ <table name="Target Throttle Plate Position Hack" storageaddress="000BC6D0">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" storageaddress="000922d0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092250" />
+ <table type="Y Axis" storageaddress="00092290" />
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 1" storageaddress="00092550" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000924d0" />
+ <table type="Y Axis" storageaddress="00092510" />
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 2" storageaddress="000927d0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092750" />
+ <table type="Y Axis" storageaddress="00092790" />
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 1" storageaddress="00092a50" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000929d0" />
+ <table type="Y Axis" storageaddress="00092a10" />
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 2" storageaddress="00092cd0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092c50" />
+ <table type="Y Axis" storageaddress="00092c90" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="00004B10" >
+   <state name="Disable" data="00 0B E8 44" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d" />
+
+<table name="Engine Displacement" storageaddress="0008f060" />
+
+<table name="Volumetric Efficiency" storageaddress="00092fc8" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="00092ed0" />
+ <table type="Y Axis" storageaddress="00092f50" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="000937c8" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00093748" />
+ <table type="Y Axis" storageaddress="00093788" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="00093a48" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000939c8" />
+ <table type="Y Axis" storageaddress="00093a08" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Hack" storageaddress="000345D4">
+   <state name="Disable" data="00 0B E8 44" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="00093c90" sizex="18">
+ <table type="Y Axis" storageaddress="00093c48" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" storageaddress="00093cfc" sizex="18">
+ <table type="Y Axis" storageaddress="00093cb4" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" storageaddress="00093d68" sizex="18">
+ <table type="Y Axis" storageaddress="00093d20" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e" />
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
+
+<table name="CEL Flash Hack #1" storageaddress="00042818">
+   <state name="Disable" data="00 07 A8 66" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c" />
 
  </rom>
 
@@ -12052,6 +13138,381 @@ is compatible with standard routine. -->
 
 </rom>
 
+<rom base="2Boost AZ1G202G">
+  <romid>
+   <xmlid>2Boost AZ1G202G 0004</xmlid>
+   <internalidaddress>0008f030</internalidaddress>
+   <internalidstring>2Boost AZ1G202G 0004</internalidstring>
+   <ecuid>5A42784207</ecuid>
+   <year>08</year>
+   <market>EDM</market>
+   <make>Subaru</make>
+   <model>Impreza</model>
+   <submodel>STi</submodel>
+   <transmission>MT</transmission>
+   <memmodel>SH7058</memmodel>
+   <flashmethod>subarucan</flashmethod>
+   <filesize>1024kb</filesize>
+  </romid>
+
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 08 f0 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 08 f0 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 08 f0 24" />
+ </table>
+
+<table name="CEL Flash Hack #2" storageaddress="0007CB6C">
+   <state name="Enable"  data="FF FF A9 03" />
+   <state name="Disable" data="FF FF 9B 3A" />
+ </table>
+
+<table name="Map Switch Input " storageaddress="0008f04c" />
+
+ <table name="Boost Target Hack" storageaddress="00014134">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+ 
+<table name="Target Boost Overtake map" storageaddress="0008f0d8" sizex="14" sizey="14">
+ <table type="X Axis" storageaddress="0008f068" />
+ <table type="Y Axis" storageaddress="0008f0a0" />
+</table>
+
+<table name="Target Boost SI-DRIVE Intelligent" storageaddress="0008f2d0" sizex="14" sizey="14">
+ <table type="X Axis" storageaddress="0008f260" />
+ <table type="Y Axis" storageaddress="0008f298" />
+</table>
+
+<table name="Target Boost SI-DRIVE Sport" storageaddress="0008f4c8" sizex="14" sizey="14">
+ <table type="X Axis" storageaddress="0008f458" />
+ <table type="Y Axis" storageaddress="0008f490" />
+</table>
+
+<table name="Target Boost SI-DRIVE Sport Sharp" storageaddress="0008f6c0" sizex="14" sizey="14">
+ <table type="X Axis" storageaddress="0008f650" />
+ <table type="Y Axis" storageaddress="0008f688" />
+</table>
+  
+ <table name="Wastegate Hack" storageaddress="000145F8">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+ 
+<table name="Initial Wastegate Duty Overtake map" storageaddress="0008f89c" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008f848" />
+ <table type="Y Axis" storageaddress="0008f874" />
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Intelligent" storageaddress="0008f9cc" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008f978" />
+ <table type="Y Axis" storageaddress="0008f9a4" />
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport" storageaddress="0008fafc" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008faa8" />
+ <table type="Y Axis" storageaddress="0008fad4" />
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport Sharp" storageaddress="0008fc2c" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008fbd8" />
+ <table type="Y Axis" storageaddress="0008fc04" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map" storageaddress="0008fd5c" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008fd08" />
+ <table type="Y Axis" storageaddress="0008fd34" />
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Intelligent" storageaddress="0008fe8c" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008fe38" />
+ <table type="Y Axis" storageaddress="0008fe64" />
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport" storageaddress="0008ffbc" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="0008ff68" />
+ <table type="Y Axis" storageaddress="0008ff94" />
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport Sharp" storageaddress="000900ec" sizex="11" sizey="10">
+ <table type="X Axis" storageaddress="00090098" />
+ <table type="Y Axis" storageaddress="000900c4" />
+</table>
+
+ <table name="Fueling Hack" storageaddress="0002FDA0">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="0009025c" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000901c8" />
+ <table type="Y Axis" storageaddress="00090214" />
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Intelligent" storageaddress="00090448" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000903b4" />
+ <table type="Y Axis" storageaddress="00090400" />
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Sport" storageaddress="00090634" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000905a0" />
+ <table type="Y Axis" storageaddress="000905ec" />
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Sport Sharp" storageaddress="00090820" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="0009078c" />
+ <table type="Y Axis" storageaddress="000907d8" />
+</table>
+
+ <table name="Timing Hack" storageaddress="00038E38">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+
+<table name="Base Timing Overtake map" storageaddress="00090a18" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00090978" />
+ <table type="Y Axis" storageaddress="000909d0" />
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Intelligent" storageaddress="00090c44" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00090ba4" />
+ <table type="Y Axis" storageaddress="00090bfc" />
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport" storageaddress="00090e70" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00090dd0" />
+ <table type="Y Axis" storageaddress="00090e28" />
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport Sharp" storageaddress="0009109c" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00090ffc" />
+ <table type="Y Axis" storageaddress="00091054" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Intelligent" storageaddress="000912c8" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091228" />
+ <table type="Y Axis" storageaddress="00091280" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport" storageaddress="000914f4" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091454" />
+ <table type="Y Axis" storageaddress="000914ac" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport Sharp" storageaddress="00091720" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091680" />
+ <table type="Y Axis" storageaddress="000916d8" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Intelligent" storageaddress="0009194c" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="000918ac" />
+ <table type="Y Axis" storageaddress="00091904" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport" storageaddress="00091b78" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091ad8" />
+ <table type="Y Axis" storageaddress="00091b30" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport Sharp" storageaddress="00091da4" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091d04" />
+ <table type="Y Axis" storageaddress="00091d5c" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Intelligent" storageaddress="00091fd0" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00091f30" />
+ <table type="Y Axis" storageaddress="00091f88" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport" storageaddress="000921fc" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="0009215c" />
+ <table type="Y Axis" storageaddress="000921b4" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport Sharp" storageaddress="00092428" sizex="22" sizey="18">
+ <table type="X Axis" storageaddress="00092388" />
+ <table type="Y Axis" storageaddress="000923e0" />
+</table>
+
+ <table name="Intake AVCS Hack" storageaddress="00057BE8">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="00092648" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000925b4" />
+ <table type="Y Axis" storageaddress="00092600" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Intelligent" storageaddress="00092988" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000928f4" />
+ <table type="Y Axis" storageaddress="00092940" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport" storageaddress="00092cc8" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00092c34" />
+ <table type="Y Axis" storageaddress="00092c80" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport Sharp" storageaddress="00093008" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00092f74" />
+ <table type="Y Axis" storageaddress="00092fc0" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Intelligent" storageaddress="00093348" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000932b4" />
+ <table type="Y Axis" storageaddress="00093300" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport" storageaddress="00093688" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000935f4" />
+ <table type="Y Axis" storageaddress="00093640" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp" storageaddress="000939c8" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00093934" />
+ <table type="Y Axis" storageaddress="00093980" />
+</table>
+
+ <table name="Exhaust AVCS Hack" storageaddress="00059534">
+   <state name="Disable" data="00 0B E8 B8" />
+ </table>
+
+<table name="Exhaust Cam Retard Angle (AVCS) Overtake map" storageaddress="00093d08" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00093c74" />
+ <table type="Y Axis" storageaddress="00093cc0" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Intelligent" storageaddress="00094048" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00093fb4" />
+ <table type="Y Axis" storageaddress="00094000" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport" storageaddress="00094388" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="000942f4" />
+ <table type="Y Axis" storageaddress="00094340" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport Sharp" storageaddress="000946c8" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00094634" />
+ <table type="Y Axis" storageaddress="00094680" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Intelligent" storageaddress="00094a08" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00094974" />
+ <table type="Y Axis" storageaddress="000949c0" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport" storageaddress="00094d48" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00094cb4" />
+ <table type="Y Axis" storageaddress="00094d00" />
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp" storageaddress="00095088" sizex="19" sizey="18">
+ <table type="X Axis" storageaddress="00094ff4" />
+ <table type="Y Axis" storageaddress="00095040" />
+</table>
+
+<!-- This is not an error, Requsted Torque table calculation
+is made by another routine. It looks like that routine
+ignores table offset value. But Requested Torque table layout
+is compatible with standard routine. -->
+
+<table name="Requested Torque (Accelerator Pedal) Hack" storageaddress="000475DC">
+  <state name="Disable" data="00 0B DD 70" />
+</table>
+
+<table name="Requested Torque (Accelerator Pedal) Overtake map" storageaddress="000953b8" sizex="16" sizey="17">
+ <table type="X Axis" storageaddress="00095334" />
+ <table type="Y Axis" storageaddress="00095374" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="00004B10" >
+   <state name="Disable" data="00 0B E8 04" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d" />
+
+<table name="Engine Displacement" storageaddress="0008f060" />
+
+<table name="Volumetric Efficiency" storageaddress="000956d0" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="000955d8" />
+ <table type="Y Axis" storageaddress="00095658" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="00095ed0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00095e50" />
+ <table type="Y Axis" storageaddress="00095e90" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="00096150" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000960d0" />
+ <table type="Y Axis" storageaddress="00096110" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Hack" storageaddress="00033FC0">
+   <state name="Disable" data="00 0B E8 04" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="00096398" sizex="18">
+ <table type="Y Axis" storageaddress="00096350" />
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Intelligent" storageaddress="00096404" sizex="18">
+ <table type="Y Axis" storageaddress="000963bc" />
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport" storageaddress="00096470" sizex="18">
+ <table type="Y Axis" storageaddress="00096428" />
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport Sharp" storageaddress="000964dc" sizex="18">
+ <table type="Y Axis" storageaddress="00096494" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e" >
+ <description>When you enable Overtake button, please also enable Requested Torque (Accelerator Pedal) hack</description>
+</table>
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
+
+<table name="CEL Flash Hack #1" storageaddress="00042174">
+   <state name="Disable" data="00 07 C8 46" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c" />
+
+</rom>
+
 <rom base="2BOOST BASE">
     <romid>
       <xmlid>2Boost AZ1G900P</xmlid>
@@ -13095,4 +14556,298 @@ is compatible with standard routine. -->
 
 </rom>
 
+  <rom base="2Boost AZ1G900P">
+    <romid>
+      <xmlid>2Boost AZ1G900P 0004</xmlid>
+      <internalidaddress>0008f030</internalidaddress>
+      <internalidstring>2Boost AZ1G900P 0004</internalidstring>
+      <ecuid>7142504007</ecuid>
+      <year>11</year>
+      <market>EDM</market>
+      <make>Subaru</make>
+      <model>Forester</model>
+      <submodel>XT</submodel>
+      <transmission>AT</transmission>
+      <memmodel>SH7058</memmodel>
+      <flashmethod>subarucan</flashmethod>
+      <filesize>1024kb</filesize>
+    </romid>
+
+<table name="Boost Target Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Wastegate Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Fueling Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Timing Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Intake AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Exhaust AVCS Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Target Throttle Plate Position Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable"  data="00 08 f0 00" />
+ </table>
+<table name="Enable Speed Density">
+   <state name="Enable"  data="00 08 f0 18" />
+ </table>
+<table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable"  data="00 08 f0 0c" />
+ </table>
+<table name="CEL Flash Hack #1">
+   <state name="Enable"  data="00 08 f0 24" />
+ </table>
+
+<table name="CEL Flash Hack #2" storageaddress="0007AAD0">
+   <state name="Enable"  data="FF FF A9 03" />
+   <state name="Disable" data="FF FF 99 96" />
+ </table>
+
+<table name="Map Switch Input" storageaddress="0008f04c" />
+
+ <table name="Boost Target Hack" storageaddress="14024">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Target Boost Overtake map" storageaddress="0008f0d0" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f068" />
+ <table type="Y Axis" storageaddress="0008f094" />
+</table>
+
+<table name="Target Boost map 1" storageaddress="0008f284" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f21c" />
+ <table type="Y Axis" storageaddress="0008f248" />
+</table>
+
+<table name="Target Boost map 2" storageaddress="0008f438" sizex="11" sizey="15">
+ <table type="X Axis" storageaddress="0008f3d0" />
+ <table type="Y Axis" storageaddress="0008f3fc" />
+</table>
+
+ <table name="Wastegate Hack" storageaddress="00014508">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Initial Wastegate Duty Overtake map" storageaddress="0008f5f4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f584" />
+ <table type="Y Axis" storageaddress="0008f5c0" />
+</table>
+
+<table name="Initial Wastegate Duty map 1" storageaddress="0008f7ec" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f77c" />
+ <table type="Y Axis" storageaddress="0008f7b8" />
+</table>
+
+<table name="Initial Wastegate Duty map 2" storageaddress="0008f9e4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008f974" />
+ <table type="Y Axis" storageaddress="0008f9b0" />
+</table>
+
+<table name="Max Wastegate Duty Overtake map" storageaddress="0008fbdc" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008fb6c" />
+ <table type="Y Axis" storageaddress="0008fba8" />
+</table>
+
+<table name="Max Wastegate Duty map 1" storageaddress="0008fdd4" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008fd64" />
+ <table type="Y Axis" storageaddress="0008fda0" />
+</table>
+
+<table name="Max Wastegate Duty map 2" storageaddress="0008ffcc" sizex="15" sizey="13">
+ <table type="X Axis" storageaddress="0008ff5c" />
+ <table type="Y Axis" storageaddress="0008ff98" />
+</table>
+
+ <table name="Fueling Hack" storageaddress="0003010C">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+ 
+<table name="Primary Open Loop Fueling Overtake map" storageaddress="000901d8" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="00090154" />
+ <table type="Y Axis" storageaddress="00090190" />
+</table>
+
+<table name="Primary Open Loop Fueling map 1" storageaddress="0009036c" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="000902e8" />
+ <table type="Y Axis" storageaddress="00090324" />
+</table>
+
+<table name="Primary Open Loop Fueling map 2" storageaddress="00090500" sizex="15" sizey="18">
+ <table type="X Axis" storageaddress="0009047c" />
+ <table type="Y Axis" storageaddress="000904b8" />
+</table>
+
+<table name="Timing Hack" storageaddress="392D0">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+ 
+<table name="Base Timing Overtake map" storageaddress="000906a0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090610" />
+ <table type="Y Axis" storageaddress="00090658" />
+</table>
+
+<table name="Base Timing Primary Cruise map 1" storageaddress="00090874" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000907e4" />
+ <table type="Y Axis" storageaddress="0009082c" />
+</table>
+
+<table name="Base Timing Primary Cruise map 2" storageaddress="00090a48" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000909b8" />
+ <table type="Y Axis" storageaddress="00090a00" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 1" storageaddress="00090c1c" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090b8c" />
+ <table type="Y Axis" storageaddress="00090bd4" />
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 2" storageaddress="00090df0" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090d60" />
+ <table type="Y Axis" storageaddress="00090da8" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 1" storageaddress="00090fc4" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00090f34" />
+ <table type="Y Axis" storageaddress="00090f7c" />
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 2" storageaddress="00091198" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="00091108" />
+ <table type="Y Axis" storageaddress="00091150" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 1" storageaddress="0009136c" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000912dc" />
+ <table type="Y Axis" storageaddress="00091324" />
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 2" storageaddress="00091540" sizex="18" sizey="18">
+ <table type="X Axis" storageaddress="000914b0" />
+ <table type="Y Axis" storageaddress="000914f8" />
+</table>
+
+ <table name="AVCS Hack" storageaddress="000580A0">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+ 
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" storageaddress="00091700" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091684" />
+ <table type="Y Axis" storageaddress="000916c0" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 1" storageaddress="0009195c" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="000918e0" />
+ <table type="Y Axis" storageaddress="0009191c" />
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 2" storageaddress="00091bb8" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091b3c" />
+ <table type="Y Axis" storageaddress="00091b78" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 1" storageaddress="00091e14" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091d98" />
+ <table type="Y Axis" storageaddress="00091dd4" />
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 2" storageaddress="00092070" sizex="15" sizey="16">
+ <table type="X Axis" storageaddress="00091ff4" />
+ <table type="Y Axis" storageaddress="00092030" />
+</table>
+
+ <table name="Target Throttle Plate Position Hack" storageaddress="000BC6D0">
+   <state name="Disable" data="00 0B E8 F8" />
+ </table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" storageaddress="000922d0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092250" />
+ <table type="Y Axis" storageaddress="00092290" />
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 1" storageaddress="00092550" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000924d0" />
+ <table type="Y Axis" storageaddress="00092510" />
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 2" storageaddress="000927d0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092750" />
+ <table type="Y Axis" storageaddress="00092790" />
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 1" storageaddress="00092a50" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000929d0" />
+ <table type="Y Axis" storageaddress="00092a10" />
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 2" storageaddress="00092cd0" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00092c50" />
+ <table type="Y Axis" storageaddress="00092c90" />
+</table>
+
+ <table name="Enable Speed Density" storageaddress="000049E8" >
+   <state name="Disable" data="00 0B E8 44" />
+ </table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d" />
+
+<table name="Engine Displacement" storageaddress="0008f060" />
+
+<table name="Volumetric Efficiency" storageaddress="00092fc8" sizex="32" sizey="30">
+ <table type="X Axis" storageaddress="00092ed0" />
+ <table type="Y Axis" storageaddress="00092f50" />
+</table>
+
+<table name="VE Tip-in Compensation" storageaddress="000937c8" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="00093748" />
+ <table type="Y Axis" storageaddress="00093788" />
+</table>
+
+<table name="MAF/SD Blending" storageaddress="00093a48" sizex="16" sizey="16">
+ <table type="X Axis" storageaddress="000939c8" />
+ <table type="Y Axis" storageaddress="00093a08" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Hack" storageaddress="000343E0">
+   <state name="Disable" data="00 0B E8 44" />
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" storageaddress="00093c90" sizex="18">
+ <table type="Y Axis" storageaddress="00093c48" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" storageaddress="00093cfc" sizex="18">
+ <table type="Y Axis" storageaddress="00093cb4" />
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" storageaddress="00093d68" sizex="18">
+ <table type="Y Axis" storageaddress="00093d20" />
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e" />
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
+
+<table name="CEL Flash Hack #1" storageaddress="00042624">
+   <state name="Disable" data="00 07 A7 AA" />
+ </table>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f" />
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058" />
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c" />
+
+</rom>
 </roms>

@@ -75,7 +75,7 @@
 //Base Timing
 #define ORIG_TABLE_BASE_TIMING_A_ADDRESS (0x0005B208)
 
-#define TABLE_BASE_TIMING_X_COUNT 15
+#define TABLE_BASE_TIMING_X_COUNT 18
 #define TABLE_BASE_TIMING_Y_COUNT 18
 
 #define TABLE_BASE_TIMING_DATA_TYPE 0x4000000
@@ -123,32 +123,24 @@
 #define P_MANIFOLD_PRESSURE_ADDRESS (0xFFFFB14C)
 //Manifold absolute pressure, mmHg
 #define P_MANIFOLD_PRESSURE ((float*)P_MANIFOLD_PRESSURE_ADDRESS)
-//CREATE_CONST(float, pManifoldPressure, P_MANIFOLD_PRESSURE_ADDRESS)
-//#define P_MANIFOLD_PRESSURE pManifoldPressure
 
 //Engine speed address
 //SSM Routine P8
 #define P_ENGINE_SPEED_ADDRESS (0xFFFFB3FC)
 //Engine speed, RPM
 #define P_ENGINE_SPEED ((float*)P_ENGINE_SPEED_ADDRESS)
-//CREATE_CONST(float, pEngineSpeed, P_ENGINE_SPEED_ADDRESS)
-//#define P_ENGINE_SPEED pEngineSpeed
 
 //Intake air temperature address
 //SSM Routine P11
 #define P_IAT_ADDRESS (0xFFFF90B8)
 //Intake air temperature, Celsius
 #define P_IAT ((float*)P_IAT_ADDRESS)
-//CREATE_CONST(float, pIAT, P_IAT_ADDRESS)
-//#define P_IAT pIAT
 
 //Throttle plate angle change address
 //Tip-in routine
 #define P_THROTTLE_ANGLE_CHANGE_ADDRESS (0xFFFFB1E0)
 //Throttle plate angle change, degrees
 #define P_THROTTLE_ANGLE_CHANGE ((float*)P_THROTTLE_ANGLE_CHANGE_ADDRESS)
-//CREATE_CONST(float, pThrottleAngleChange, P_THROTTLE_ANGLE_CHANGE_ADDRESS)
-//#define P_THROTTLE_ANGLE_CHANGE pThrottleAngleChange
 
 //Enable Speed Density
 #define SPEED_DENSITY
@@ -156,8 +148,6 @@
 //Cruise state
 #define P_CRUISE_STATE_ADDRESS (0xFFFFB0C6) /* Cruise system flag variable RAM address */
 #define P_CRUISE_STATE ((unsigned char*)P_CRUISE_STATE_ADDRESS)
-//CREATE_CONST(unsigned char, pCruiseState, P_CRUISE_STATE_ADDRESS)
-//#define P_CRUISE_STATE pCruiseState
 
 /* 3rd bit set when cruise disabled cleared when enabled */
 #define P_CRUISE_STATE_MASK_CRUISE_DISABLED ((unsigned char)8)
@@ -168,16 +158,34 @@
 //SSM Routine S154
 #define P_CRUISE_CANCEL_SWITCH_ADDRESS (0xFFFFAF73)
 #define P_CRUISE_CANCEL_SWITCH ((unsigned char*)P_CRUISE_CANCEL_SWITCH_ADDRESS)
-//CREATE_CONST(unsigned char, pCruiseCancelSwitch, P_CRUISE_CANCEL_SWITCH_ADDRESS)
-//#define P_CRUISE_CANCEL_SWITCH pCruiseCancelSwitch
 //Cruise Cancel switch mask
 #define P_CRUISE_CANCEL_SWITCH_MASK (0x40)
 
 //Accelerator pedal angle
 #define P_ACCELERATOR_PEDAL_ANGLE_ADDRESS (0xFFFFB338)
 #define P_ACCELERATOR_PEDAL_ANGLE ((float *)P_ACCELERATOR_PEDAL_ANGLE_ADDRESS)
-//CREATE_CONST(float, pAcceleratorPegalAngle, P_ACCELERATOR_PEDAL_ANGLE_ADDRESS)
-//#define P_ACCELERATOR_PEDAL_ANGLE pAcceleratorPegalAngle
+
+//Brake pedal switch
+//SSM Routine S67
+#define P_BRAKE_PEDAL_SWITCH_ADDRESS (0xFFFFAF70)
+#define P_BRAKE_PEDAL_SWITCH ((unsigned char*)P_BRAKE_PEDAL_SWITCH_ADDRESS)
+//Brake pedal switch mask
+#define P_BRAKE_PEDAL_SWITCH_MASK 8
+
+//CEL Flash
+//ROM CEL Trigger outer function
+#define ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS (0x00051614)
+//ROM CEL status
+#define P_CEL_LIGHT_STATUS_OEM_ADDRESS (0xFFFFCCEA)
+#define P_CEL_LIGHT_STATUS_OEM ((unsigned char*)P_CEL_LIGHT_STATUS_OEM_ADDRESS)
+
+//Engine load, E32
+#define P_ENGINE_LOAD_ADDRESS (0xFFFFB2C4)
+#define P_ENGINE_LOAD ((float*)P_ENGINE_LOAD_ADDRESS)
+
+//FBKC, E39
+#define P_FBKC_ADDRESS  (0xFFFFBD70)
+#define P_FBKC ((float*)P_FBKC_ADDRESS)
 
 //RAM address for our variables
 #define RAM_HOLE (0xFFFF9B00)

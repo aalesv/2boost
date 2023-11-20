@@ -40,3 +40,11 @@ massAirflow_entry_point (float mafVoltage,
     return massAirflow_hooked(mafVoltage, tablePointerMAF);
 }
 #endif //SPEED_DENSITY
+
+#if defined ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS
+void
+celFlash_outer_entry_point (void)
+{
+    celTrigger_hooked();
+}
+#endif //ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS

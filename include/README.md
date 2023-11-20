@@ -14,6 +14,10 @@ Functions that are entry points for Calc 2D/3D and Mass Airflow Calc routines
 
 Functions that hook the original tables calculation ROM functions.
 
+#### cel_flash.h
+
+Functions that hook ROM's CEL flash functions
+
 #### global_vars.h
 
 Global variables, constants etc.

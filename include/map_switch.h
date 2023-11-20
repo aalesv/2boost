@@ -31,17 +31,38 @@
 //Returns 0 if must use original ROM map, 1 if must use 1st map, 2 if must use 2nd map, 3 if must use 3d map, 4 if must use 4th map
 uint8 globalMapSwitch(void) ROM_CODE;
 //Returns 1 if cruise is enabled, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8 cruiseStateEnabled (void) ROM_CODE;
 //Returns 1 if I, 2 if S, 3 if S#, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8 siDriveState (void) ROM_CODE;
 //Returns map switch source defined in MAP_SWITCH_SOURCE enum
 //As function will always be inlined, do not specify linker section and it will be stripped
-inline static uint8 globalMapSwitchSource (void) ALWAYS_INLINE;
+static inline uint8 globalMapSwitchSource (void) ROM_CODE;
 
+//Returns 1 if overtake button conditions met, and 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
+uint8 overtakeMapConditionsMet(void) ROM_CODE;
+//Returns overtake map number
+static inline uint8 overtakeMapNumber(void) ROM_CODE;
 //Returns overtake map column number if overtake conditions are met and 0 otherwise
 uint8 overtakeMapSwitch(void) ROM_CODE;
 //Returns 1 if cruise cancel button is pressed, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8 cruiseCancelPressed(void) ROM_CODE;
+//Returns 1 if brake pedal is pressed, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
+uint8 brakePedalPressed(void) ROM_CODE;
 
 extern uint8 CFG_GLOBAL_MAP_SWITCH_SOURCE;
 extern uint8 CFG_OVERTAKE_BUTTON_SWITCH_SOURCE;

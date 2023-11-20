@@ -78,7 +78,7 @@
 #define ORIG_TABLE_BASE_TIMING_C_ADDRESS (0x00089BD8) //Base Timing Reference Cruise (AVCS related)
 #define ORIG_TABLE_BASE_TIMING_D_ADDRESS (0x00089BF4) //Base Timing Reference Non-Cruise (AVCS related) 
 
-#define TABLE_BASE_TIMING_X_COUNT 19
+#define TABLE_BASE_TIMING_X_COUNT 22
 #define TABLE_BASE_TIMING_Y_COUNT 18
 
 #define TABLE_BASE_TIMING_DATA_TYPE 0x4000000
@@ -193,6 +193,28 @@
 //Si-Drive state
 #define P_SI_DRVIE_STATE_ADDRESS (0xFFFF611E) /* SI-Drive system flag variable RAM address */
 #define P_SI_DRVIE_STATE ((unsigned char*)P_SI_DRVIE_STATE_ADDRESS)
+
+//Brake pedal switch
+//SSM Routine S67
+#define P_BRAKE_PEDAL_SWITCH_ADDRESS (0xFFFF61B8)
+#define P_BRAKE_PEDAL_SWITCH ((unsigned char*)P_BRAKE_PEDAL_SWITCH_ADDRESS)
+//Brake pedal switch mask
+#define P_BRAKE_PEDAL_SWITCH_MASK 1
+
+//CEL Flash
+//ROM CEL Trigger outer function
+#define ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS (0x0007C846)
+//ROM CEL status
+#define P_CEL_LIGHT_STATUS_OEM_ADDRESS (0xFFFF9B3A)
+#define P_CEL_LIGHT_STATUS_OEM ((unsigned char*)P_CEL_LIGHT_STATUS_OEM_ADDRESS)
+
+//Engine load, E32
+#define P_ENGINE_LOAD_ADDRESS (0xFFFF65D4)
+#define P_ENGINE_LOAD ((float*)P_ENGINE_LOAD_ADDRESS)
+
+//FBKC, E39
+#define P_FBKC_ADDRESS  (0xFFFF7C40)
+#define P_FBKC ((float*)P_FBKC_ADDRESS)
 
 //RAM address for our variables
 #define RAM_HOLE (0xFFFFA900)

@@ -62,6 +62,26 @@ globalMapSwitch(void)
 	RAM_VARIABLES->globalMapSwitch = res;
 	return res;
 }
+//Returns 1 if overtake button conditions met, and 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
+uint8
+overtakeMapConditionsMet(void)
+{
+	//Conditions are met if Cruise Cancel button is pressed
+	//and accelerator angle is over minimum level
+	return (cruiseCancelPressed() == 1) 
+		&& (*P_ACCELERATOR_PEDAL_ANGLE > CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE);
+}
+
+//Returns overtake map number
+static inline uint8
+overtakeMapNumber(void)
+{
+	//Last element in LUT's column
+	return LUT_OVERTAKE_MAP_COLUMN_NUMBER;
+}
 
 //Returns 0 if overtake button conditions not met,
 //and overtake map column number otherwise.
@@ -77,19 +97,45 @@ overtakeMapSwitch(void)
 			break;
 		#if defined(P_CRUISE_CANCEL_SWITCH)
 		//Overtake button is Cruise Cancel button
-		case OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL:
-			//If Cruise Cancel button is pressed
-			//and accelerator angle is over minimum level
-			if ((cruiseCancelPressed() == 1) 
-			  && (*P_ACCELERATOR_PEDAL_ANGLE > CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE))
-				{
-					//Last element in LUT's column
-					res = LUT_OVERTAKE_MAP_COLUMN_NUMBER;
-				} else {
-					res = 0;
-				}
+		//Overtake mode is enabled until
+		//Cruise Cancel and Accelarator Pedal are pressed
+		case OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_HOLD:
+			//Enable overtake mode if overtake conditions are met
+			if (overtakeMapConditionsMet())
+			{
+				//Set Overtake map
+				res = overtakeMapNumber();
+				RAM_VARIABLES->OvertakeMode = 1;
+			} else {
+				res = 0;
+				RAM_VARIABLES->OvertakeMode = 0;
+			}
 			break;
-		#endif
+		#if defined(P_BRAKE_PEDAL_SWITCH)
+		//Overtake mode is enabled when
+		//Cruise Cancel and Accelarator Pedal pressed
+		//until Brake Pedal pressed
+		case OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_RELEASE:
+			//Enable overtake mode if overtake conditions are met
+			if (overtakeMapConditionsMet())
+			{
+				RAM_VARIABLES->OvertakeMode = 1;
+			}
+			//Disable only when brake pedal is pressed
+			if (brakePedalPressed())
+			{
+				RAM_VARIABLES->OvertakeMode = 0;
+			}
+			//Set map number
+			if (RAM_VARIABLES->OvertakeMode)
+			{
+				res = overtakeMapNumber();
+			} else {
+				res = 0;
+			}
+			break;
+		#endif //P_BRAKE_PEDAL_SWITCH
+		#endif //P_CRUISE_CANCEL_SWITCH
 		default:
 		//In case of misconfiguration don't enable overtake map.
 			res = 0;
@@ -101,6 +147,9 @@ overtakeMapSwitch(void)
 
 #if defined(P_CRUISE_CANCEL_SWITCH)
 //Returns 1 if cruise cancel button is pressed, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8
 cruiseCancelPressed(void)
 {
@@ -116,9 +165,30 @@ cruiseCancelPressed(void)
 }
 #endif //P_CRUISE_CANCEL_SWITCH
 
+#if defined(P_BRAKE_PEDAL_SWITCH)
+//Returns 1 if brake pedal is pressed, 0 otherwise
+#if !defined(BUILD_TESTS)
+static inline
+#endif
+uint8
+brakePedalPressed(void)
+{
+	if ((*P_BRAKE_PEDAL_SWITCH & P_BRAKE_PEDAL_SWITCH_MASK)
+							  == P_BRAKE_PEDAL_SWITCH_MASK)
+	{
+		return 1;
+	} else {
+		return 0;
+	}
+}
+#endif //P_BRAKE_PEDAL_SWITCH
+
 #if defined P_CRUISE_STATE_MASK_CRUISE_ENABLED
 //Returns 1 if cruise is enabled, 0 otherwise
 //Straight cruise logic
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8 cruiseStateEnabled (void){
 	if ((*P_CRUISE_STATE & P_CRUISE_STATE_MASK_CRUISE_ENABLED) 
 						== P_CRUISE_STATE_MASK_CRUISE_ENABLED)
@@ -140,6 +210,9 @@ uint8 cruiseStateEnabled (void){
 #if defined P_CRUISE_STATE_MASK_CRUISE_DISABLED
 //Returns 1 if cruise is enabled, 0 otherwise
 //Reverse cruise logic
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8
 cruiseStateEnabled (void)
 {
@@ -163,6 +236,9 @@ cruiseStateEnabled (void)
 #if defined P_SI_DRVIE_STATE
 //Return Si-Drive switch state
 //Return SI_DRIVE_STATE_NONE if Si-Drive error
+#if !defined(BUILD_TESTS)
+static inline
+#endif
 uint8
 siDriveState (void) 
 {

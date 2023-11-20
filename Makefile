@@ -74,7 +74,11 @@ CC_VERSION:=$(shell $(CC) -dumpversion)
 #One should enable top level reordering (which is enabled by default when -O specified)
 #for each target when it is needed.
 #To do so set TOP_LEVEL_REORDER_TARGET_LIST variable.
-CFLAGS=-g -c -mrenesas $(ARCH_FLAGS) -mb -O3 -fno-toplevel-reorder -I$(INCLUDE) -I$(TARGET_INCLUDE) $(USERCFLAGS)
+#Option -fno-ipa-cp-clone disables function cloning because it can lead to
+#bigger binary size. Check this every time when moving to other compiler's version.
+#Maybe sometimes they will fix it.
+CFLAGS=-g -c -mrenesas $(ARCH_FLAGS) -mb -O3 -fno-ipa-cp-clone \
+		-fno-toplevel-reorder -I$(INCLUDE) -I$(TARGET_INCLUDE) $(USERCFLAGS)
 #List of targets where top level reordering must be enabled
 TOP_LEVEL_REORDER_TARGET_LIST=
 LD=$(BIN)$(PATHSEP)sh-elf-ld
@@ -88,7 +92,9 @@ READELFFLAGS=--wide
 OBJCOPY=$(BIN)$(PATHSEP)sh-elf-objcopy
 #Copy to bin file only specified sections
 #Section names must correspond sections in LD_COMMON_SCRIPT file
-OBJCOPYFLAGS=-O binary --only-section=ROM_HOLE_CODE --only-section=ROM_HOLE_DATA --only-section=ROM_HOLE_EXTERNAL_LIB --only-section=ROM_HOLE_TESTS
+OBJCOPYFLAGS=-O binary --only-section=ROM_HOLE_CODE \
+			--only-section=ROM_HOLE_DATA --only-section=ROM_HOLE_EXTERNAL_LIB \
+			--only-section=ROM_HOLE_TESTS --only-section=ROM_HOLE_ENTRY_POINTS
 SORT=sort
 
 #Dirs

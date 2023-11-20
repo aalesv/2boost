@@ -355,8 +355,8 @@ getPointerFromLut (const int LUT[][LUT_COLUMN_COUNT],
 }
 
 //Prevent LUT array overrun condition
-static inline
-uint8 sanitizeLutSecondIndex (uint8 index)
+static inline uint8
+sanitizeLutSecondIndex (uint8 index)
 {
 	if (index > LUT_COLUMN_COUNT - 1)
 	{

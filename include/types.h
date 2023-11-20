@@ -22,7 +22,8 @@ enum MAP_SWITCH_SOURCE
 enum OVERTAKE_BUTTON_SOURCE
 {
 	OVERTAKE_BUTTON_SOURCE_NONE, //Overtake button disabled
-	OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL, //Cruise cancel switch
+	OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_HOLD, //Cruise cancel switch. The mode remains active as long as the button is held down. 
+	OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_RELEASE //Cruise cancel switch. The mode remains active until brake pedal is pressed.
 };
 
 
@@ -40,6 +41,12 @@ enum MAF_SD_BLENDING
 	MAF_SD_BLENDING_ON		//MAF/SD blending enabled
 };
 
+enum CEL_FLASH
+{
+	CEL_FLASH_DISABLED,		//CEL flash disabled
+	CEL_FLASH_ENABLED		//CEL flash enbled
+};
+
 //Generic lookup table type
 //This is needed to remove warnings when calling generic LUT lookup function
 #define generic_lut_t const int (*)[LUT_COLUMN_COUNT]
@@ -53,6 +60,8 @@ typedef struct
 	uint8 mapSelected;
 	//MAF/SD blending mode
 	uint8 mafSdBlendMode;
+	//Dashboard CEL light status, placed at (RAM_HOLE + 3) address, Flash Hack #2
+	uint8 celLightIsOn;
 	//Mass airflow from MAF sensor - only if Speed Density enabled
 	float airFlowFromMaf;
 	//Volumetric efficiency table value - only if Speed Density enabled
@@ -65,6 +74,21 @@ typedef struct
 	float airFlowFromSdNotBlended;
 	//SD calculated mass airflow
 	float airFlowFromSD;
+	//Overtake mode state
+	uint8 OvertakeMode;
+	//CEL flash enabled/disabled flag - do it needs to flash now
+	uint8 celFlashEnabled;
+	//ROM CEL saved state
+	uint8 celLightSavedOemState;
+	//Counter variable
+    int celFlashCounter;
+	//How long keep CEL light on
+    int celFlashOnCount;
+	//How long keep CEL light off
+    int celFlashOffCount;
+	//Counter variable for number of on-off cycles
+	int celFlashCyclesCounter;
+
 } ram_variables_t;
 
 //Type def for 3D table
@@ -168,4 +192,6 @@ typedef float (*calc_2d_float_to_float_t)(float, const table_2d_noconv_t *);
 typedef uint16 (*calc_2d_uint16_to_uint16_noconv_t)(float, 
 													const table_2d_noconv_t *);
 
+//Type for 'void f(void)' function
+typedef void (*void_fn_ptr)(void);
 #endif //TYPES_H

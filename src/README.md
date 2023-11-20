@@ -10,6 +10,10 @@ Main linker script
 
 Functions that hook the original tables calculation ROM functions.
 
+#### cel_flash.h
+
+Functions that hook ROM's CEL flash functions
+
 #### global_vars.c
 
 Global variables, constants etc.

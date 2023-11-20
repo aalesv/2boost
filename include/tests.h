@@ -18,47 +18,55 @@
 //For emulator testing only
 
 #if defined(BUILD_TESTS)
+
+//CEL ports
+#define PDDR_W ((int*)0xFFFFF746)
+#define PEDR_W ((int*)0xFFFFF754)
 	
 	//Declare debug output
 	debug_variables_t *DEBUG_VARIABLES ROM_TESTS_DATA;
 
 	//Prepare to test - set variables
-	void test_set_default_ram_vars(void) ROM_TESTS_CODE;
+	void test_set_default_ram_vars(void) NOINLINE ROM_TESTS_CODE;
 
 	//Test everything
-	void test_everything(void) ROM_TESTS_CODE;
+	void test_everything(void) NOINLINE ROM_TESTS_CODE;
 
 	//Test maps switch
-	void test_globalMapSwitch(void) ROM_TESTS_CODE;
+	void test_globalMapSwitch(void) NOINLINE ROM_TESTS_CODE;
 
 	//Test Cruise cancel button
-	void test_cruiseCancelPressed(void) ROM_TESTS_CODE;
+	void test_cruiseCancelPressed(void) NOINLINE ROM_TESTS_CODE;
 
-	void test_overtakeMapSwitch(void) ROM_TESTS_CODE;
+	void test_overtakeMapSwitch_press_and_hold(void) NOINLINE ROM_TESTS_CODE;
+	void test_overtakeMapSwitch_press_and_release(void) NOINLINE ROM_TESTS_CODE;
 
-	void test_globalMapSwitch_overtake(void) ROM_TESTS_CODE;
+	void test_globalMapSwitch_overtake_press_and_hold(void) NOINLINE ROM_TESTS_CODE;
+	void test_globalMapSwitch_overtake_press_and_release(void) NOINLINE ROM_TESTS_CODE;
 
 	//Test calc_3d_uint_to_float_entry_point() call for all defined tables
 	//and modes - Cruise on/off, all Si-Drive modes
 	//Currently only Timing tables tested
-	void test_calc_3d_uint_to_float_entry_point_all_tables_and_modes(void) ROM_TESTS_CODE;
+	void test_calc_3d_uint_to_float_entry_point_all_tables_and_modes(void) NOINLINE ROM_TESTS_CODE;
 	#if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
 		//Test calc_3d_uint_to_float_entry_point() call for Timing tables
-		void test_calc_3d_uint_to_float_entry_point_timing(void) ROM_TESTS_CODE;
-		void test_getPointerFromLut_all_modes(void) ROM_TESTS_CODE;
+		void test_calc_3d_uint_to_float_entry_point_timing(void) NOINLINE ROM_TESTS_CODE;
+		void test_getPointerFromLut_all_modes(void) NOINLINE ROM_TESTS_CODE;
 	#endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
 
 	#if defined(ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS)
 		//Test calc_3d_uint_to_float_entry_point() call for Requsted Torque
-		void test_calc_3d_uint_to_float_entry_point_req_torque(void) ROM_TESTS_CODE;
+		void test_calc_3d_uint_to_float_entry_point_req_torque(void) NOINLINE ROM_TESTS_CODE;
 	#endif //ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS
 
 	#if defined(ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS)
-		void test_calc_2d_uint_to_float_entry_point_tip_in(void) ROM_TESTS_CODE;
+		void test_calc_2d_uint_to_float_entry_point_tip_in(void) NOINLINE ROM_TESTS_CODE;
 	#endif
 
 	//Test Speed Density
-	void test_massAirflow_entry_point(void) ROM_TESTS_CODE;
+	void test_massAirflow_entry_point(void) NOINLINE ROM_TESTS_CODE;
+
+	void test_celFlash_hooked(void) NOINLINE ROM_TESTS_CODE;
 
 #endif //BUILD_TESTS
 
@@ -74,4 +82,5 @@ extern float massAirflow_entry_point(float mafVoltage,
 extern uint8 overtakeMapSwitch(void);
 extern uint8 cruiseCancelPressed(void);
 extern uint8 globalMapSwitch(void);
+extern void celTrigger_hooked(void);
 

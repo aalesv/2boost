@@ -14,7 +14,7 @@
 
 //This is for proper VS Code functioning
  #ifdef __INTELLISENSE__
- #include "AZ1G202G.h"
+ #include "A8DH100P.h"
  #endif
 
  //GCC minimal actual version which don't need workarounds to produce valid assembler code
@@ -39,27 +39,30 @@
 #define ROM_ENTRY_POINT_CALC_3D			LD_SECTION("ROM_ENTRY_POINT_CALC_3D", 4)
 #define ROM_ENTRY_POINT_CALC_2D			LD_SECTION("ROM_ENTRY_POINT_CALC_2D", 4)
 #define ROM_ENTRY_POINT_SPEED_DENSITY 	LD_SECTION("ROM_ENTRY_POINT_SPEED_DENSITY", 4)
+#define ROM_ENTRY_POINT_CEL_FLASH		LD_SECTION("ROM_ENTRY_POINT_CEL_FLASH", 4)
 //Main ROM code
-#define ROM_CODE  		LD_SECTION("ROM_CODE", 4)
+#define ROM_CODE	  		LD_SECTION("ROM_CODE", 4)
 //ROM metadata - version etc.
-#define ROM_METADATA	LD_SECTION("ROM_METADATA", 4)
+#define ROM_METADATA		LD_SECTION("ROM_METADATA", 4)
 //ROM internal variables
-#define ROM_DATA		LD_SECTION("ROM_DATA", 4)
-#define ROM_DATA_CONST	LD_SECTION("ROM_DATA_CONST", 4)
+#define ROM_DATA			LD_SECTION("ROM_DATA", 4)
+#define ROM_DATA_CONST		LD_SECTION("ROM_DATA_CONST", 4)
 //ROM config data that can be modified by tuner
-#define ROM_CONFIG		LD_SECTION("ROM_CONFIG", 1)
+#define ROM_CONFIG			LD_SECTION("ROM_CONFIG", 1)
 //Tables pointer structures
-#define ROM_TABLE_PTR	LD_SECTION("ROM_TABLE_PTR", 4)
+#define ROM_TABLE_PTR		LD_SECTION("ROM_TABLE_PTR", 4)
 //Tables themselves
-#define ROM_TABLE_DATA  LD_SECTION("ROM_TABLE_DATA", 4)
+#define ROM_TABLE_DATA		LD_SECTION("ROM_TABLE_DATA", 4)
+#define ROM_3D_TABLE_DATA 	LD_SECTION("ROM_3D_TABLE_DATA", 4)
+#define ROM_2D_TABLE_DATA	LD_SECTION("ROM_2D_TABLE_DATA", 4)
 //Lookup tables
-#define ROM_LUT			LD_SECTION("ROM_LUT", 4)
+#define ROM_LUT				LD_SECTION("ROM_LUT", 4)
 //ROM other data
-#define ROM_OTHER_DATA	LD_SECTION("ROM_OTHER_DATA", 1)
+#define ROM_OTHER_DATA		LD_SECTION("ROM_OTHER_DATA", 1)
 //Tests
-#define ROM_TESTS_CODE	LD_SECTION("ROM_TESTS_CODE", 4)
+#define ROM_TESTS_CODE		LD_SECTION("ROM_TESTS_CODE", 4)
 //Tests internal variables
-#define ROM_TESTS_DATA	LD_SECTION("ROM_TESTS_DATA", 4)
+#define ROM_TESTS_DATA		LD_SECTION("ROM_TESTS_DATA", 4)
 
 //A section definition
 #define LD_SECTION(SECTION, ALIGN) __attribute__ ((section (SECTION),aligned(ALIGN)))
@@ -132,9 +135,9 @@
 	_CREATE_TABLE_3D_UINT_1(NAME, X_COUNT, Y_COUNT, DATA_TYPE, MULTIPLIER, OFFSET)
 //Needed for correct macro stringifying
 #define _CREATE_TABLE_3D_UINT_1(NAME, X_COUNT, Y_COUNT, DATA_TYPE, MULTIPLIER, OFFSET) \
-	static const float NAME##_x_axis [X_COUNT] ROM_TABLE_DATA = {0}; \
-	static const float NAME##_y_axis [Y_COUNT] ROM_TABLE_DATA = {0}; \
-	static const UINT_##DATA_TYPE NAME##_data [X_COUNT * Y_COUNT] ROM_TABLE_DATA = {0}; \
+	static const float NAME##_x_axis [X_COUNT] ROM_3D_TABLE_DATA = {0}; \
+	static const float NAME##_y_axis [Y_COUNT] ROM_3D_TABLE_DATA = {0}; \
+	static const UINT_##DATA_TYPE NAME##_data [X_COUNT * Y_COUNT] ROM_3D_TABLE_DATA = {0}; \
 \
 	const table_3d_uint_t NAME ROM_TABLE_PTR = { \
 		.x_len = X_COUNT, \
@@ -184,8 +187,8 @@
 	_CREATE_TABLE_2D_UINT_1(NAME, X_COUNT, DATA_TYPE, MULTIPLIER, OFFSET)
 //Needed for correct macro stringifying
 #define _CREATE_TABLE_2D_UINT_1(NAME, X_COUNT, DATA_TYPE, MULTIPLIER, OFFSET) \
-	static const float NAME##_x_axis [X_COUNT] ROM_TABLE_DATA = {0}; \
-	static const UINT_##DATA_TYPE NAME##_data [X_COUNT] ROM_TABLE_DATA = {0}; \
+	static const float NAME##_x_axis [X_COUNT] ROM_2D_TABLE_DATA = {0}; \
+	static const UINT_##DATA_TYPE NAME##_data [X_COUNT] ROM_2D_TABLE_DATA = {0}; \
 \
 	const table_2d_uint_t NAME ROM_TABLE_PTR = { \
 		.x_len = X_COUNT, \

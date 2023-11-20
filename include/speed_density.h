@@ -30,30 +30,30 @@
 #define MAF_SD_BLEND_Y_COUNT (16)
 
 //VE table X axis
-static const float tblVe_x_axis [VE_X_COUNT] ROM_TABLE_DATA;
+static const float tblVe_x_axis [VE_X_COUNT] ROM_3D_TABLE_DATA;
 //VE table Y axis
-static const float tblVe_y_axis [VE_Y_COUNT] ROM_TABLE_DATA;
+static const float tblVe_y_axis [VE_Y_COUNT] ROM_3D_TABLE_DATA;
 //VE table data
-static const UINT_0x8000000 tblVe_data [VE_X_COUNT * VE_Y_COUNT] ROM_TABLE_DATA;
+static const UINT_0x8000000 tblVe_data [VE_X_COUNT * VE_Y_COUNT] ROM_3D_TABLE_DATA;
 //VE table structure
 const table_3d_uint_t tblVe ROM_TABLE_PTR;
 
 //VE Tip-in table X axis
-static const float tblVeTipIn_x_axis [VE_TIP_IN_X_COUNT] ROM_TABLE_DATA;
+static const float tblVeTipIn_x_axis [VE_TIP_IN_X_COUNT] ROM_3D_TABLE_DATA;
 //VE Tip-in table Y axis
-static const float tblVeTipIn_y_axis [VE_TIP_IN_Y_COUNT] ROM_TABLE_DATA;
+static const float tblVeTipIn_y_axis [VE_TIP_IN_Y_COUNT] ROM_3D_TABLE_DATA;
 //VE Tip-in table data
-static const UINT_0x8000000 tblVeTipIn_data [VE_TIP_IN_X_COUNT * VE_TIP_IN_Y_COUNT] ROM_TABLE_DATA;
+static const UINT_0x8000000 tblVeTipIn_data [VE_TIP_IN_X_COUNT * VE_TIP_IN_Y_COUNT] ROM_3D_TABLE_DATA;
 //VE Tip-in table structure
 const table_3d_uint_t tblVeTipIn ROM_TABLE_PTR;
 
 //MAF/SD blending table X axis
-static const float tblMafSdBlend_x_axis [MAF_SD_BLEND_X_COUNT] ROM_TABLE_DATA;
+static const float tblMafSdBlend_x_axis [MAF_SD_BLEND_X_COUNT] ROM_3D_TABLE_DATA;
 //MAF/SD blending table Y axis
-static const float tblMafSdBlend_y_axis [MAF_SD_BLEND_Y_COUNT] ROM_TABLE_DATA;
+static const float tblMafSdBlend_y_axis [MAF_SD_BLEND_Y_COUNT] ROM_3D_TABLE_DATA;
 //MAF/SD blending table data
 //0 - MAF only, 1 - SD only
-static const  UINT_0x8000000 tblMafSdBlend_data [MAF_SD_BLEND_X_COUNT * MAF_SD_BLEND_Y_COUNT] ROM_TABLE_DATA;
+static const  UINT_0x8000000 tblMafSdBlend_data [MAF_SD_BLEND_X_COUNT * MAF_SD_BLEND_Y_COUNT] ROM_3D_TABLE_DATA;
 //MAF/SD blending table structure
  const table_3d_uint_t tblMafSdBlend ROM_TABLE_PTR;
 

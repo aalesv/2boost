@@ -25,6 +25,11 @@ float massAirflow_entry_point (float mafVoltage,
         const table_2d_noconv_t *tablePointerMAF) ROM_ENTRY_POINT_SPEED_DENSITY;
 #endif //SPEED_DENSITY
 
+#if defined ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS
+void celFlash_outer_entry_point (void) ROM_ENTRY_POINT_CEL_FLASH;
+extern void celTrigger_hooked (void) ROM_ENTRY_POINT_CEL_FLASH;
+#endif //ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS
+
 //This function replaces original calc 3D table function
 extern float calc_3d_uint_to_float_hooked (const float x, 
                             const float y, const table_3d_uint_t *tablePointer);

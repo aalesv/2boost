@@ -12,7 +12,7 @@
 #include "global_vars.h"
 
 //Version string
-volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0003.01.00";
+volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.00.00";
 
 volatile const char INFO[] __attribute__((used)) = "Compiled GCC " __VERSION__;
 
@@ -24,6 +24,33 @@ volatile const uint8 CFG_MAF_SD_BLENDING = MAF_SD_BLENDING_OFF;
 
 //Overtake button source (disabled/cruise cancel button) option. Can be modified by tuner.
 volatile const uint8 CFG_OVERTAKE_BUTTON_SWITCH_SOURCE = OVERTAKE_BUTTON_SOURCE_NONE;
+
+//Global CEL flash enable flag. Can be modified by tuner.
+volatile const uint8 CFG_CEL_FLASH_ENABLED = CEL_FLASH_DISABLED;
+
+//Overtake mode CEL on count
+volatile const uint8 CFG_CEL_FLASH_OVERTAKE_ON = 1;
+
+//Overtake mode CEL off count
+volatile const uint8 CFG_CEL_FLASH_OVERTAKE_OFF = 1;
+
+//Overtake mode CEL on/off cycles
+volatile const uint8 CFG_CEL_FLASH_OVERTAKE_CYCLES = 1;
+
+//FBKC CEL on count
+volatile const uint8 CFG_CEL_FLASH_FBKC_ON = 4;
+
+//FBKC mode CEL off count
+volatile const uint8 CFG_CEL_FLASH_FBKC_OFF = 4;
+
+//FBKC mode CEL on/off cycles
+volatile const uint8 CFG_CEL_FLASH_FBKC_CYCLES = 4;
+
+//FBKC limit that enables CEL flashing
+volatile const float CFG_CEL_FLASH_FBKC_LIMIT = -2.0f;
+
+//Engine load limit that enables FBKC CEL flashing
+volatile const float CFG_CEL_FLASH_FBKC_LOAD_LIMIT = 1.5f;
 
 //Engine displacement, default 2.457 liters
 volatile const float CFG_ENGINE_DISPLACEMENT = 2.457f;
@@ -52,4 +79,12 @@ calc_2d_uint_to_float_t calc_2d_uint_to_float =
 //Returns Y axis float value without conversion
 calc_2d_float_to_float_t calc_2d_float_to_float = 
         ((calc_2d_float_to_float_t)ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS); //-V566
+#endif
+
+#if defined(ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS)
+//ROM CEL trigger outer function, located at ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS
+//Switches dashboard CEL on/off
+//For proper functioning ROM CEL state variable
+//must be substituted with RAM_VARIABLES->celLightIsOn variable
+void_fn_ptr celTrigger = ((void_fn_ptr)ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS); //-V566
 #endif
