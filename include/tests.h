@@ -66,7 +66,7 @@
 	//Test Speed Density
 	void test_massAirflow_entry_point(void) NOINLINE ROM_TESTS_CODE;
 
-	void test_celFlash_hooked(void) NOINLINE ROM_TESTS_CODE;
+	void test_celFlash_outer_entry_point(void) NOINLINE ROM_TESTS_CODE;
 
 #endif //BUILD_TESTS
 
@@ -82,5 +82,5 @@ extern float massAirflow_entry_point(float mafVoltage,
 extern uint8 overtakeMapSwitch(void);
 extern uint8 cruiseCancelPressed(void);
 extern uint8 globalMapSwitch(void);
-extern void celTrigger_hooked(void);
+extern void celFlash_outer_entry_point(void);
 

@@ -12,7 +12,7 @@
 #include "global_vars.h"
 
 //Version string
-volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.00.00";
+volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.01.00";
 
 volatile const char INFO[] __attribute__((used)) = "Compiled GCC " __VERSION__;
 

@@ -8,7 +8,11 @@ To patch you'll need Swiss File Knife https://sourceforge.net/projects/swissfile
 
 For static analysis you'll need PVS-Studio
 
+To tune you'll need RomRaider 1.0.0 or later https://github.com/RomRaider/RomRaider
+
 **ROMs not included**
+
+For more information please refer to [2Boost wiki](https://github.com/aalesv/2boost/wiki)
 
 #### Caveats
 

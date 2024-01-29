@@ -131,8 +131,8 @@ test_everything()
 	test_globalMapSwitch_overtake_press_and_release();
 
 	//Test CEL Flash
-	//This tests only fucntion return for now
-	test_celFlash_hooked();
+	//This tests only function return for now
+	test_celFlash_outer_entry_point();
 }
 
 //Test globalMapSwitch()
@@ -500,9 +500,9 @@ test_globalMapSwitch_overtake_press_and_hold()
 #if defined(P_CEL_LIGHT_STATUS_OEM) && defined(ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS)
 //Test CEL flash
 void
-test_celFlash_hooked()
+test_celFlash_outer_entry_point()
 {
-	celTrigger_hooked();
+	celFlash_outer_entry_point();
 }
 #endif //P_CEL_LIGHT_STATUS_OEM && ORIG_CEL_TRIGGER_OUTER_FUNCTION_ADDRESS
 
