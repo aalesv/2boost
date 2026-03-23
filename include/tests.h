@@ -39,10 +39,12 @@
 	void test_cruiseCancelPressed(void) NOINLINE ROM_TESTS_CODE;
 
 	void test_overtakeMapSwitch_press_and_hold(void) NOINLINE ROM_TESTS_CODE;
-	void test_overtakeMapSwitch_press_and_release(void) NOINLINE ROM_TESTS_CODE;
+	void test_overtakeMapSwitch_press_and_release_1(void) NOINLINE ROM_TESTS_CODE;
+	void test_overtakeMapSwitch_press_and_release_2(void) NOINLINE ROM_TESTS_CODE;
 
 	void test_globalMapSwitch_overtake_press_and_hold(void) NOINLINE ROM_TESTS_CODE;
-	void test_globalMapSwitch_overtake_press_and_release(void) NOINLINE ROM_TESTS_CODE;
+	void test_globalMapSwitch_overtake_press_and_release_1(void) NOINLINE ROM_TESTS_CODE;
+	void test_globalMapSwitch_overtake_press_and_release_2(void) NOINLINE ROM_TESTS_CODE;
 
 	//Test calc_3d_uint_to_float_entry_point() call for all defined tables
 	//and modes - Cruise on/off, all Si-Drive modes
@@ -84,3 +86,4 @@ extern uint8 cruiseCancelPressed(void);
 extern uint8 globalMapSwitch(void);
 extern void celFlash_outer_entry_point(void);
 
+extern uint8 CFG_OVERTAKE_BUTTON_SWITCH_SOURCE;

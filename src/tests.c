@@ -121,14 +121,22 @@ test_everything()
 
 	test_set_default_ram_vars();
 
-	test_overtakeMapSwitch_press_and_hold();
-	test_overtakeMapSwitch_press_and_release();
-
-	test_set_default_ram_vars();
-
-	//Test globalMapSwitch() with Overtake button on/off
-	test_globalMapSwitch_overtake_press_and_hold();
-	test_globalMapSwitch_overtake_press_and_release();
+	switch (CFG_OVERTAKE_BUTTON_SWITCH_SOURCE)
+	{
+		case OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_HOLD:
+			test_overtakeMapSwitch_press_and_hold();
+			test_set_default_ram_vars();
+			test_globalMapSwitch_overtake_press_and_hold();
+			break;
+		case OVERTAKE_BUTTON_SOURCE_CRUISE_CANCEL_PRESS_AND_RELEASE:
+			test_overtakeMapSwitch_press_and_release_1();
+			test_overtakeMapSwitch_press_and_release_2();
+			test_set_default_ram_vars();
+			test_globalMapSwitch_overtake_press_and_release_1();
+			test_globalMapSwitch_overtake_press_and_release_2();
+		default:
+			break;
+	}
 
 	//Test CEL Flash
 	//This tests only function return for now
@@ -429,9 +437,19 @@ void test_overtakeMapSwitch_press_and_hold(){
 	DEBUG_VARIABLES->D = overtakeMapSwitch();
 }
 
-void test_overtakeMapSwitch_press_and_release(){
+void
+test_overtakeMapSwitch_press_and_release_1()
+{
 	float 	accLo=10.0f, //Accelerator slightly pressed
 			accHi=50.0f; //Accelerator strongly pressed
+
+	//Reset overtake state
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = 0.0f;
+	*P_BRAKE_PEDAL_SWITCH = P_BRAKE_PEDAL_SWITCH_MASK;
+	//No need to save result
+	overtakeMapSwitch();
+	*P_BRAKE_PEDAL_SWITCH = 0;
 
 	*P_CRUISE_CANCEL_SWITCH = 0;
 	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
@@ -445,17 +463,44 @@ void test_overtakeMapSwitch_press_and_release(){
 	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
 	DEBUG_VARIABLES->C = overtakeMapSwitch();
 
-	*P_CRUISE_CANCEL_SWITCH = 0;
-	*P_ACCELERATOR_PEDAL_ANGLE = 0.0f;
-	*P_BRAKE_PEDAL_SWITCH = P_BRAKE_PEDAL_SWITCH_MASK;
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
 	DEBUG_VARIABLES->D = overtakeMapSwitch();
 }
 
 void
-test_globalMapSwitch_overtake_press_and_release()
+test_overtakeMapSwitch_press_and_release_2()
+{
+	float 	accLo=10.0f, //Accelerator slightly pressed
+			accHi=50.0f; //Accelerator strongly pressed
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->A = overtakeMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->B = overtakeMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = 0.0f;
+	*P_BRAKE_PEDAL_SWITCH = P_BRAKE_PEDAL_SWITCH_MASK;
+	DEBUG_VARIABLES->C = overtakeMapSwitch();
+}
+
+void
+test_globalMapSwitch_overtake_press_and_release_1()
 {
 		float 	accLo=10.0f, //Accelerator slightly pressed
 				accHi=50.0f; //Accelerator strongly pressed
+
+	//Reset overtake state
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = 0.0f;
+	*P_BRAKE_PEDAL_SWITCH = P_BRAKE_PEDAL_SWITCH_MASK;
+	//No need to save result
+	globalMapSwitch();
+	*P_BRAKE_PEDAL_SWITCH = 0;
 
 	*P_CRUISE_CANCEL_SWITCH = 0;
 	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
@@ -469,10 +514,29 @@ test_globalMapSwitch_overtake_press_and_release()
 	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
 	DEBUG_VARIABLES->C = globalMapSwitch();
 
+	*P_CRUISE_CANCEL_SWITCH = P_CRUISE_CANCEL_SWITCH_MASK;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->D = globalMapSwitch();
+}
+
+void
+test_globalMapSwitch_overtake_press_and_release_2()
+{
+		float 	accLo=10.0f, //Accelerator slightly pressed
+				accHi=50.0f; //Accelerator strongly pressed
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accLo;
+	DEBUG_VARIABLES->A = globalMapSwitch();
+
+	*P_CRUISE_CANCEL_SWITCH = 0;
+	*P_ACCELERATOR_PEDAL_ANGLE = accHi;
+	DEBUG_VARIABLES->B = globalMapSwitch();
+
 	*P_CRUISE_CANCEL_SWITCH = 0;
 	*P_ACCELERATOR_PEDAL_ANGLE = 0.0f;
 	*P_BRAKE_PEDAL_SWITCH = P_BRAKE_PEDAL_SWITCH_MASK;
-	DEBUG_VARIABLES->D = globalMapSwitch();
+	DEBUG_VARIABLES->C = globalMapSwitch();
 }
 
 void

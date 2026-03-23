@@ -1,0 +1,477 @@
+  <rom base="2Boost CALID">
+    <romid>
+      <xmlid sanitizer="2Boost.*">2Boost CALID VERSION</xmlid>
+      <internalidaddress></internalidaddress>
+      <internalidstring sanitizer="2Boost.*">2Boost CALID VERSION</internalidstring>
+      <ecuid></ecuid>
+      <year></year>
+      <market></market>
+      <make>Subaru</make>
+      <model></model>
+      <submodel></submodel>
+      <transmission></transmission>
+      <memmodel>SH7058</memmodel>
+      <flashmethod>subarucan</flashmethod>
+      <filesize>1024kb</filesize>
+    </romid>
+
+ <table name="Boost Target Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Wastegate Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Fueling Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Timing Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="AVCS Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+  <table name="Intake AVCS Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Exhaust AVCS Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Target Throttle Plate Position Hack">
+   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+ </table>
+ <table name="Enable Speed Density">
+   <state name="Enable" id="_massAirflow_entry_point"/>
+ </table>
+ <table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable" id="_calc_2d_uint_to_float_entry_point"/>
+ </table>
+ <table name="CEL Flash Hack #1">
+   <state name="Enable" id="_celFlash_outer_entry_point"/>
+ </table>
+
+ <table name="CEL Flash Hack #2" >
+   <state name="Enable"  data="" />
+   <state name="Disable" data="" />
+ </table>
+
+<table name="Map Switch Input" id="_CFG_GLOBAL_MAP_SWITCH_SOURCE"/>
+
+<table name="Target Boost Overtake map" id="_tblTargetBoostOvertake_data">
+ <table type="X Axis" id="_tblTargetBoostOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoostOvertake_y_axis"/>
+</table>
+
+<table name="Target Boost map 1" id="_tblTargetBoost1_data">
+ <table type="X Axis" id="_tblTargetBoost1_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoost1_y_axis"/>
+</table>
+
+<table name="Target Boost map 2" id="_tblTargetBoost2_data">
+ <table type="X Axis" id="_tblTargetBoost2_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoost2_y_axis"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Intelligent" id="_tblTargetBoost1_data">
+ <table type="X Axis" id="_tblTargetBoost1_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoost1_y_axis"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Sport" id="_tblTargetBoost2_data">
+ <table type="X Axis" id="_tblTargetBoost2_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoost2_y_axis"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Sport Sharp" id="_tblTargetBoost3_data">
+ <table type="X Axis" id="_tblTargetBoost3_x_axis"/>
+ <table type="Y Axis" id="_tblTargetBoost3_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty Overtake map" id="_tblInitWGDCOvertake_data">
+ <table type="X Axis" id="_tblInitWGDCOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDCOvertake_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty map 1" id="_tblInitWGDC1_data">
+ <table type="X Axis" id="_tblInitWGDC1_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDC1_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty map 2" id="_tblInitWGDC2_data">
+ <table type="X Axis" id="_tblInitWGDC2_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDC2_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Intelligent" id="_tblInitWGDC1_data">
+ <table type="X Axis" id="_tblInitWGDC1_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDC1_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport" id="_tblInitWGDC2_data">
+ <table type="X Axis" id="_tblInitWGDC2_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDC2_y_axis"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport Sharp" id="_tblInitWGDC3_data">
+ <table type="X Axis" id="_tblInitWGDC3_x_axis"/>
+ <table type="Y Axis" id="_tblInitWGDC3_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty Overtake map" id="_tblMaxWGDCOvertake_data">
+ <table type="X Axis" id="_tblMaxWGDCOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDCOvertake_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty map 1" id="_tblMaxWGDC1_data">
+ <table type="X Axis" id="_tblMaxWGDC1_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDC1_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty map 2" id="_tblMaxWGDC2_data">
+ <table type="X Axis" id="_tblMaxWGDC2_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDC2_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Intelligent" id="_tblMaxWGDC1_data">
+ <table type="X Axis" id="_tblMaxWGDC1_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDC1_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport" id="_tblMaxWGDC2_data">
+ <table type="X Axis" id="_tblMaxWGDC2_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDC2_y_axis"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport Sharp" id="_tblMaxWGDC3_data">
+ <table type="X Axis" id="_tblMaxWGDC3_x_axis"/>
+ <table type="Y Axis" id="_tblMaxWGDC3_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling Overtake map" id="_tblPrimaryOLOvertake_data">
+ <table type="X Axis" id="_tblPrimaryOLOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLOvertake_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling map 1" id="_tblPrimaryOLA1_data">
+ <table type="X Axis" id="_tblPrimaryOLA1_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA1_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling map 2" id="_tblPrimaryOLA2_data">
+ <table type="X Axis" id="_tblPrimaryOLA2_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA2_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling A map 1" id="_tblPrimaryOLA1_data">
+ <table type="X Axis" id="_tblPrimaryOLA1_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA1_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling A map 2" id="_tblPrimaryOLA2_data">
+ <table type="X Axis" id="_tblPrimaryOLA2_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA2_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling B map 1" id="_tblPrimaryOLB1_data">
+ <table type="X Axis" id="_tblPrimaryOLB1_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLB1_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling B map 2" id="_tblPrimaryOLB2_data">
+ <table type="X Axis" id="_tblPrimaryOLB2_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLB2_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Intelligent" id="_tblPrimaryOLA1_data">
+ <table type="X Axis" id="_tblPrimaryOLA1_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA1_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Sport" id="_tblPrimaryOLA2_data">
+ <table type="X Axis" id="_tblPrimaryOLA2_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA2_y_axis"/>
+</table>
+
+<table name="Primary Open Loop Fueling SI-DRIVE Sport Sharp" id="_tblPrimaryOLA3_data">
+ <table type="X Axis" id="_tblPrimaryOLA3_x_axis"/>
+ <table type="Y Axis" id="_tblPrimaryOLA3_y_axis"/>
+</table>
+
+<table name="Base Timing Overtake map" id="_tblBaseTimingOvertake_data">
+ <table type="X Axis" id="_tblBaseTimingOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingOvertake_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Cruise map 1" id="_tblBaseTimingA1_data">
+ <table type="X Axis" id="_tblBaseTimingA1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingA1_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Cruise map 2" id="_tblBaseTimingA2_data">
+ <table type="X Axis" id="_tblBaseTimingA2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingA2_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 1" id="_tblBaseTimingB1_data">
+ <table type="X Axis" id="_tblBaseTimingB1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingB1_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise map 2" id="_tblBaseTimingB2_data">
+ <table type="X Axis" id="_tblBaseTimingB2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingB2_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 1" id="_tblBaseTimingC1_data">
+ <table type="X Axis" id="_tblBaseTimingC1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingC1_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) map 2" id="_tblBaseTimingC2_data">
+ <table type="X Axis" id="_tblBaseTimingC2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingC2_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 1" id="_tblBaseTimingD1_data">
+ <table type="X Axis" id="_tblBaseTimingD1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingD1_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) map 2" id="_tblBaseTimingD2_data">
+ <table type="X Axis" id="_tblBaseTimingD2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingD2_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Intelligent" id="_tblBaseTimingA1_data">
+ <table type="X Axis" id="_tblBaseTimingA1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingA1_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport" id="_tblBaseTimingA2_data">
+ <table type="X Axis" id="_tblBaseTimingA2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingA2_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport Sharp" id="_tblBaseTimingA3_data">
+ <table type="X Axis" id="_tblBaseTimingA3_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingA3_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Intelligent" id="_tblBaseTimingB1_data">
+ <table type="X Axis" id="_tblBaseTimingB1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingB1_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport" id="_tblBaseTimingB2_data">
+ <table type="X Axis" id="_tblBaseTimingB2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingB2_y_axis"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport Sharp" id="_tblBaseTimingB3_data">
+ <table type="X Axis" id="_tblBaseTimingB3_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingB3_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Intelligent" id="_tblBaseTimingC1_data">
+ <table type="X Axis" id="_tblBaseTimingC1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingC1_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport" id="_tblBaseTimingC2_data">
+ <table type="X Axis" id="_tblBaseTimingC2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingC2_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport Sharp" id="_tblBaseTimingC3_data">
+ <table type="X Axis" id="_tblBaseTimingC3_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingC3_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Intelligent" id="_tblBaseTimingD1_data">
+ <table type="X Axis" id="_tblBaseTimingD1_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingD1_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport" id="_tblBaseTimingD2_data">
+ <table type="X Axis" id="_tblBaseTimingD2_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingD2_y_axis"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport Sharp" id="_tblBaseTimingD3_data">
+ <table type="X Axis" id="_tblBaseTimingD3_x_axis"/>
+ <table type="Y Axis" id="_tblBaseTimingD3_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map" id="_tblIntakeAvcsOvertake_data">
+ <table type="X Axis" id="_tblIntakeAvcsOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsOvertake_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 1" id="_tblIntakeAvcsA1_data">
+ <table type="X Axis" id="_tblIntakeAvcsA1_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsA1_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) map 2" id="_tblIntakeAvcsA2_data">
+ <table type="X Axis" id="_tblIntakeAvcsA2_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsA2_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 1" id="_tblIntakeAvcsB1_data">
+ <table type="X Axis" id="_tblIntakeAvcsB1_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsB1_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) map 2" id="_tblIntakeAvcsB2_data">
+ <table type="X Axis" id="_tblIntakeAvcsB2_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsB2_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Intelligent" id="_tblIntakeAvcsA1_data">
+ <table type="X Axis" id="_tblIntakeAvcsA1_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsA1_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport" id="_tblIntakeAvcsA2_data">
+ <table type="X Axis" id="_tblIntakeAvcsA2_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsA2_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport Sharp" id="_tblIntakeAvcsA3_data">
+ <table type="X Axis" id="_tblIntakeAvcsA3_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsA3_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Intelligent" id="_tblIntakeAvcsB1_data">
+ <table type="X Axis" id="_tblIntakeAvcsB1_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsB1_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport" id="_tblIntakeAvcsB2_data">
+ <table type="X Axis" id="_tblIntakeAvcsB2_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsB2_y_axis"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp" id="_tblIntakeAvcsB3_data">
+ <table type="X Axis" id="_tblIntakeAvcsB3_x_axis"/>
+ <table type="Y Axis" id="_tblIntakeAvcsB3_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle (AVCS) Overtake map" id="_tblExhaustAvcsOvertake_data">
+ <table type="X Axis" id="_tblExhaustAvcsOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsOvertake_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Intelligent" id="_tblExhaustAvcsA1_data">
+ <table type="X Axis" id="_tblExhaustAvcsA1_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsA1_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport" id="_tblExhaustAvcsA2_data">
+ <table type="X Axis" id="_tblExhaustAvcsA2_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsA2_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport Sharp" id="_tblExhaustAvcsA3_data">
+ <table type="X Axis" id="_tblExhaustAvcsA3_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsA3_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Intelligent" id="_tblExhaustAvcsB1_data">
+ <table type="X Axis" id="_tblExhaustAvcsB1_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsB1_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport" id="_tblExhaustAvcsB2_data">
+ <table type="X Axis" id="_tblExhaustAvcsB2_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsB2_y_axis"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp" id="_tblExhaustAvcsB3_data">
+ <table type="X Axis" id="_tblExhaustAvcsB3_x_axis"/>
+ <table type="Y Axis" id="_tblExhaustAvcsB3_y_axis"/>
+</table>
+
+<table name="Target Throttle Plate Position (Requested Torque) Overtake map" id="_tblTargetThrPosOvertake_data">
+ <table type="X Axis" id="_tblTargetThrPosOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblTargetThrPosOvertake_y_axis"/>
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 1" id="_tblTargetThrPosA1_data">
+ <table type="X Axis" id="_tblTargetThrPosA1_x_axis"/>
+ <table type="Y Axis" id="_tblTargetThrPosA1_y_axis"/>
+</table>
+
+<table name="Target Throttle Plate Position Cruise (Requested Torque) map 2" id="_tblTargetThrPosA2_data">
+ <table type="X Axis" id="_tblTargetThrPosA2_x_axis"/>
+ <table type="Y Axis" id="_tblTargetThrPosA2_y_axis"/>
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 1" id="_tblTargetThrPosB1_data">
+ <table type="X Axis" id="_tblTargetThrPosB1_x_axis"/>
+ <table type="Y Axis" id="_tblTargetThrPosB1_y_axis"/>
+</table>
+
+<table name="Target Throttle Plate Position Non-Cruise (Requested Torque) map 2" id="_tblTargetThrPosB2_data">
+ <table type="X Axis" id="_tblTargetThrPosB2_x_axis"/>
+ <table type="Y Axis" id="_tblTargetThrPosB2_y_axis"/>
+</table>
+
+<table name="Requested Torque (Accelerator Pedal) Overtake map" id="_tblReqTorqueAccPedalOvertake_data">
+ <table type="X Axis" id="_tblReqTorqueAccPedalOvertake_x_axis"/>
+ <table type="Y Axis" id="_tblReqTorqueAccPedalOvertake_y_axis"/>
+</table>
+
+<table name="MAF/SD Blending mode" id="_CFG_MAF_SD_BLENDING"/>
+
+<table name="Engine Displacement" id="_CFG_ENGINE_DISPLACEMENT"/>
+
+<table name="Volumetric Efficiency" id="_tblVe_data">
+ <table type="X Axis" id="_tblVe_x_axis"/>
+ <table type="Y Axis" id="_tblVe_y_axis"/>
+</table>
+
+<table name="VE Tip-in Compensation" id="_tblVeTipIn_data">
+ <table type="X Axis" id="_tblVeTipIn_x_axis"/>
+ <table type="Y Axis" id="_tblVeTipIn_y_axis"/>
+</table>
+
+<table name="MAF/SD Blending" id="_tblMafSdBlend_data">
+ <table type="X Axis" id="_tblMafSdBlend_x_axis"/>
+ <table type="Y Axis" id="_tblMafSdBlend_y_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" id="_tblThrTipInOvertake_data">
+ <table type="Y Axis" id="_tblThrTipInOvertake_x_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment map 1" id="_tblThrTipInA1_data">
+ <table type="Y Axis" id="_tblThrTipInA1_x_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment map 2" id="_tblThrTipInA2_data">
+ <table type="Y Axis" id="_tblThrTipInA2_x_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Intelligent" id="_tblThrTipInA1_data">
+ <table type="Y Axis" id="_tblThrTipInA1_x_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport" id="_tblThrTipInA2_data">
+ <table type="Y Axis" id="_tblThrTipInA2_x_axis"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport Sharp" id="_tblThrTipInA3_data">
+ <table type="Y Axis" id="_tblThrTipInA3_x_axis"/>
+</table>
+
+<table name="Overtake Button Input " id="_CFG_OVERTAKE_BUTTON_SWITCH_SOURCE"/>
+
+<table name="Minimum Accelerator pedal angle" id="_CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE"/>
+
+<table name="CEL Flash Enable" id="_CFG_CEL_FLASH_ENABLED"/>
+<table name="Overtake CEL Flash Parameters" id="_CFG_CEL_FLASH_OVERTAKE_ON"/>
+<table name="FBKC CEL Flash Parameters" id="_CFG_CEL_FLASH_FBKC_ON"/>
+<table name="FBKC CEL Flash Maximum Degrees" id="_CFG_CEL_FLASH_FBKC_LIMIT"/>
+<table name="FBKC CEL Flash Minimum Load" id="_CFG_CEL_FLASH_FBKC_LOAD_LIMIT"/>
+
+</rom>

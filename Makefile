@@ -19,13 +19,20 @@ PVSDIR=C:\Program Files (x86)\PVS-Studio
 
 #Detect OS
 ifeq (${OS}, Windows_NT)
-	WINDOWS=1
+	ifeq (a,$(shell echo "a"))
+#CYGWIN
+#This is based on the fact that 'echo "a"' in Unix will print a (without quotes) but windows will print "a" (with the quotes).
+		WINDOWS=0
+	else
+		WINDOWS=1
+	endif
 else
 	WINDOWS=0
 endif
 
 #Set OS specific stuff
 CMD=
+PYTHON_BIN=python
 ifeq ($(WINDOWS), 1)
 	ROOT=$(WINROOT)
 #Path separator. $() is empty variable
@@ -39,6 +46,8 @@ ifeq ($(WINDOWS), 1)
 #Sort starting from 10th symbol
 	SORTFLAGS=/+10
 	DEV_NULL=nul
+	PYTHON_PATH=C:\Python311
+	PYTHON=$(PYTHON_PATH)$(PATHSEP)$(PYTHON_BIN)
 else
 	ROOT=$(NIXROOT)
 #Path separator
@@ -56,6 +65,8 @@ else
 		CMD=cmd.exe /C
 	endif
 	DEV_NULL=/dev/null
+#Some 'which' could print error message to stderr when command not found, redirect it to null
+	PYTHON=$(shell which python 2>/dev/null)
 endif
 
 #CPU architecture, SH2E
@@ -96,6 +107,7 @@ OBJCOPYFLAGS=-O binary --only-section=ROM_HOLE_CODE \
 			--only-section=ROM_HOLE_DATA --only-section=ROM_HOLE_EXTERNAL_LIB \
 			--only-section=ROM_HOLE_TESTS --only-section=ROM_HOLE_ENTRY_POINTS
 SORT=sort
+STRINGS=$(BIN)$(PATHSEP)sh-elf-strings
 
 #Dirs
 BUILD=.$(PATHSEP)build
@@ -104,6 +116,9 @@ INCLUDE=.$(PATHSEP)include
 #Target specific includes only - headers and linker scripts
 TARGET_INCLUDE=$(INCLUDE)$(PATHSEP)target
 SRC=.$(PATHSEP)src
+SCRIPT=.$(PATHSEP)script
+XML=.$(PATHSEP)xml
+XML_TARGET=$(XML)$(PATHSEP)target
 
 #PVS-Studio
 PVS=$(CMD) "$(PVSDIR)$(PATHSEP)x64$(PATHSEP)PVS-Studio"
@@ -116,6 +131,9 @@ PLOGCONVERTERFLAGS=-t plog -o $(PVS-WORK-DIR)
 #Symbols to search in non-stripped binary
 #Version, config bytes, tables, tests
 SYMBOLS="VERSION$(FINDSEP)CFG_$(FINDSEP)_tbl.*_$(FINDSEP)_test_$(FINDSEP)_entry_point"
+
+#Script to create definitions
+MAKE_DEFS_SCRIPT=$(PYTHON) $(SCRIPT)$(PATHSEP)prepare_defs.py
 
 MAKEFLAGS+=--no-print-directory
 
@@ -179,6 +197,9 @@ help:
 	@echo 		  for example 'make A8DK100P' will build
 	@echo 		  files only for A8DK100P. Specify DOPATCH=-yes to patch your ROM.
 	@echo make clean	- Clean build directory.
+	@echo make defs	- Generate definitions for CALID. ROM must be built previously.
+	@echo			  Specify CALID=CALID. Note that definitions are built automatically
+	@echo			  when builduing a ROM.
 	@echo make help	- This message.
 	@echo make list	- List for possible CAL IDs.
 	@echo make tests	- Test build for emulator testing only.
@@ -197,12 +218,23 @@ help:
 #If it is disabled, gcc does not optimize out unused static consts
 $(TOP_LEVEL_REORDER_TARGET_LIST): CFLAGS+=-ftoplevel-reorder
 
-# Form target list from CLAID header file names
+#Build .out file name
+#For example, $(call build_out_file_name, AZ1J500V) returns .\build\2Boost-AZ1J500V.out
+define build_out_file_name
+$(BUILD)$(PATHSEP)2Boost-$(strip $(1)).out
+endef
+
+#Get VERSION string contents for specified CALID
+define get_version_string
+$(shell $(STRINGS) $(call build_out_file_name, $(1)) | $(GREP) $(1))
+endef
+
+# Form target list from CALID header file names
 # Set variables
 #ROM hole address
 $(all-targets): BASE=$(find-rom-hole-addr)
 #Non-sripped linked binary aligned at ROM hole address
-$(all-targets): outfile=$(BUILD)$(PATHSEP)2Boost-$@.out
+$(all-targets): outfile=$(call build_out_file_name, $@)
 #Stripped binary file ready to patch
 $(all-targets): binfile=$(BUILD)$(PATHSEP)2Boost-$@.bin
 #Stock ROM file
@@ -227,9 +259,8 @@ $(all-targets):
 	$(O)$(LD) $(LDFLAGS) -T $(ld-script-target) -o $(outfile) $(all-o-files-with-dir) $(EXTERNAL_LIBS)
 	@echo Stripping binary... $(MUTE)
 	$(O)$(OBJCOPY) $(OBJCOPYFLAGS) $(outfile) $(binfile)
-	@echo Addresses for objects are: $(MUTE)
-	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(GREP) $(SYMBOLS) | $(SORT) $(SORTFLAGS)
-	@echo$(NEWLINE) $(MUTE)
+	$(O)$(MAKE) defs CALID=$@
+#	@echo$(NEWLINE) $(MUTE)
 	@echo Patching ROM... $(MUTE)
 	$(O)$(CP) $(orig-rom) $(patched-rom)
 # To actually patch specify DOPATCH=-yes on command line
@@ -242,7 +273,7 @@ all: $(all-targets)
 
 # Clean build directory
 clean:
-	$(RM) $(BUILD)$(PATHSEP)*.bin $(BUILD)$(PATHSEP)*.i $(BUILD)$(PATHSEP)*.o $(BUILD)$(PATHSEP)*.out
+	$(RM) $(BUILD)$(PATHSEP)*.bin $(BUILD)$(PATHSEP)*.i $(BUILD)$(PATHSEP)*.o $(BUILD)$(PATHSEP)*.out $(BUILD)$(PATHSEP)*.xml
 
 #Build .i file and pass it to PVS-Studio
 #Don't forget to set pvs-logfile, TARGET variables
@@ -278,3 +309,20 @@ tests:
 	$(O)$(MAKE) $(CALID) USERCFLAGS=$(cflags_testing) DOPATCH=$(DOPATCH)
 	@echo$(NEWLINE)
 	@echo Do not flash test ROM. For emulator use only!
+
+#Make definitions
+#To read symbols a valid linked ROM patch object file (.o) needed
+defs: $(call build_out_file_name, $(CALID))
+defs: outfile=$(call build_out_file_name, $(CALID))
+#Template file
+defs: template-file=$(XML_TARGET)$(PATHSEP)$(CALID).xml
+#Generated definitions file
+defs: definitions-file=$(BUILD)$(PATHSEP)2Boost-$(CALID).xml
+#Version string
+defs: version-string=$(call get_version_string, $(CALID))
+#'base' attribute of 'rom' tag
+defs: rom-base=2Boost $(CALID)
+defs:
+	@echo Generating definitions for $(CALID)... $(MUTE)
+	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(MAKE_DEFS_SCRIPT) -t $(template-file) --rombase "$(rom-base)" --internalidstring "$(version-string)" -o $(definitions-file)
+	@echo Created $(definitions-file) $(MUTE)
