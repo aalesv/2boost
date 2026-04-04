@@ -167,6 +167,17 @@ $(shell grep ROM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$@.txt | awk -F"=|\;" '{print $
 endef
 endif
 
+# RAM address
+ifeq ($(WINDOWS), 1)
+define find-ram-hole-addr
+$(shell for /f "tokens=2 delims='()'" %%i in ('findstr RAM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h') do echo %%i)
+endef
+else
+define find-ram-hole-addr
+$(shell grep RAM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h | awk -F"\\\\(|\\\\)" '{print $$2}')
+endef
+endif
+
 # Find all possible targets
 # List all include\target\*.h files,
 # remove .h extension
@@ -322,7 +333,27 @@ defs: definitions-file=$(BUILD)$(PATHSEP)2Boost-$(CALID).xml
 defs: version-string=$(call get_version_string, $(CALID))
 #'base' attribute of 'rom' tag
 defs: rom-base=2Boost $(CALID)
+#Address where RAM variables placed
+defs: RAM_HOLE=$(call find-ram-hole-addr, $(CALID))
+#According to type definition (see types.h), CEL light on/off variable
+#is placed at offset 3, so adding this value to variable address
+defs: cel-flash-hack2-enable-address=$(call arith_op_hex_py, +, $(RAM_HOLE), 3)
+#Transform address to appropriate format
+defs: cel-flash-hack2-enable-data=$(call xml-state-data-format, $(cel-flash-hack2-enable-address))
 defs:
 	@echo Generating definitions for $(CALID)... $(MUTE)
-	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(MAKE_DEFS_SCRIPT) -t $(template-file) --rombase "$(rom-base)" --internalidstring "$(version-string)" -o $(definitions-file)
+	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(MAKE_DEFS_SCRIPT) -t $(template-file) --rombase "$(rom-base)" --internalidstring "$(version-string)" -o $(definitions-file) --set-attribute "//*[@id-ext='cel_hack2_enable']" data "$(cel-flash-hack2-enable-data)"
 	@echo Created $(definitions-file) $(MUTE)
+
+# Arithmetic operations on hex numbers
+# $(call arith_op_hex_py, `operation`, `hex number 1`, `hex number 2`)
+# Add 3+2: $(call arith_op_hex_py, +, 3, 2)
+define arith_op_hex_py
+$(shell $(PYTHON) -c "import sys;h=int(sys.argv[1], 16)$(1)int(sys.argv[2], 16);print (f'{h:x}')" $(2) $(3))
+endef
+
+# Convert hex number to data format suitable to write to 'state' XML defs attribute
+# DEADBEEF -> DE AD BE EF
+define xml-state-data-format
+$(shell $(PYTHON) -c "import sys,re;print(' '.join(re.findall(r'.{2}', sys.argv[1])))" $(1))
+endef

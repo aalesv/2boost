@@ -47,8 +47,7 @@
  </table>
 
  <table name="CEL Flash Hack #2" >
-   <state name="Enable"  data="" />
-   <state name="Disable" data="" />
+   <state name="Enable"  data="" id-ext="cel_hack2_enable"/>
  </table>
 
 <table name="Map Switch Input " id="_CFG_GLOBAL_MAP_SWITCH_SOURCE"/>

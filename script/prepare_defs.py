@@ -88,6 +88,12 @@ parserGroupOptions = parser.add_argument(
     help='Internal ID string. Will be written to \'internalidstring\' tag. Will be written to \'xmlid\' tag too. Leave them intact if not specified.'
 )
 
+parser.add_argument('--set-attribute',
+                    nargs=3,
+                    metavar='<Search criteria (XPath)> <Attribute name> <Attribute value>',
+                    action = 'append',
+                    help = 'Searches all elements specified by search criteria in XPath format and sets specified attribute name to specified value. Can be specified multiple times.')
+
 #Parse command line options
 #Check for required parameters, throws error if needed,
 #outputs help and version messages
@@ -186,6 +192,11 @@ for row in rows:
             t.set('data', data_string)
         #We don't want 'id' attribute to be present in definitions file
         t.attrib.pop('id')
+
+#Search for elements specified in 'set attribute' command line parameter
+for search, attr, value in args.set_attribute:
+    for t in xml_root.xpath(search):
+        t.set(attr, value)
 
 #Prepare output to a XML file
 tree = ET.ElementTree()

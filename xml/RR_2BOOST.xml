@@ -754,7 +754,7 @@
    </table>
    <description>This is the open loop fuel map. Because there is no feedback in open loop, the actual AFR may differ from the values presented in this table. In addition, the ECU applies a long-term correction (A/F Learning) to open loop fueling from patterns it recognizes in closed loop fueling. Other compensations and minimum enrichment factors exist as well. Because the underlying values of this table are enrichment offsets relative to stoichiometric, AFRs leaner than 14.7, as presented, are not valid.</description>
   </table>
-  <table type="3D" name="Primary Open Loop Fueling map Base" category="Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="16" sizey="18" userlevel="1" logparam="P58">
+  <table type="3D" name="Primary Open Loop Fueling Base" category="Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="16" sizey="18" userlevel="1" logparam="P58">
    <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
    <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
     <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
@@ -764,7 +764,7 @@
    </table>
    <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is equal to 1.0. When the IAM is less than 1.0, this fuel map is used as a base and the 'Primary Open Loop Fueling map Additive' enrichment map is added to determine the final primary open loop fueling. An estimated AFR for this final fueling can be calculated as follows: 14.7/(((14.7/(Base AFR map value)) + (Additive map value * (1.0 - current IAM))). For example, if the 'Primary Open Loop Fueling map Base' calls for an effective AFR of 10.5:1 and the 'Primary Open Loop Fueling map Additive' map calls for 0.10 enrichment offset compensation and the current IAM is 0.75, then the final primary ol fueling would have an estimated AFR of 10.3:1.</description>
   </table>
-  <table type="3D" name="Primary Open Loop Fueling map Additive" category="Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="16" sizey="18" userlevel="1" logparam="P58">
+  <table type="3D" name="Primary Open Loop Fueling Additive" category="Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="16" sizey="18" userlevel="1" logparam="P58">
    <scaling units="'Primary Open Loop Fueling' Raw Enrichment Offset Additive" expression="x*.0078125" to_byte="x/.0078125" format="0.00" fineincrement=".01" coarseincrement=".1" />
    <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
     <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
@@ -6698,6 +6698,39 @@
    <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is greater than or equal to the threshold specified by the 'Primary Open Loop Fuel Map Switch (IAM)' table. Because there is no feedback in open loop, the actual AFR may differ from the values presented in this table. In addition, the ECU applies a long-term correction (A/F Learning) to open loop fueling from patterns it recognizes in closed loop fueling. Other compensations and minimum enrichment factors exist as well. Because the underlying values of this table are enrichment offsets relative to stoichiometric, AFRs leaner than 14.7, as presented, are not valid.</description>
   </table>
 
+  <table type="3D" name="Primary Open Loop Fueling Base SI-DRIVE Intelligent" category="2Boost - Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="15" sizey="18" userlevel="1" logparam="P58">
+   <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is equal to 1.0. When the IAM is less than 1.0, this fuel map is used as a base and the 'Primary Open Loop Fueling map Additive' enrichment map is added to determine the final primary open loop fueling. An estimated AFR for this final fueling can be calculated as follows: 14.7/(((14.7/(Base AFR map value)) + (Additive map value * (1.0 - current IAM))). For example, if the 'Primary Open Loop Fueling map Base' calls for an effective AFR of 10.5:1 and the 'Primary Open Loop Fueling map Additive' map calls for 0.10 enrichment offset compensation and the current IAM is 0.75, then the final primary ol fueling would have an estimated AFR of 10.3:1.</description>
+  </table>
+
+  <table type="3D" name="Primary Open Loop Fueling Base SI-DRIVE Sport" category="2Boost - Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="15" sizey="18" userlevel="1" logparam="P58">
+   <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is equal to 1.0. When the IAM is less than 1.0, this fuel map is used as a base and the 'Primary Open Loop Fueling map Additive' enrichment map is added to determine the final primary open loop fueling. An estimated AFR for this final fueling can be calculated as follows: 14.7/(((14.7/(Base AFR map value)) + (Additive map value * (1.0 - current IAM))). For example, if the 'Primary Open Loop Fueling map Base' calls for an effective AFR of 10.5:1 and the 'Primary Open Loop Fueling map Additive' map calls for 0.10 enrichment offset compensation and the current IAM is 0.75, then the final primary ol fueling would have an estimated AFR of 10.3:1.</description>
+  </table>
+
+  <table type="3D" name="Primary Open Loop Fueling Base SI-DRIVE Sport Sharp" category="2Boost - Fueling - Primary Open Loop" storagetype="uint8" endian="big" sizex="15" sizey="18" userlevel="1" logparam="P58">
+   <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is equal to 1.0. When the IAM is less than 1.0, this fuel map is used as a base and the 'Primary Open Loop Fueling map Additive' enrichment map is added to determine the final primary open loop fueling. An estimated AFR for this final fueling can be calculated as follows: 14.7/(((14.7/(Base AFR map value)) + (Additive map value * (1.0 - current IAM))). For example, if the 'Primary Open Loop Fueling map Base' calls for an effective AFR of 10.5:1 and the 'Primary Open Loop Fueling map Additive' map calls for 0.10 enrichment offset compensation and the current IAM is 0.75, then the final primary ol fueling would have an estimated AFR of 10.3:1.</description>
+  </table>
+
     <table type="Switch" name="Throttle Tip-in Enrichment Hack" category="2Boost - Tip-in Enrichment" sizey="4">
    <description>Enable Throttle Tip-in Enrichment hack. When enabled, 2Boost Throttle Tip-in Enrichment maps are used. </description>
   </table>
@@ -7222,7 +7255,73 @@
    </table>
    <description>This map selects the degree of intake cam advance for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
   </table>
+
+  <table type="3D" name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Intelligent " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport Sharp " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Intelligent " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
  
+  <table type="3D" name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+ 
+  <table type="3D" name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Advance (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of intake cam advance for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+
   <table type="3D" name="Intake Cam Advance Angle Non-Cruise (AVCS) map 2" category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
    <scaling units="Advance (degrees)" expression="x*.0054931640625" to_byte="x/.0054931640625" format="0.00" fineincrement=".5" coarseincrement="1" />
    <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
@@ -7370,6 +7469,72 @@
    <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
   </table>
   
+    <table type="3D" name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Intelligent " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport Sharp " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Intelligent " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+  
+  <table type="3D" name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp " category="2Boost - Variable Valve Timing (AVCS)" storagetype="uint16" endian="big" sizex="14" sizey="18" userlevel="4">
+   <scaling units="Retard (degrees)" expression="x*.001525879" to_byte="x/.001525879" format="0.00" fineincrement=".5" coarseincrement="1" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This map selects the degree of Exhaust Cam Retard for the variable valve timing system during non-cruise conditions. Cruise and non-cruise conditions are determined by a number of factors including engine speed, requested torque, MAF, vehicle speed, IAT, idle mode, ECT, and SI-Drive mode (if applicable). The ECU will ramp between the cruise and non-cruise map values when conditions dictate the switch.</description>
+  </table>
+
   <table type="Switch" name="Requested Torque (Accelerator Pedal) Hack" category="2Boost - Drive-by-Wire Throttle (DBW)" sizey="4">
    <description>Enable Requested Torque (Accelerator Pedal) hack. When enabled, 2Boost Requested Torque (Accelerator Pedal) maps are used. </description>
   </table>
@@ -7608,6 +7773,16 @@
   </table>
 
   <table type="3D" name="Primary Open Loop Fueling Overtake map" category="2Boost - Overtake Button" storagetype="uint8" endian="big" sizex="15" sizey="18" userlevel="1" logparam="P58">
+   <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
+   <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
+    <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   </table>
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This fuel map is used in open loop when the ignition advance multiplier (IAM) is greater than or equal to the threshold specified by the 'Primary Open Loop Fuel Map Switch (IAM)' table. Because there is no feedback in open loop, the actual AFR may differ from the values presented in this table. In addition, the ECU applies a long-term correction (A/F Learning) to open loop fueling from patterns it recognizes in closed loop fueling. Other compensations and minimum enrichment factors exist as well. Because the underlying values of this table are enrichment offsets relative to stoichiometric, AFRs leaner than 14.7, as presented, are not valid.</description>
+  </table>
+  <table type="3D" name="Primary Open Loop Fueling Overtake Base map" category="2Boost - Overtake Button" storagetype="uint8" endian="big" sizex="15" sizey="18" userlevel="1" logparam="P58">
    <scaling units="Estimated Air/Fuel Ratio" expression="14.7/(1+x*.0078125)" to_byte="(14.7/x-1)/.0078125" format="0.00" fineincrement=".06" coarseincrement=".5" />
    <table type="X Axis" name="Engine Load" storagetype="float" endian="little" logparam="E32">
     <scaling units="g/rev" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
@@ -8253,6 +8428,11 @@
   <table name="CEL Flash Hack #1" storageaddress="0001137C">
     <state name="Disable" data="00 05 16 14" />
   </table>
+
+  <table name="CEL Flash Hack #2" storageaddress="00051D4C">
+   <state name="Disable" data="FF FF CC EA" />
+ </table>
+
  </rom>
 
  <rom base="2Boost A2WC420F">
@@ -9382,6 +9562,9 @@
     <state name="Disable" data="00 07 C6 12" />
   </table>
 
+  <table name="CEL Flash Hack #2" storageaddress="0007CD64">
+    <state name="Disable" data="FF FF 8D 3E" />
+  </table>
   
  </rom>
  
@@ -10508,6 +10691,10 @@
     <state name="Disable" data="00 07 C9 FE" />
   </table>
 
+<table name="CEL Flash Hack #2" storageaddress="0007D150">
+   <state name="Disable" data="FF FF 8F 5A" />
+ </table>
+
  </rom>
 
  <rom base="2Boost A8DK100P">
@@ -11081,6 +11268,986 @@
 
 
 </rom>
+
+ <rom base="2BOOST BASE">
+  <romid>
+   <xmlid>2Boost AE5F301C</xmlid>
+   <ecuid>5B42564107</ecuid>
+   <year>10</year>
+   <market>ADM</market>
+   <make>Subaru</make>
+   <model>Legacy</model>
+   <submodel>GT</submodel>
+   <transmission>AT</transmission>
+   <memmodel>SH7058</memmodel>
+   <flashmethod>subarucan</flashmethod>
+   <filesize>1024kb</filesize>
+  </romid>
+  <table name="Target Boost " storageaddress="0xC10E8" sizex="14">
+   <table type="X Axis" storageaddress="0xC1074" />
+   <table type="Y Axis" storageaddress="0xC10AC" />
+  </table>
+  <table name="Target Boost Compensation (ECT)" storageaddress="0xC0A9C">
+   <table type="Y Axis" storageaddress="0xC09BC" />
+  </table>
+  <table name="Target Boost Compensation (1st Gear)" storageaddress="0xC09B4" />
+  <table name="Target Boost Compensation (1st Gear) Speed Disable" storageaddress="0xC09B0" />
+  <table name="Target Boost Compensation (IAT) " storageaddress="0xC0BE4">
+   <table type="Y Axis" storageaddress="0xC0BCC" />
+  </table>
+  <table name="Target Boost Compensation (Atm. Pressure) " storageaddress="0xC0C94" sizex="8">
+   <table type="X Axis" storageaddress="0xC0C5C" />
+   <table type="Y Axis" storageaddress="0xC0C7C" />
+  </table>
+  <table name="Boost Limit (Fuel Cut) " storageaddress="0xce924" sizex="8" sizey="12">
+   <table type="X Axis" storageaddress="0xce8d4" />
+   <table type="Y Axis" storageaddress="0xce8f4" />
+  </table>
+  <table name="Boost Control Disable (IAM)" storageaddress="0xc09a4" />
+  <table name="Boost Control Disable (Fine Correction)" storageaddress="0xC09A0" />
+  <table name="Boost Control Disable Delay (Fine Correction)" storageaddress="0xC0955" />
+  <table name="Initial Wastegate Duty " storageaddress="0xC0F08" sizex="14" sizey="13">
+   <table type="X Axis" storageaddress="0xC0E9C" />
+   <table type="Y Axis" storageaddress="0xC0ED4" />
+  </table>
+  <table name="Max Wastegate Duty " storageaddress="0xC0D30" sizex="14" sizey="13">
+   <table type="X Axis" storageaddress="0xC0CC4" />
+   <table type="Y Axis" storageaddress="0xC0CFC" />
+  </table>
+  // Checked with known routine 
+  <table name="Max Wastegate Duty Limit Post-Compensation" storageaddress="0x13904" />
+  <table name="Initial/Max Wastegate Duty Compensation (IAT)" storageaddress="0xC0A3C">
+   <table type="Y Axis" storageaddress="0xC09FC" />
+  </table>
+  <table name="Initial/Max Wastegate Duty Compensation (ECT)" storageaddress="0xC0A5C">
+   <table type="Y Axis" storageaddress="0xC09BC" />
+  </table>
+  <table name="Initial/Max Wastegate Duty Compensation (Atm. Pressure)" storageaddress="0xC0C34" sizex="10">
+   <table type="X Axis" storageaddress="0xC0BFC" />
+   <table type="Y Axis" storageaddress="0xC0C24" />
+  </table>
+  <table name="Turbo Dynamics Proportional" storageaddress="0xC0AD0">
+   <table type="Y Axis" storageaddress="0xC0AAC" />
+  </table>
+  <table name="Turbo Dynamics Integral Positive" storageaddress="0xC0B40">
+   <table type="Y Axis" storageaddress="0xC0B1C" />
+  </table>
+  <table name="Turbo Dynamics Integral Negative" storageaddress="0xC0B08">
+   <table type="Y Axis" storageaddress="0xC0AE4" />
+  </table>
+  <table name="TD Proportional Compensation (IAT)" storageaddress="0xC0A6C" sizey="16">
+   <table type="Y Axis" storageaddress="0xC09FC" />
+  </table>
+  <table name="TD Integral Positive Compensation (IAT)" storageaddress="0xC0A8C" sizey="16">
+   <table type="Y Axis" storageaddress="0xC09FC" />
+  </table>
+  <table name="TD Integral Negative Compensation (IAT)" storageaddress="0xC0A7C" sizey="16">
+   <table type="Y Axis" storageaddress="0xC09FC" />
+  </table>
+  <table name="TD Activation Thresholds (RPM)" storageaddress="0xC0990" />
+  <table name="TD Activation Thresholds (Target Boost) " storageaddress="0xC097C" />
+  <table name="TD Integral Cumulative Range (WGDC Correction)" storageaddress="0xC0998" />
+  <table name="TD Integral Negative Activation (Boost Error)" storageaddress="0xC0984" />
+  <table name="TD Integral Positive Activation (Boost Error)" storageaddress="0xC0988" />
+  <table name="TD Integral Negative Activation (Wastegate Duty)" storageaddress="0xC098C" />
+  <table name="Manifold Pressure Sensor Scaling " storageaddress="0xd5cac" />
+  <table name="Manifold Pressure Sensor Limits (CEL)" storageaddress="0xd5c5e" />
+  <table name="Manifold Pressure Sensor CEL Delays" storageaddress="0xd5c13" />
+  <table name="Primary Open Loop Fueling Base" storageaddress="0xcc9bc" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xcc934" />
+   <table type="Y Axis" storageaddress="0xcc97c" />
+  </table>
+  <table name="Primary Open Loop Fueling Additive" storageaddress="0xccd0c" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xccc84" />
+   <table type="Y Axis" storageaddress="0xccccc" />
+  </table>
+
+  <table name="Primary Open Loop Fueling (KCA Additive B Low)" storageaddress="0xccb64" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xccadc" />
+   <table type="Y Axis" storageaddress="0xccb24" />
+  </table>
+
+
+  <table name="Minimum Active Primary Open Loop Enrichment" storageaddress="0xc8d20" />
+  <table name="Minimum Primary Open Loop Enrichment (Throttle)" storageaddress="0xc98c8">
+   <table type="Y Axis" storageaddress="0xc98b0" />
+  </table>
+  <table name="Minimum Primary Open Loop Enrichment (Accelerator)" storageaddress="0xc98e8">
+   <table type="Y Axis" storageaddress="0xc98d0" />
+  </table>
+  <table name="Primary Open Loop Fueling Compensation (ECT)" storageaddress="0xcafe4">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Front Oxygen Sensor Scaling" storageaddress="0xd5f8c">
+   <table type="Y Axis" storageaddress="0xd5f58" />
+  </table>
+  // Need further study on Rich limit
+  <table name="Front Oxygen Sensor Rich Limit" storageaddress="0x23F94" />
+  <table name="Front Oxygen Sensor Compensation (Atm. Pressure)" storageaddress="0xc4ce0">
+   <table type="Y Axis" storageaddress="0xc4cd0" />
+  </table>
+  <table name="CL Fueling Target Compensation A (Load)" storageaddress="0xcdb58" sizey="11">
+   <table type="X Axis" storageaddress="0xcdb00" />
+   <table type="Y Axis" storageaddress="0xcdb2c" />
+  </table>
+  <table name="CL Fueling Target Compensation B (Load)" storageaddress="0xcdca4">
+   <table type="X Axis" storageaddress="0xcdc4c" />
+   <table type="Y Axis" storageaddress="0xcdc78" />
+  </table>
+  <table name="CL Fueling Target Compensation Imm. Cruise (ECT)" storageaddress="0xcda34">
+   <table type="X Axis" storageaddress="0xc91bc" />
+   <table type="Y Axis" storageaddress="0xcda28" />
+  </table>
+  <table name="CL Fueling Target Compensation Imm. Non-Cruise (ECT)" storageaddress="0xcdaa0">
+   <table type="X Axis" storageaddress="0xc91bc" />
+   <table type="Y Axis" storageaddress="0xcda94" />
+  </table>
+ 
+ <table name="CL to OL Delay " storageaddress="0xc8970" /> 
+
+ <table name="CL to OL Delay/Switch SI-DRIVE Intelligent" storageaddress="0xc896a" />
+  <table name="CL to OL Transition with Delay (Throttle)" storageaddress="0xc98a0">
+   <table type="Y Axis" storageaddress="0xc9860" />
+  </table>
+
+ 
+<table name="CL to OL Transition with Delay Throttle Hysteresis" storageaddress="0xc8d28" />
+  
+  <table name="CL to OL Transition with Delay (Base Pulse Width)" storageaddress="0xcaf10">
+   <table type="Y Axis" storageaddress="0xcaed0" />
+  </table>
+  <table name="CL to OL Transition with Delay BPW Hysteresis" storageaddress="0xc8d24" />
+  
+  <table name="CL to OL Transition Counter Step Value (MAF)" storageaddress="0xcaf58">
+   <table type="Y Axis" storageaddress="0xcaf30" />
+  </table>
+ 
+  <table name="CL Delay Maximum (Throttle)" storageaddress="0xc8d88" />
+  <table name="CL Delay Maximum (Vehicle Speed)" storageaddress="0xc8da4" />
+  <table name="CL Delay Minimum (ECT)" storageaddress="0xc8d2c" />
+  <table name="CL Delay Maximum (Engine Load)" storageaddress="0xc8db4" />
+ 
+  <table name="CL Delay Engine Load Counter Threshold" storageaddress="0xc8968" />
+
+ <table name="CL Delay Maximum Engine Speed (Per Gear)" storageaddress="0xc8d30" />
+  
+  <table name="CL Delay Maximum Engine Speed (Neutral)" storageaddress="0xc8d58" />
+
+
+
+  <table name="Injector Latency" storageaddress="0xc9e20">
+   <table type="Y Axis" storageaddress="0xc9e0c" />
+  </table>
+
+
+  <table name="Injector Flow Scaling" storageaddress="0xc8a70" />
+
+  <table name="Per Injector Pulse Width Compensation A" storageaddress="0xccf24" sizex="9" sizey="12">
+   <table type="X Axis" storageaddress="0xcced0" />
+   <table type="Y Axis" storageaddress="0xccef4" />
+  </table>
+  <table name="Per Injector Pulse Width Compensation B" storageaddress="0xccfe4" sizex="9" sizey="12">
+   <table type="X Axis" storageaddress="0xccf90" />
+   <table type="Y Axis" storageaddress="0xccfb4" />
+  </table>
+  <table name="Per Injector Pulse Width Compensation C" storageaddress="0xcd0a4" sizex="9" sizey="12">
+   <table type="X Axis" storageaddress="0xcd050" />
+   <table type="Y Axis" storageaddress="0xcd074" />
+  </table>
+  <table name="Per Injector Pulse Width Compensation D" storageaddress="0xcd164" sizex="9" sizey="12">
+   <table type="X Axis" storageaddress="0xcd110" />
+   <table type="Y Axis" storageaddress="0xcd134" />
+  </table>
+  <table name="Cranking Fuel Injector Pulse Width A (ECT)" storageaddress="0xc9d4a">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+ 
+// further check - 1 Dec09
+ <table name="Cranking Fuel Injector Pulse Width B (ECT)" storageaddress="0XC9D6A">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Cranking Fuel Injector Pulse Width C (ECT)" storageaddress="0xc9d8a">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Cranking Fuel Injector Pulse Width D (ECT)" storageaddress="0xc9daa">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Cranking Fuel Injector Pulse Width E (ECT)" storageaddress="0xc9dca">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Cranking Fuel Injector Pulse Width F (ECT)" storageaddress="0xc9dea">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Cranking Fuel IPW Compensation Imm. Cruise (RPM)" storageaddress="0xcc0f4">
+   <table type="X Axis" storageaddress="0xcc0c4" />
+   <table type="Y Axis" storageaddress="0xcc0d8" />
+  </table>
+  <table name="Cranking Fuel IPW Compensation Imm. Non-Cruise (RPM)" storageaddress="0xcc0a0">
+   <table type="X Axis" storageaddress="0xcc070" />
+   <table type="Y Axis" storageaddress="0xcc084" />
+  </table>
+  <table name="Cranking Fuel IPW Compensation (MAP)" storageaddress="0xc9400">
+   <table type="Y Axis" storageaddress="0xc93d8" />
+  </table>
+  <table name="Cranking Fuel IPW Compensation (Accelerator)" storageaddress="0xc9434" sizey="10">
+   <table type="Y Axis" storageaddress="0xc940c" />
+  </table>
+  <table name="Cranking Fuel IPW Compensation (IAT)" storageaddress="0xc9454">
+   <table type="Y Axis" storageaddress="0xc9440" />
+  </table>
+  <table name="Throttle Tip-in Enrichment A" storageaddress="0xcb698">
+   <table type="Y Axis" storageaddress="0xcb650" />
+  </table>
+  <table name="Throttle Tip-in Enrichment B" storageaddress="0xcb704">
+   <table type="Y Axis" storageaddress="0xcb6bc" />
+  </table>
+  <table name="Minimum Tip-in Enrichment Activation" storageaddress="0xc9088" />
+  <table name="Minimum Tip-in Enrichment Activation (Throttle)" storageaddress="0xc9084" />
+  <table name="Tip-in Enrichment Compensation (Boost Error)" storageaddress="0xc9b94">
+   <table type="Y Axis" storageaddress="0xc9b70" />
+  </table>
+  <table name="Tip-in Enrichment Compensation (RPM)" storageaddress="0xc9b60" sizey="16">
+   <table type="Y Axis" storageaddress="0xc9b20" />
+  </table>
+  <table name="Tip-in Enrichment Compensation A (ECT)" storageaddress="0xc9b9d">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Compensation B (ECT)" storageaddress="0xcb728">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Compensation C (ECT)" storageaddress="0xcb748">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Compensation D (ECT)" storageaddress="0xcb788">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Compensation D (ECT) Activation" storageaddress="0xc908c" />
+  <table name="Tip-in Enrichment Disable Applied Counter Threshold A (ECT)" storageaddress="0xc9bad">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Disable Applied Counter Threshold B (ECT)" storageaddress="0xc9bbd">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Applied Counter Reset" storageaddress="0xc892c" />
+  <table name="Tip-in Enrichment Disable Throttle Cumulative Threshold A (ECT)" storageaddress="0xcb7a8">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Enrichment Disable Throttle Cumulative Threshold B (ECT)" storageaddress="0xcb7c8">
+   <table type="Y Axis" storageaddress="0xc91bc" />
+  </table>
+  <table name="Tip-in Throttle Cumulative Reset" storageaddress="0xc892d" />
+  <table name="A/F Learning #1 Limits" storageaddress="0xc8c68" />
+  <table name="A/F Learning #1 Airflow Ranges" storageaddress="0xc8c78" />
+ 
+ <table name="MAF Limit (Maximum)" storageaddress="0xc47c8" />
+ 
+ <table name="MAF Sensor Scaling" storageaddress="0xd5e80">
+   <table type="Y Axis" storageaddress="0xd5da8" />
+  </table>
+  <table name="MAF Compensation (IAT)" storageaddress="0xc4e84" sizex="6" sizey="10">
+   <table type="X Axis" storageaddress="0xc4e44" />
+   <table type="Y Axis" storageaddress="0xc4e5c" />
+  </table>
+// unchecked
+  <table name="Engine Load Limit A (Maximum)" storageaddress="0x22460" />
+ 
+ <table name="Engine Load Limit B Maximum (RPM)" storageaddress="0xc4be0">
+   <table type="Y Axis" storageaddress="0xc4bd8" />
+  </table>
+  <table name="Engine Load Compensation Cruise (MP)" storageaddress="0xc4f34" sizex="13" sizey="16">
+   <table type="X Axis" storageaddress="0xc4ec0" />
+   <table type="Y Axis" storageaddress="0xc4ef4" />
+  </table>
+
+//Done
+  <table name="Engine Load Compensation Non-Cruise (MP)" storageaddress="0xC5078" sizex="13" sizey="16">
+   <table type="X Axis" storageaddress="0xC5004" />
+   <table type="Y Axis" storageaddress="0xC5038" />
+  </table>
+
+
+
+
+  <table name="Base Timing Primary Cruise" storageaddress="0xd0b00" sizex="12" sizey="9">
+   <table type="X Axis" storageaddress="0xd0aac" />
+   <table type="Y Axis" storageaddress="0xd0adc" />
+  </table>
+  <table name="Base Timing Reference Cruise (AVCS related)" storageaddress="0xd0d68" sizex="12" sizey="9">
+   <table type="X Axis" storageaddress="0xd0d14" />
+   <table type="Y Axis" storageaddress="0xd0d44" />
+  </table>
+  <table name="Base Timing Primary Non-Cruise" storageaddress="0xd0bf4" sizex="18" sizey="16">
+<table type="X Axis" storageaddress="0xd0b6c" />
+   <table type="Y Axis" storageaddress="0xd0bb4" />
+  </table>
+  <table name="Base Timing Reference Non-Cruise (AVCS related)" storageaddress="0xd0e5c" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xd0dd4" />
+   <table type="Y Axis" storageaddress="0xd0e1c" />
+  </table>
+  <table name="Base Timing Idle A (In-Gear)" storageaddress="0xcf24a">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Base Timing Idle B (In-Gear)" storageaddress="0xcf25a">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Base Timing Idle A (Neutral)" storageaddress="0xcf26a">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Base Timing Idle B (Neutral)" storageaddress="0xcf27a">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Base Timing Idle Minimum" storageaddress="0xcf241">
+   <table type="Y Axis" storageaddress="0xcf074" />
+  </table>
+  <table name="Base Timing Idle Minimum Vehicle Speed Enable" storageaddress="0xcedb8" />
+  
+
+  <table name="Knock Correction Advance Max Cruise" storageaddress="0xd0798" sizex="12" sizey="9">
+   <table type="X Axis" storageaddress="0xd0744" />
+   <table type="Y Axis" storageaddress="0xd0774" />
+  </table>
+  <table name="Knock Correction Advance Max Non-Cruise" storageaddress="0xd088c" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xd0804" />
+   <table type="Y Axis" storageaddress="0xd084c" />
+  </table>
+  <table name="Timing Compensation A (IAT)" storageaddress="0xcf32c">
+   <table type="Y Axis" storageaddress="0xcf2ec" />
+  </table>
+  <table name="Timing Compensation A (IAT) Activation" storageaddress="0xd0fa8" sizex="6" sizey="5">
+   <table type="X Axis" storageaddress="0xd0f7c" />
+   <table type="Y Axis" storageaddress="0xd0f94" />
+  </table>
+  <table name="Timing Compensation B (IAT)" storageaddress="0xcf84c">
+   <table type="Y Axis" storageaddress="0xcf80c" />
+  </table>
+
+
+// Reconfirmed OK
+
+  <table name="Timing Compensation B (IAT) IAM Activation" storageaddress="0xcef9c" />
+
+
+
+  <table name="Timing Compensation B (IAT) Max Additive" storageaddress="0xcef80" />
+  
+<table name="Timing Compensation Imm. Cruise A (ECT)" storageaddress="0xcf2ca">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Timing Compensation Imm. Cruise B (ECT)" storageaddress="0xcf2da">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Timing Compensation Imm. Non-Cruise A (ECT)" storageaddress="0xcf2aa">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Timing Compensation Imm. Non-Cruise B (ECT)" storageaddress="0xcf2ba">
+   <table type="Y Axis" storageaddress="0xceff4" />
+  </table>
+  <table name="Timing Compensation Per Cylinder A" storageaddress="0xd04fc" sizey="5">
+   <table type="X Axis" storageaddress="0xd04b0" />
+   <table type="Y Axis" storageaddress="0xd04e8" />
+  </table>
+  <table name="Timing Compensation Per Cylinder B" storageaddress="0xd0590" sizey="5">
+   <table type="X Axis" storageaddress="0xd0544" />
+   <table type="Y Axis" storageaddress="0xd057c" />
+  </table>
+  <table name="Timing Compensation Per Cylinder C" storageaddress="0xd0624" sizey="5">
+   <table type="X Axis" storageaddress="0xd05d8" />
+   <table type="Y Axis" storageaddress="0xd0610" />
+  </table>
+  <table name="Timing Compensation Per Cylinder D" storageaddress="0xd06bc" sizey="6">
+   <table type="X Axis" storageaddress="0xd066c" />
+   <table type="Y Axis" storageaddress="0xd06a4" />
+  </table>
+  <table name="Timing Comp Minimum Load (Per Cylinder)" storageaddress="0xcead4" />
+  <table name="Timing Comp Maximum RPM (Per Cylinder)" storageaddress="0xcead0" />
+  <table name="Timing Comp Minimum Coolant Temp (Per Cylinder)" storageaddress="0xcead8" />
+  <table name="Feedback Correction Range (RPM)" storageaddress="0xceae4" />
+  <table name="Feedback Correction Minimum Load" storageaddress="0xceadc" />
+  <table name="Feedback Correction Retard Value" storageaddress="0xceb04" />
+  <table name="Feedback Correction Retard Limit" storageaddress="0xceb00" />
+  <table name="Feedback Correction Negative Advance Value" storageaddress="0xceb08" />
+  <table name="Feedback Correction Negative Advance Delay" storageaddress="0xcea22" />
+  <table name="Extended Feedback Correction High RPM Compensation" storageaddress="0xceb10" />
+  <table name="Fine Correction Range (RPM)" storageaddress="0xcecac" />
+  <table name="Fine Correction Range (Load)" storageaddress="0xcecbc" />
+  <table name="Fine Correction Rows (RPM)" storageaddress="0xcec4c" />
+  <table name="Fine Correction Columns (Load)" storageaddress="0xcec68" />
+  <table name="Fine Correction Retard Value A" storageaddress="0xcec90" />
+  <table name="Fine Correction Retard Value B" storageaddress="0xceca4" />
+  <table name="Fine Correction Retard Limit" storageaddress="0xcec8c" />
+  <table name="Fine Correction Advance Value" storageaddress="0xcec88" />
+  <table name="Fine Correction Advance Limit" storageaddress="0xcec84" />
+  <table name="Fine Correction Advance Delay" storageaddress="0xcea32" />
+  <table name="Rough Correction Range (RPM)" storageaddress="0xcebf4" />
+  <table name="Rough Correction Range (Load)" storageaddress="0xcec04" />
+  <table name="Rough Correction Minimum KC Advance Map Value" storageaddress="0xcef94" />
+  <table name="Rough Correction Learning Delay (Increasing) " storageaddress="0xcfa3c">
+   <table type="Y Axis" storageaddress="0xcfa14" />
+  </table>
+  // Recomfirmed OK.
+  
+   
+//IAM initial and IAM step are verified -OK	
+  <table name="Advance Multiplier (Initial)" storageaddress="0xcec18" />
+  <table name="Advance Multiplier Step Value" storageaddress="0xcec1c" />
+  
+  <table name="Exhaust Cam Retard Angle Cruise (AVCS) " storageaddress="0xd85ac" sizex="11" sizey="9">
+   <table type="X Axis" storageaddress="0xd855c" />
+   <table type="Y Axis" storageaddress="0xd8588" />
+  </table>
+  <table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) " storageaddress="0xd86fc" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xd8674" />
+   <table type="Y Axis" storageaddress="0xd86bc" />
+  </table>
+  <table name="Intake Cam Advance Angle Cruise (AVCS) " storageaddress="0xd7e04" sizex="11" sizey="9">
+   <table type="X Axis" storageaddress="0xd7db4" />
+   <table type="Y Axis" storageaddress="0xd7de0" />
+  </table>
+  <table name="Intake Cam Advance Angle Non-Cruise (AVCS) " storageaddress="0xd7f54" sizex="18" sizey="16">
+   <table type="X Axis" storageaddress="0xd7ecc" />
+   <table type="Y Axis" storageaddress="0xd7f14" />
+  </table>
+  <table name="Requested Torque (Accelerator Pedal) SI-DRIVE Sport" storageaddress="0xdd3b0" sizex="16">
+   <table type="X Axis" storageaddress="0xdd32c" />
+   <table type="Y Axis" storageaddress="0xdd36c" />
+  </table>
+  <table name="Requested Torque (Accelerator Pedal) SI-DRIVE Sport Sharp" storageaddress="0xdd654" sizex="16">
+   <table type="X Axis" storageaddress="0xdd5d0" />
+   <table type="Y Axis" storageaddress="0xdd610" />
+  </table>
+  <table name="Requested Torque (Accelerator Pedal) SI-DRIVE Intelligent" storageaddress="0xdd8f8" sizex="16">
+   <table type="X Axis" storageaddress="0xdd874" />
+   <table type="Y Axis" storageaddress="0xdd8b4" />
+  </table>
+  <table name="Requested Torque Base (RPM)" storageaddress="0xDC7D0">
+   <table type="Y Axis" storageaddress="0xDC790" />
+  </table>
+  <table name="Target Throttle Plate Position Cruise (Requested Torque Ratio)" storageaddress="0xDCC84" sizex="16" sizey="9">
+   <table type="X Axis" storageaddress="0xDCC20" />
+   <table type="Y Axis" storageaddress="0xDCC60" />
+  </table>
+  <table name="Target Throttle Plate Position Non-Cruise (Requested Torque Ratio)" storageaddress="0xDCE24" sizex="16">
+   <table type="X Axis" storageaddress="0xDCDA4" />
+   <table type="Y Axis" storageaddress="0xDCDE4" />
+  </table>
+  <table name="Target Throttle Plate Position Maximum (Requested Torque Ratio)" storageaddress="0xdde60" sizex="16">
+   <table type="X Axis" storageaddress="0xddde0" />
+   <table type="Y Axis" storageaddress="0xdde20" />
+  </table>
+  <table name="Rev Limit (Fuel Cut)" storageaddress="0xc9104" />
+  <table name="Rev Limit Fuel Resume (Boost)" storageaddress="0xc9114" />
+  <table name="Speed Limiting Enable (Fuel Cut)" storageaddress="0xc911c" />
+  <table name="Speed Limiting Disable (Fuel Cut)" storageaddress="0xc9124" />
+  <table name="Speed Limiting A (Throttle) SI-DRIVE Sport/Sport Sharp" storageaddress="0xDC640" />
+  <table name="Speed Limiting B (Throttle) SI-DRIVE Sport/Sport Sharp" storageaddress="0xDC658" />
+  <table name="Speed Limiting A (Throttle) SI-DRIVE Intelligent" storageaddress="0xDC64C" />
+  <table name="Speed Limiting B (Throttle) SI-DRIVE Intelligent" storageaddress="0xDC664" />
+  <table name="Intake Temp Sensor Scaling" storageaddress="d62f8">
+   <table type="Y Axis" storageaddress="d6280" />
+  </table>
+  <table name="Coolant Temp Sensor Scaling" storageaddress="d6210">
+   <table type="Y Axis" storageaddress="d61a0" />
+  </table>
+  <table name="Radiator Fan Modes A (ECT)" storageaddress="d65f8" />
+  <table name="Radiator Fan Modes B (ECT)" storageaddress="d6608" />
+  <table name="Radiator Fan Modes (Veh. Speed)" storageaddress="d6618" />
+  <table name="Gear Determination Thresholds A" storageaddress="c4a98" />
+  <table name="Gear Determination Thresholds B" storageaddress="c4aac" />
+  
+  <table name="Idle Speed Target A" storageaddress="0xd29e4">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Idle Speed Target B" storageaddress="0xd2a04">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Idle Speed Target C" storageaddress="0xd2a24">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Idle Speed Target D" storageaddress="0xd2a44">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Idle Speed Target E" storageaddress="0xd2a64">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Idle Speed Target F" storageaddress="0xd2a84">
+   <table type="Y Axis" storageaddress="0xd24e8" />
+  </table>
+  <table name="Checksum Fix" storageaddress="0xFFB80" />
+  
+  // Routine confirmed on Force Pass Readiness
+  <table name="Force Pass Readiness Monitors " storageaddress="0x867A8" />
+  
+  <table name="(P0000) PASS CODE (NO DTC DETECTED)" storageaddress="0x7B7BE" />
+  <table name="(P0000) PASS CODE (NO DTC DETECTED) " storageaddress="0x7B7BF" />
+  <table name="(P0011) CAMSHAFT POS. - TIMING OVER-ADVANCED 1" storageaddress="0x7B7A1" />
+  <table name="(P0014) EXHAUST AVCS SYSTEM 1 RANGE/PERF" storageaddress="0x7B83C" />
+  <table name="(P0016) CRANKSHAFT/CAMSHAFT CORRELATION 1A" storageaddress="0x7B833" />
+  <table name="(P0017) CRANK/CAM TIMING B FAILURE 1" storageaddress="0x7B846" />
+  <table name="(P0018) CRANKSHAFT/CAMSHAFT CORRELATION 2A" storageaddress="0x7B832" />
+  <table name="(P0019) CRANK/CAM TIMING B FAILURE 2" storageaddress="0x7B845" />
+  <table name="(P0021) CAMSHAFT POS. - TIMING OVER-ADVANCED 2" storageaddress="0x7B7A2" />
+  <table name="(P0024) EXHAUST AVCS SYSTEM 2 RANGE/PERF" storageaddress="0x7B83B" />
+  <table name="(P0030) FRONT O2 SENSOR RANGE/PERF" storageaddress="0x7B7E3" />
+  <table name="(P0031) FRONT O2 SENSOR LOW INPUT" storageaddress="0x7B7CD" />
+  <table name="(P0032) FRONT O2 SENSOR HIGH INPUT" storageaddress="0x7B7CB" />
+  <table name="(P0037) REAR O2 SENSOR LOW INPUT" storageaddress="0x7B7CC" />
+  <table name="(P0038) REAR O2 SENSOR HIGH INPUT" storageaddress="0x7B7CA" />
+  <table name="(P0102) MAF SENSOR LOW INPUT" storageaddress="0x7B77D" />
+  <table name="(P0103) MAF SENSOR HIGH INPUT" storageaddress="0x7B77E" />
+  <table name="(P0107) MAP SENSOR LOW INPUT" storageaddress="0x7B7CE" />
+  <table name="(P0108) MAP SENSOR HIGH INPUT" storageaddress="0x7B7CF" />
+  <table name="(P0112) IAT SENSOR LOW INPUT" storageaddress="0x7B7C7" />
+  <table name="(P0113) IAT SENSOR HIGH INPUT" storageaddress="0x7B7C8" />
+  <table name="(P0117) COOLANT TEMP SENSOR LOW INPUT" storageaddress="0x7B786" />
+  <table name="(P0118) COOLANT TEMP SENSOR HIGH INPUT" storageaddress="0x7B787" />
+  <table name="(P0122) TPS A LOW INPUT" storageaddress="0x7B784" />
+  <table name="(P0123) TPS A HIGH INPUT" storageaddress="0x7B785" />
+  <table name="(P0125) INSUFFICIENT COOLANT TEMP (FUELING)" storageaddress="0x7B789" />
+  <table name="(P0131) FRONT O2 SENSOR LOW INPUT" storageaddress="0x7B7C1" />
+  <table name="(P0132) FRONT O2 SENSOR HIGH INPUT" storageaddress="0x7B7C3" />
+  <table name="(P0133) FRONT O2 SENSOR SLOW RESPONSE" storageaddress="0x7B7AB" />
+  <table name="(P0134) FRONT O2 SENSOR NO ACTIVITY" storageaddress="0x7B7E1" />
+  <table name="(P0139) REAR O2 SENSOR SLOW RESPONSE" storageaddress="0x7B7AC" />
+  <table name="(P0140) REAR O2 SENSOR NO ACTIVITY" storageaddress="0x7B82D" />
+  <table name="(P0171) SYSTEM TOO LEAN" storageaddress="0x7B7B5" />
+  <table name="(P0172) SYSTEM TOO RICH" storageaddress="0x7B7B6" />
+  <table name="(P0222) TPS B LOW INPUT" storageaddress="0x7B7EB" />
+  <table name="(P0223) TPS B HIGH INPUT" storageaddress="0x7B7EC" />
+  <table name="(P0230) FUEL PUMP PRIMARY CIRCUIT" storageaddress="0x7B7DD" />
+  <table name="(P0245) WASTEGATE SOLENOID A LOW" storageaddress="0x7B7D9" />
+  <table name="(P0246) WASTEGATE SOLENOID A HIGH" storageaddress="0x7B7DA" />
+  <table name="(P0301) MISFIRE CYLINDER 1" storageaddress="0x7B7B7" />
+  <table name="(P0302) MISFIRE CYLINDER 2" storageaddress="0x7B7B8" />
+  <table name="(P0303) MISFIRE CYLINDER 3" storageaddress="0x7B7B9" />
+  <table name="(P0304) MISFIRE CYLINDER 4" storageaddress="0x7B7BA" />
+  <table name="(P0327) KNOCK SENSOR 1 LOW INPUT" storageaddress="0x7B782" />
+  <table name="(P0328) KNOCK SENSOR 1 HIGH INPUT" storageaddress="0x7B783" />
+  <table name="(P0335) CRANKSHAFT POS. SENSOR A MALFUNCTION" storageaddress="0x7B778" />
+  <table name="(P0340) CAMSHAFT POS. SENSOR A MALFUNCTION" storageaddress="0x7B7FF" />
+  <table name="(P0345) CAMSHAFT POS. SENSOR A BANK 2" storageaddress="0x7B7FE" />
+  <table name="(P0365) CAMSHAFT POS. SENSOR B BANK 1" storageaddress="0x7B7FD" />
+  <table name="(P0390) CAMSHAFT POS. SENSOR B BANK 2" storageaddress="0x7B7FC" />
+  <table name="(P0420) CAT EFFICIENCY BELOW THRESHOLD" storageaddress="0x7B7B1" />
+  <table name="(P0458) EVAP PURGE VALVE CIRCUIT LOW" storageaddress="0x7B7A5" />
+  <table name="(P0459) EVAP PURGE VALVE CIRCUIT HIGH" storageaddress="0x7B7A6" />
+  <table name="(P0462) FUEL LEVEL SENSOR LOW INPUT" storageaddress="0x7B78A" />
+  <table name="(P0463) FUEL LEVEL SENSOR HIGH INPUT" storageaddress="0x7B78B" />
+  <table name="(P0500) VEHICLE SPEED SENSOR A" storageaddress="0x7B77F" />
+  <table name="(P0512) STARTER REQUEST CIRCUIT" storageaddress="0x7B78E" />
+  <table name="(P0604) CONTROL MODULE RAM ERROR" storageaddress="0x7B77C" />
+  <table name="(P0605) CONTROL MODULE ROM ERROR" storageaddress="0x7B800" />
+  <table name="(P0607) CONTROL MODULE PERFORMANCE" storageaddress="0x7B7F3" />
+  <table name="(P0638) THROTTLE ACTUATOR RANGE/PERF" storageaddress="0x7B7F2" />
+  <table name="(P0700) TRANSMISSION CONTROL SYSTEM" storageaddress="0x7B80C" />
+  <table name="(P0851) NEUTRAL SWITCH INPUT LOW" storageaddress="0x7B792" />
+  <table name="(P0852) NEUTRAL SWITCH INPUT HIGH" storageaddress="0x7B796" />
+  <table name="(P1160) ABNORMAL RETURN SPRING" storageaddress="0x7B7ED" />
+  <table name="(P1518) STARTER SWITCH LOW INPUT" storageaddress="0x7B78D" />
+  <table name="(P1519) IMRC STUCK CLOSED" storageaddress="0x7B83F" />
+  <table name="(P1520) IMRC CIRCUIT MALFUNCTION" storageaddress="0x7B83E" />
+  <table name="(P1560) BACK-UP VOLTAGE MALFUNCTION" storageaddress="0x7B7D6" />
+  <table name="(P1616) SBDS INTERACTIVE CODES" storageaddress="0x7B83D" />
+  <table name="(P2004) TGV - INTAKE MANIFOLD RUNNER 1 STUCK OPEN" storageaddress="0x7B815" />
+  <table name="(P2005) TGV - INTAKE MANIFOLD RUNNER 2 STUCK OPEN" storageaddress="0x7B817" />
+  <table name="(P2006) TGV - INTAKE MANIFOLD RUNNER 1 STUCK CLOSED" storageaddress="0x7B816" />
+  <table name="(P2007) TGV - INTAKE MANIFOLD RUNNER 2 STUCK CLOSED" storageaddress="0x7B818" />
+  <table name="(P2008) TGV - INTAKE MANIFOLD RUNNER 1 CIRCUIT OPEN" storageaddress="0x7B823" />
+  <table name="(P2009) TGV - INTAKE MANIFOLD RUNNER 1 CIRCUIT LOW" storageaddress="0x7B821" />
+  <table name="(P2011) TGV - INTAKE MANIFOLD RUNNER 2 CIRCUIT OPEN" storageaddress="0x7B824" />
+  <table name="(P2012) TGV - INTAKE MANIFOLD RUNNER 2 CIRCUIT LOW" storageaddress="0x7B822" />
+  <table name="(P2016) TGV - INTAKE MANIFOLD RUNNER 1 POS. SENSOR LOW" storageaddress="0x7B81D" />
+  <table name="(P2017) TGV - INTAKE MANIFOLD RUNNER 1 POS. SENSOR HIGH" storageaddress="0x7B81E" />
+  <table name="(P2021) TGV - INTAKE MANIFOLD RUNNER 2 POS. SENSOR LOW" storageaddress="0x7B81F" />
+  <table name="(P2022) TGV - INTAKE MANIFOLD RUNNER 2 POS. SENSOR HIGH" storageaddress="0x7B820" />
+  <table name="(P2088) OCV SOLENOID A1 CIRCUIT OPEN" storageaddress="0x7B808" />
+  <table name="(P2089) OCV SOLENOID A1 CIRCUIT SHORT" storageaddress="0x7B807" />
+  <table name="(P2090) OCV SOLENOID B1 CIRCUIT OPEN" storageaddress="0x7B804" />
+  <table name="(P2091) OCV SOLENOID B1 CIRCUIT SHORT" storageaddress="0x7B803" />
+  <table name="(P2092) OCV SOLENOID A2 CIRCUIT OPEN" storageaddress="0x7B806" />
+  <table name="(P2093) OCV SOLENOID A2 CIRCUIT SHORT" storageaddress="0x7B805" />
+  <table name="(P2094) OCV SOLENOID B2 CIRCUIT OPEN" storageaddress="0x7B802" />
+  <table name="(P2095) OCV SOLENOID B2 CIRCUIT SHORT" storageaddress="0x7B801" />
+  <table name="(P2101) THROTTLE ACTUATOR CIRCUIT RANGE/PERF" storageaddress="0x7B7F0" />
+  <table name="(P2102) THROTTLE ACTUATOR CIRCUIT LOW" storageaddress="0x7B7EE" />
+  <table name="(P2103) THROTTLE ACTUATOR CIRCUIT HIGH" storageaddress="0x7B7EF" />
+  <table name="(P2109) TPS A MINIMUM STOP PERF" storageaddress="0x7B7EA" />
+  <table name="(P2122) TPS D CIRCUIT LOW INPUT" storageaddress="0x7B7F7" />
+  <table name="(P2123) TPS D CIRCUIT HIGH INPUT" storageaddress="0x7B7F8" />
+  <table name="(P2127) TPS E CIRCUIT LOW INPUT" storageaddress="0x7B7F5" />
+  <table name="(P2128) TPS E CIRCUIT HIGH INPUT" storageaddress="0x7B7F6" />
+  <table name="(P2135) TPS A/B VOLTAGE" storageaddress="0x7B7F9" />
+  <table name="(P2138) TPS D/E VOLTAGE" storageaddress="0x7B7F4" />
+  <table name="(P2228) BARO. PRESSURE CIRCUIT LOW INPUT" storageaddress="0x7B81C" />
+  <table name="(P2229) BARO. PRESSURE CIRCUIT HIGH INPUT" storageaddress="0x7B81B" />
+  <table name="(P2419) EVAP SWITCHING VALVE LOW" storageaddress="0x7B841" />
+  <table name="(P2420) EVAP SWITCHING VALVE HIGH" storageaddress="0x7B842" />
+
+  <table name="Boost Target Hack" storageaddress="000135C4">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Wastegate Hack" storageaddress="000138D4">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Fueling Hack" storageaddress="00032238">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Timing Hack" storageaddress="0003C81C">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Intake AVCS Hack" storageaddress="0005C20C">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Exhaust AVCS Hack" storageaddress="0005DCB0">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Requested Torque (Accelerator Pedal) Hack" storageaddress="00014C78">
+    <state name="Disable" data="00 0B EA 44" />
+  </table>
+
+  <table name="Enable Speed Density" storageaddress="00004800" >
+    <state name="Disable" data="00 0B E9 90" />
+  </table>
+
+  <table name="Throttle Tip-in Enrichment Hack" storageaddress="00036B54">
+    <state name="Disable" data="00 0B E9 90" />
+  </table>
+
+  <table name="CEL Flash Hack #1" storageaddress="00045FB0">
+    <state name="Disable" data="00 07 EB 32" />
+  </table>
+
+  <table name="CEL Flash Hack #2" storageaddress="0007EE54">
+    <state name="Disable" data="FF FF 9C 5A"/>
+  </table>
+ </rom>
+
+<rom base="2Boost AE5F301C">
+    <romid>
+      <xmlid>2Boost AE5F301C 0004</xmlid>
+      <internalidaddress>0008f030</internalidaddress>
+      <internalidstring>2Boost AE5F301C 0004</internalidstring>
+      <ecuid>5B42564107</ecuid>
+      <year>10</year>
+      <market>ADM</market>
+      <make>Subaru</make>
+      <model>Legacy</model>
+      <submodel>GT</submodel>
+      <transmission>AT</transmission>
+      <memmodel>SH7058</memmodel>
+      <flashmethod>subarucan</flashmethod>
+      <filesize>1024kb</filesize>
+    </romid>
+
+ <table name="Boost Target Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Wastegate Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Fueling Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Timing Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Intake AVCS Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Exhaust AVCS Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Requested Torque (Accelerator Pedal) Hack">
+   <state name="Enable" data="00 08 f0 00"/>
+ </table>
+ <table name="Enable Speed Density">
+   <state name="Enable" data="00 08 f0 18"/>
+ </table>
+ <table name="Throttle Tip-in Enrichment Hack">
+   <state name="Enable" data="00 08 f0 0c"/>
+ </table>
+ <table name="CEL Flash Hack #1">
+   <state name="Enable" data="00 08 f0 24"/>
+ </table>
+
+ <table name="CEL Flash Hack #2">
+   <state name="Enable" data="ff ff a9 03"/>
+ </table>
+
+<table name="Map Switch Input " storageaddress="0008f04c"/>
+
+<table name="Target Boost Overtake map " sizex="14" sizey="15" storageaddress="0008f0dc">
+ <table type="X Axis" storageaddress="0008f068"/>
+ <table type="Y Axis" storageaddress="0008f0a0"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Intelligent" sizex="14" sizey="15" storageaddress="0008f2f4">
+ <table type="X Axis" storageaddress="0008f280"/>
+ <table type="Y Axis" storageaddress="0008f2b8"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Sport" sizex="14" sizey="15" storageaddress="0008f50c">
+ <table type="X Axis" storageaddress="0008f498"/>
+ <table type="Y Axis" storageaddress="0008f4d0"/>
+</table>
+
+<table name="Target Boost SI-DRIVE Sport Sharp" sizex="14" sizey="15" storageaddress="0008f724">
+ <table type="X Axis" storageaddress="0008f6b0"/>
+ <table type="Y Axis" storageaddress="0008f6e8"/>
+</table>
+
+<table name="Initial Wastegate Duty Overtake map " sizex="14" sizey="13" storageaddress="0008f934">
+ <table type="X Axis" storageaddress="0008f8c8"/>
+ <table type="Y Axis" storageaddress="0008f900"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Intelligent" sizex="14" sizey="13" storageaddress="0008fb0c">
+ <table type="X Axis" storageaddress="0008faa0"/>
+ <table type="Y Axis" storageaddress="0008fad8"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport" sizex="14" sizey="13" storageaddress="0008fce4">
+ <table type="X Axis" storageaddress="0008fc78"/>
+ <table type="Y Axis" storageaddress="0008fcb0"/>
+</table>
+
+<table name="Initial Wastegate Duty SI-DRIVE Sport Sharp" sizex="14" sizey="13" storageaddress="0008febc">
+ <table type="X Axis" storageaddress="0008fe50"/>
+ <table type="Y Axis" storageaddress="0008fe88"/>
+</table>
+
+<table name="Max Wastegate Duty Overtake map " sizex="14" sizey="13" storageaddress="00090094">
+ <table type="X Axis" storageaddress="00090028"/>
+ <table type="Y Axis" storageaddress="00090060"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Intelligent" sizex="14" sizey="13" storageaddress="0009026c">
+ <table type="X Axis" storageaddress="00090200"/>
+ <table type="Y Axis" storageaddress="00090238"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport" sizex="14" sizey="13" storageaddress="00090444">
+ <table type="X Axis" storageaddress="000903d8"/>
+ <table type="Y Axis" storageaddress="00090410"/>
+</table>
+
+<table name="Max Wastegate Duty SI-DRIVE Sport Sharp" sizex="14" sizey="13" storageaddress="0009061c">
+ <table type="X Axis" storageaddress="000905b0"/>
+ <table type="Y Axis" storageaddress="000905e8"/>
+</table>
+
+<table name="Primary Open Loop Fueling Overtake map" sizex="18" sizey="16" storageaddress="00090810">
+ <table type="X Axis" storageaddress="00090788"/>
+ <table type="Y Axis" storageaddress="000907d0"/>
+</table>
+
+<table name="Primary Open Loop Fueling Base SI-DRIVE Intelligent" sizex="18" sizey="16" storageaddress="000909b8">
+ <table type="X Axis" storageaddress="00090930"/>
+ <table type="Y Axis" storageaddress="00090978"/>
+</table>
+
+<table name="Primary Open Loop Fueling Base SI-DRIVE Sport" sizex="18" sizey="16" storageaddress="00090b60">
+ <table type="X Axis" storageaddress="00090ad8"/>
+ <table type="Y Axis" storageaddress="00090b20"/>
+</table>
+
+<table name="Primary Open Loop Fueling Base SI-DRIVE Sport Sharp" sizex="18" sizey="16" storageaddress="00090d08">
+ <table type="X Axis" storageaddress="00090c80"/>
+ <table type="Y Axis" storageaddress="00090cc8"/>
+</table>
+
+<table name="Base Timing Overtake map" sizex="22" sizey="18" storageaddress="00090ec8">
+ <table type="X Axis" storageaddress="00090e28"/>
+ <table type="Y Axis" storageaddress="00090e80"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Intelligent" sizex="22" sizey="18" storageaddress="000910f4">
+ <table type="X Axis" storageaddress="00091054"/>
+ <table type="Y Axis" storageaddress="000910ac"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport" sizex="22" sizey="18" storageaddress="00091320">
+ <table type="X Axis" storageaddress="00091280"/>
+ <table type="Y Axis" storageaddress="000912d8"/>
+</table>
+
+<table name="Base Timing Primary Cruise SI-DRIVE Sport Sharp" sizex="22" sizey="18" storageaddress="0009154c">
+ <table type="X Axis" storageaddress="000914ac"/>
+ <table type="Y Axis" storageaddress="00091504"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Intelligent" sizex="22" sizey="18" storageaddress="00091778">
+ <table type="X Axis" storageaddress="000916d8"/>
+ <table type="Y Axis" storageaddress="00091730"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport" sizex="22" sizey="18" storageaddress="000919a4">
+ <table type="X Axis" storageaddress="00091904"/>
+ <table type="Y Axis" storageaddress="0009195c"/>
+</table>
+
+<table name="Base Timing Primary Non-Cruise SI-DRIVE Sport Sharp" sizex="22" sizey="18" storageaddress="00091bd0">
+ <table type="X Axis" storageaddress="00091b30"/>
+ <table type="Y Axis" storageaddress="00091b88"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Intelligent" sizex="22" sizey="18" storageaddress="00091dfc">
+ <table type="X Axis" storageaddress="00091d5c"/>
+ <table type="Y Axis" storageaddress="00091db4"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport" sizex="22" sizey="18" storageaddress="00092028">
+ <table type="X Axis" storageaddress="00091f88"/>
+ <table type="Y Axis" storageaddress="00091fe0"/>
+</table>
+
+<table name="Base Timing Reference Cruise (AVCS related) SI-DRIVE Sport Sharp" sizex="22" sizey="18" storageaddress="00092254">
+ <table type="X Axis" storageaddress="000921b4"/>
+ <table type="Y Axis" storageaddress="0009220c"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Intelligent" sizex="22" sizey="18" storageaddress="00092480">
+ <table type="X Axis" storageaddress="000923e0"/>
+ <table type="Y Axis" storageaddress="00092438"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport" sizex="22" sizey="18" storageaddress="000926ac">
+ <table type="X Axis" storageaddress="0009260c"/>
+ <table type="Y Axis" storageaddress="00092664"/>
+</table>
+
+<table name="Base Timing Reference Non-Cruise (AVCS related) SI-DRIVE Sport Sharp" sizex="22" sizey="18" storageaddress="000928d8">
+ <table type="X Axis" storageaddress="00092838"/>
+ <table type="Y Axis" storageaddress="00092890"/>
+</table>
+
+<table name="Intake Cam Advance Angle (AVCS) Overtake map " sizex="22" sizey="18" storageaddress="00092b04">
+ <table type="X Axis" storageaddress="00092a64"/>
+ <table type="Y Axis" storageaddress="00092abc"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Intelligent " sizex="22" sizey="18" storageaddress="00092ebc">
+ <table type="X Axis" storageaddress="00092e1c"/>
+ <table type="Y Axis" storageaddress="00092e74"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport " sizex="22" sizey="18" storageaddress="00093274">
+ <table type="X Axis" storageaddress="000931d4"/>
+ <table type="Y Axis" storageaddress="0009322c"/>
+</table>
+
+<table name="Intake Cam Advance Angle Cruise (AVCS) SI-DRIVE Sport Sharp " sizex="22" sizey="18" storageaddress="0009362c">
+ <table type="X Axis" storageaddress="0009358c"/>
+ <table type="Y Axis" storageaddress="000935e4"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Intelligent " sizex="22" sizey="18" storageaddress="000939e4">
+ <table type="X Axis" storageaddress="00093944"/>
+ <table type="Y Axis" storageaddress="0009399c"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport " sizex="22" sizey="18" storageaddress="00093d9c">
+ <table type="X Axis" storageaddress="00093cfc"/>
+ <table type="Y Axis" storageaddress="00093d54"/>
+</table>
+
+<table name="Intake Cam Advance Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp " sizex="22" sizey="18" storageaddress="00094154">
+ <table type="X Axis" storageaddress="000940b4"/>
+ <table type="Y Axis" storageaddress="0009410c"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle (AVCS) Overtake map " sizex="22" sizey="18" storageaddress="0009450c">
+ <table type="X Axis" storageaddress="0009446c"/>
+ <table type="Y Axis" storageaddress="000944c4"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Intelligent " sizex="22" sizey="18" storageaddress="000948c4">
+ <table type="X Axis" storageaddress="00094824"/>
+ <table type="Y Axis" storageaddress="0009487c"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport " sizex="22" sizey="18" storageaddress="00094c7c">
+ <table type="X Axis" storageaddress="00094bdc"/>
+ <table type="Y Axis" storageaddress="00094c34"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Cruise (AVCS) SI-DRIVE Sport Sharp " sizex="22" sizey="18" storageaddress="00095034">
+ <table type="X Axis" storageaddress="00094f94"/>
+ <table type="Y Axis" storageaddress="00094fec"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Intelligent " sizex="22" sizey="18" storageaddress="000953ec">
+ <table type="X Axis" storageaddress="0009534c"/>
+ <table type="Y Axis" storageaddress="000953a4"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport " sizex="22" sizey="18" storageaddress="000957a4">
+ <table type="X Axis" storageaddress="00095704"/>
+ <table type="Y Axis" storageaddress="0009575c"/>
+</table>
+
+<table name="Exhaust Cam Retard Angle Non-Cruise (AVCS) SI-DRIVE Sport Sharp " sizex="22" sizey="18" storageaddress="00095b5c">
+ <table type="X Axis" storageaddress="00095abc"/>
+ <table type="Y Axis" storageaddress="00095b14"/>
+</table>
+
+<table name="Requested Torque (Accelerator Pedal) Overtake map" sizex="16" sizey="17" storageaddress="00095ef8">
+ <table type="X Axis" storageaddress="00095e74"/>
+ <table type="Y Axis" storageaddress="00095eb4"/>
+</table>
+
+<table name="MAF/SD Blending mode" storageaddress="0008f04d"/>
+
+<table name="Engine Displacement" storageaddress="0008f060"/>
+
+<table name="Volumetric Efficiency" sizex="32" sizey="30" storageaddress="00096210">
+ <table type="X Axis" storageaddress="00096118"/>
+ <table type="Y Axis" storageaddress="00096198"/>
+</table>
+
+<table name="VE Tip-in Compensation" sizex="16" sizey="16" storageaddress="00096a10">
+ <table type="X Axis" storageaddress="00096990"/>
+ <table type="Y Axis" storageaddress="000969d0"/>
+</table>
+
+<table name="MAF/SD Blending" sizex="16" sizey="16" storageaddress="00096c90">
+ <table type="X Axis" storageaddress="00096c10"/>
+ <table type="Y Axis" storageaddress="00096c50"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment Overtake map" sizey="18" storageaddress="00096ed8">
+ <table type="Y Axis" storageaddress="00096e90"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Intelligent" sizey="18" storageaddress="00096f44">
+ <table type="Y Axis" storageaddress="00096efc"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport" sizey="18" storageaddress="00096fb0">
+ <table type="Y Axis" storageaddress="00096f68"/>
+</table>
+
+<table name="Throttle Tip-in Enrichment SI-DRIVE Sport Sharp" sizey="18" storageaddress="0009701c">
+ <table type="Y Axis" storageaddress="00096fd4"/>
+</table>
+
+<table name="Overtake Button Input " storageaddress="0008f04e"/>
+
+<table name="Minimum Accelerator pedal angle" storageaddress="0008f064"/>
+
+<table name="CEL Flash Enable" storageaddress="0008f04f"/>
+<table name="Overtake CEL Flash Parameters" storageaddress="0008f050"/>
+<table name="FBKC CEL Flash Parameters" storageaddress="0008f053"/>
+<table name="FBKC CEL Flash Maximum Degrees" storageaddress="0008f058"/>
+<table name="FBKC CEL Flash Minimum Load" storageaddress="0008f05c"/>
+
+</rom>
+
 
 <rom base="2BOOST BASE">
   <romid>
@@ -11669,6 +12836,10 @@
 
   <table name="CEL Flash Hack #1" storageaddress="00042818">
     <state name="Disable" data="00 07 A8 66" />
+  </table>
+
+  <table name="CEL Flash Hack #2" storageaddress="0007AB8C">
+    <state name="Disable" data="FF FF 99 7E" />
   </table>
 
  </rom>
@@ -12999,6 +14170,10 @@
 
   <table name="CEL Flash Hack #1" storageaddress="00042174">
     <state name="Disable" data="00 07 C8 46" />
+  </table>
+
+  <table name="CEL Flash Hack #2" storageaddress="0007CB6C">
+    <state name="Disable" data="FF FF 9B 3A" />
   </table>
 
  </rom>
@@ -14535,6 +15710,15 @@ is compatible with standard routine. -->
     <table name="Enable Speed Density" storageaddress="000049E8" >
       <state name="Disable" data="00 0B E8 44" />
     </table>
+
+    <table name="CEL Flash Hack #1" storageaddress="00042624">
+      <state name="Disable" data="00 07 A7 AA" />
+    </table>
+
+    <table name="CEL Flash Hack #2" storageaddress="0007AAD0">
+      <state name="Disable" data="FF FF 99 96" />
+    </table>
+
   </rom>
 
  <rom base="2Boost AZ1G900P">
@@ -15253,10 +16437,6 @@ is compatible with standard routine. -->
 
 <table name="Minimum Accelerator pedal angle" storageaddress="0008f064" />
 
-<table name="CEL Flash Hack #1" storageaddress="00042624">
-   <state name="Disable" data="00 07 A7 AA" />
- </table>
-
 <table name="CEL Flash Enable" storageaddress="0008f04f" />
 <table name="Overtake CEL Flash Parameters" storageaddress="0008f050" />
 <table name="FBKC CEL Flash Parameters" storageaddress="0008f053" />
@@ -15790,6 +16970,11 @@ is compatible with standard routine. -->
 <table name="CEL Flash Hack #1" storageaddress="000449EC">
    <state name="Enable" />
    <state name="Disable" data="00 07 CA 06" />
+
+  <table name="CEL Flash Hack #2" storageaddress="0007CD28">
+    <state name="Disable" data="FF FF 9A 0E" />
+  </table>
+
 </table>
 
 
@@ -16581,6 +17766,10 @@ is compatible with standard routine. -->
       <state name="Disable" data="00 07 62 EA" />
     </table>
 
+    <table name="CEL Flash Hack #2" storageaddress="0007660C">
+      <state name="Disable" data="FF FF 9A FE" />
+    </table>
+
   </rom>
 
   <rom base="2Boost EE5F300A">
@@ -17308,6 +18497,10 @@ is compatible with standard routine. -->
     <table name="CEL Flash Hack #1" storageaddress="0003CF98">
       <state name="Enable" />
       <state name="Disable" data="00 06 E4 DA" />
+    </table>
+
+    <table name="CEL Flash Hack #2" storageaddress="0006E800">
+      <state name="Disable" data="FF FF 96 42" />
     </table>
 
  </rom>
