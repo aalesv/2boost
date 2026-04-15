@@ -23,6 +23,7 @@ ifeq (${OS}, Windows_NT)
 #CYGWIN
 #This is based on the fact that 'echo "a"' in Unix will print a (without quotes) but windows will print "a" (with the quotes).
 		WINDOWS=0
+		PVSDIR=/cygdrive/c/Program Files (x86)/PVS-Studio
 	else
 		WINDOWS=1
 	endif
@@ -170,11 +171,11 @@ endif
 # RAM address
 ifeq ($(WINDOWS), 1)
 define find-ram-hole-addr
-$(shell for /f "tokens=2 delims='()'" %%i in ('findstr RAM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h') do echo %%i)
+$(shell for /f "tokens=2 delims='()'" %%i in ('findstr /c:"#define RAM_HOLE" $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h') do echo %%i)
 endef
 else
 define find-ram-hole-addr
-$(shell grep RAM_HOLE $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h | awk -F"\\\\(|\\\\)" '{print $$2}')
+$(shell grep "#define RAM_HOLE" $(TARGET_INCLUDE)$(PATHSEP)$(strip $(1)).h | awk -F"\\\\(|\\\\)" '{print $$2}')
 endef
 endif
 
@@ -342,7 +343,7 @@ defs: cel-flash-hack2-enable-address=$(call arith_op_hex_py, +, $(RAM_HOLE), 3)
 defs: cel-flash-hack2-enable-data=$(call xml-state-data-format, $(cel-flash-hack2-enable-address))
 defs:
 	@echo Generating definitions for $(CALID)... $(MUTE)
-	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(MAKE_DEFS_SCRIPT) -t $(template-file) --rombase "$(rom-base)" --internalidstring "$(version-string)" -o $(definitions-file) --set-attribute "//*[@id-ext='cel_hack2_enable']" data "$(cel-flash-hack2-enable-data)"
+	$(O)$(READELF) $(READELFFLAGS) -s $(outfile) | $(MAKE_DEFS_SCRIPT) -t $(template-file) --rombase "$(rom-base)" --internalidstring "$(version-string)" -o $(definitions-file) --set-attribute "//*[@id1='cel_hack2_enable']" data "$(cel-flash-hack2-enable-data)"
 	@echo Created $(definitions-file) $(MUTE)
 
 # Arithmetic operations on hex numbers

@@ -26,6 +26,16 @@ from lxml import etree as ET
 import csv, sys, os, errno
 import re
 
+def remove_attribute(tag, attribute_name):
+    try:
+        tag.attrib.pop(attribute_name)
+    except KeyError:
+        pass
+
+# deadbeef -> de ad be ef
+def split_2_with_space(string):
+    return ' '.join(re.findall(r'.{2}', string))
+
 #Sanitize XML tag text with regex and remove 'sanitizer' attribute.
 #If tag has 'sanitizer' attribute, its value will be preferred over default_sanitizer
 def sanitize_tag_text(tag, text, default_sanitizer=None):
@@ -39,10 +49,7 @@ def sanitize_tag_text(tag, text, default_sanitizer=None):
         text_new = re.search(sanitizer, text).group()
     tag.text = text_new
     #Remove attribute
-    try:
-        tag.attrib.pop(sanitizer_attrib_name)
-    except KeyError:
-        pass
+    remove_attribute(tag, sanitizer_attrib_name)
 
 #Argument parser object
 parser = argparse.ArgumentParser(
@@ -150,9 +157,11 @@ if internal_id_string is not None:
 #Process every row in list
 for row in rows:
     address = row[1]
+    #Size of object in bytes
+    size_bytes = int(row[2])
     #Float consumes 4 bytes
     #Actually needed only for axis
-    size = int(int(row[2]) / 4)
+    size = int(int(size_bytes) / 4)
     #Convert number to string because attribute values must be string literals
     size_str = str(size)
     #id that corresponds 'id' attribute of right tag 
@@ -188,10 +197,48 @@ for row in rows:
         #Entry point
         if id.endswith('_entry_point'):
             #Split the address into groups of characters separated by space 
-            data_string = ' '.join(re.findall(r'.{2}', address))
+            data_string = split_2_with_space(address)
             t.set('data', data_string)
         #We don't want 'id' attribute to be present in definitions file
         t.attrib.pop('id')
+    #Process extended ids with support of templates and variables
+    #Put string to 'data-template' attribute
+    #Supported attributes
+    #id-extended    name of object
+    #data-template      string with template, supports variable (see below).
+    #                   Default is '{address}'
+    #element-size       size of element (for example, integer is 4 bytes size). Default is 1.
+    #output-attribute   name of attribute where interpolated data-template will be stored.
+    #                   Default is 'data'.
+    #
+    #Supported variables
+    #{name}               name of object
+    #{address}            address of object
+    #{address_split2}     address split with spaces by groups of two: deadbeef -> de ad be ef
+    #{size}               size of object in bytes
+    #{number_of_elements} number of elements, number_of_elements=size/element_size.
+    #                     Doesn't check if they are evenly divisible.
+    tags = xml_root.xpath(f'//*[@id-extended="{id}"]')
+    for t in tags:
+        output_attribute = t.get('output-attribute')
+        if output_attribute is None:
+            output_attribute = 'data'
+        data_template = t.get('data-template')
+        if data_template is None:
+            data_template = '{address}'
+        ar_s = t.get('element-size')
+        element_size = 1 if ar_s is None else int(ar_s)
+        data_vars = dict()
+        data_vars['name'] = id
+        data_vars['address'] = address
+        data_vars['address_split2'] = split_2_with_space(address)
+        data_vars['number_of_elements'] = f'{int(size_bytes / element_size):x}'
+        data_vars['size'] = size_bytes
+        t.set(output_attribute, data_template.format(**data_vars))
+        remove_attribute(t, 'data-template')
+        remove_attribute(t, 'output-attribute')
+        remove_attribute(t, 'id-extended')
+        remove_attribute(t, 'element-size')
 
 #Search for elements specified in 'set attribute' command line parameter
 for search, attr, value in args.set_attribute:
