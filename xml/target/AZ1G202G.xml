@@ -16,34 +16,34 @@
     </romid>
 
  <table name="Boost Target Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Wastegate Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Fueling Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Timing Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Intake AVCS Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Exhaust AVCS Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Requested Torque (Accelerator Pedal) Hack">
-   <state name="Enable" id="_calc_3d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_3d_uint_to_float_entry_point"/>
  </table>
  <table name="Enable Speed Density">
-   <state name="Enable" id="_massAirflow_entry_point"/>
+   <state name="Enable" id-extended="_massAirflow_entry_point"/>
  </table>
  <table name="Throttle Tip-in Enrichment Hack">
-   <state name="Enable" id="_calc_2d_uint_to_float_entry_point"/>
+   <state name="Enable" id-extended="_calc_2d_uint_to_float_entry_point"/>
  </table>
  <table name="CEL Flash Hack #1">
-   <state name="Enable" id="_celFlash_outer_entry_point"/>
+   <state name="Enable" id-extended="_celFlash_outer_entry_point"/>
  </table>
 
  <table name="CEL Flash Hack #2" >

@@ -59,14 +59,14 @@ parser = argparse.ArgumentParser(
 )
 #Command line parameter for a file that contains a table output by readelf
 #If not specified stdin is used
-parserGroupOptions = parser.add_argument(
+parser.add_argument(
     '-i', '--input',
     metavar='<filename>',
     help='Input file name. STDIN if not specified.'
 )
 #Command line parameter for a RomRaider definitions XML template file
 #Required.
-parserGroupOtpions = parser.add_argument(
+parser.add_argument(
     '-t', '--template',
     metavar='<filename>',
     required=True,
@@ -74,7 +74,7 @@ parserGroupOtpions = parser.add_argument(
 )
 #Command line parameter for a file that contains processed RomRaider XML definitions file
 #If not specified stdout is used
-parserGroupOptions = parser.add_argument(
+parser.add_argument(
     '-o', '--output',
     metavar='<filename>',
     help='Output file name. STDOUT if not specified.'
@@ -82,14 +82,14 @@ parserGroupOptions = parser.add_argument(
 
 #String for a 'base' attribute of 'xml' tag, e.g.
 #<xml base="2Boost CALID">
-parserGroupOptions = parser.add_argument(
+parser.add_argument(
     '--rombase',
     metavar='<string>',
     help='String for a \'base\' attribute of \'rom\' tag. Leave it intact if not specified.'
 )
 
 #String for a 'internalidstring' XML tag
-parserGroupOptions = parser.add_argument(
+parser.add_argument(
     '--internalidstring',
     metavar='<string>',
     help='Internal ID string. Will be written to \'internalidstring\' tag. Will be written to \'xmlid\' tag too. Leave them intact if not specified.'
@@ -97,14 +97,27 @@ parserGroupOptions = parser.add_argument(
 
 parser.add_argument('--set-attribute',
                     nargs=3,
-                    metavar='<Search criteria (XPath)> <Attribute name> <Attribute value>',
+                    metavar=('<Search criteria (XPath)>', '<Attribute name>', '<Attribute value>'),
                     action = 'append',
                     help = 'Searches all elements specified by search criteria in XPath format and sets specified attribute name to specified value. Can be specified multiple times.')
+
+parser.add_argument('--default-output-attribute-name',
+                    metavar='<string>',
+                    default='data',
+                    help = 'Default value of \'output-attribute\' attribute (when it\'s omitted).')
+
+parser.add_argument('--default-output-attribute-value',
+                    metavar='<string>',
+                    default='{address_split2}',
+                    help = 'Default value of \'output-attribute-value\' attribute (when it\'s omitted).')
 
 #Parse command line options
 #Check for required parameters, throws error if needed,
 #outputs help and version messages
 args = parser.parse_args()
+
+DEFAULT_OUTPUT_ATTRIBUTE_NAME  = args.default_output_attribute_name
+DEFAULT_OUTPUT_ATTRIBUTE_VALUE = args.default_output_attribute_value
 
 #Get input and output file names
 #None if not specified
@@ -194,22 +207,15 @@ for row in rows:
         #Check for Y axis
         if id.startswith('_tbl') and id.endswith('_y_axis'):
             t.getparent().set('sizey', size_str)
-        #Entry point
-        if id.endswith('_entry_point'):
-            #Split the address into groups of characters separated by space 
-            data_string = split_2_with_space(address)
-            t.set('data', data_string)
         #We don't want 'id' attribute to be present in definitions file
         t.attrib.pop('id')
     #Process extended ids with support of templates and variables
-    #Put string to 'data-template' attribute
+    #Put string to 'output-attribute-value' attribute
     #Supported attributes
     #id-extended    name of object
-    #data-template      string with template, supports variable (see below).
-    #                   Default is '{address}'
-    #element-size       size of element (for example, integer is 4 bytes size). Default is 1.
-    #output-attribute   name of attribute where interpolated data-template will be stored.
-    #                   Default is 'data'.
+    #output-attribute-value string with template, supports variables (see below).
+    #element-size           size of element (for example, integer is 4 bytes size). Default is 1.
+    #output-attribute       name of attribute where interpolated output-attribute-value will be stored.
     #
     #Supported variables
     #{name}               name of object
@@ -222,20 +228,20 @@ for row in rows:
     for t in tags:
         output_attribute = t.get('output-attribute')
         if output_attribute is None:
-            output_attribute = 'data'
-        data_template = t.get('data-template')
-        if data_template is None:
-            data_template = '{address}'
-        ar_s = t.get('element-size')
-        element_size = 1 if ar_s is None else int(ar_s)
+            output_attribute = DEFAULT_OUTPUT_ATTRIBUTE_NAME
+        output_attribute_value = t.get('output-attribute-value')
+        if output_attribute_value is None:
+            output_attribute_value = DEFAULT_OUTPUT_ATTRIBUTE_VALUE
+        el_s = t.get('element-size')
+        element_size = 1 if el_s is None else int(el_s)
         data_vars = dict()
         data_vars['name'] = id
         data_vars['address'] = address
         data_vars['address_split2'] = split_2_with_space(address)
         data_vars['number_of_elements'] = f'{int(size_bytes / element_size):x}'
         data_vars['size'] = size_bytes
-        t.set(output_attribute, data_template.format(**data_vars))
-        remove_attribute(t, 'data-template')
+        t.set(output_attribute, output_attribute_value.format(**data_vars))
+        remove_attribute(t, 'output-attribute-value')
         remove_attribute(t, 'output-attribute')
         remove_attribute(t, 'id-extended')
         remove_attribute(t, 'element-size')
