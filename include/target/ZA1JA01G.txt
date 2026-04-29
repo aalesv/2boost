@@ -1,0 +1,2 @@
+ROM_HOLE = 0xC1000;
+brz = 1;
