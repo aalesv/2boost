@@ -61,7 +61,7 @@ static const  UINT_0x8000000 tblMafSdBlend_data [MAF_SD_BLEND_X_COUNT * MAF_SD_B
 static const float speedDensityConstant ROM_DATA_CONST;
 
 //This function replaces original calc MAF table function
-float massAirflow_hooked(float mafVoltage, const table_2d_noconv_t *tablePointerMAF) ROM_CODE;
+float massAirflow_hooked(float mafVoltage, const table_2d_noconv_t *tablePointerMAF) ROM_CODE_SD;
 
 //Engine displacement, liters
 extern float CFG_ENGINE_DISPLACEMENT;

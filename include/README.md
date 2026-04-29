@@ -2,6 +2,10 @@
 
 Settings for each CAL Id.
 
+#### .\target\*.inc
+
+Per-target makefile include
+
 #### .\target\*.txt
 
 Linker script include files for each CAL Id. Currently each file contain ROM hole address needed by linker to correctly align binary.

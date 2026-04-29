@@ -12,7 +12,7 @@
 #include "global_vars.h"
 
 //Version string
-volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.02.00";
+volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.03.00";
 
 volatile const char INFO[] __attribute__((used)) = "Compiled GCC " __VERSION__;
 
@@ -53,7 +53,10 @@ volatile const float CFG_CEL_FLASH_FBKC_LIMIT = -2.0f;
 volatile const float CFG_CEL_FLASH_FBKC_LOAD_LIMIT = 1.5f;
 
 //Engine displacement, default 2.457 liters
-volatile const float CFG_ENGINE_DISPLACEMENT = 2.457f;
+#if !defined(ENGINE_DISPLACEMENT)
+ #define ENGINE_DISPLACEMENT 2.457f
+#endif
+volatile const float CFG_ENGINE_DISPLACEMENT = ENGINE_DISPLACEMENT;
 
 //Minimum accelerator pedal value to activate Overtake button, precents
 volatile const float CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE = 25.0f;

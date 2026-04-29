@@ -70,8 +70,9 @@ else
 	PYTHON=$(shell which python 2>/dev/null)
 endif
 
-#CPU architecture, SH2E
+#CPU default architecture, SH2E
 ARCH=m2e
+ARCH_DIR=$(ARCH)
 ARCH_FLAGS=-$(ARCH)
 
 BIN=$(ROOT)$(PATHSEP)bin
@@ -96,7 +97,7 @@ TOP_LEVEL_REORDER_TARGET_LIST=
 LD=$(BIN)$(PATHSEP)sh-elf-ld
 #LD script for linking ROM
 LD_COMMON_SCRIPT=$(SRC)$(PATHSEP)2boost.txt
-LD_LIB_PATH=$(ROOT)$(PATHSEP)lib$(PATHSEP)gcc$(PATHSEP)sh-elf$(PATHSEP)$(CC_VERSION)$(PATHSEP)$(ARCH)$(PATHSEP)
+LD_LIB_PATH=$(ROOT)$(PATHSEP)lib$(PATHSEP)gcc$(PATHSEP)sh-elf$(PATHSEP)$(CC_VERSION)$(PATHSEP)$(ARCH_DIR)$(PATHSEP)
 LDFLAGS=-T $(LD_COMMON_SCRIPT)
 EXTERNAL_LIBS=$(LD_LIB_PATH)libgcc.a
 READELF=$(BIN)$(PATHSEP)sh-elf-readelf
@@ -116,6 +117,7 @@ ROM=.$(PATHSEP)ROM
 INCLUDE=.$(PATHSEP)include
 #Target specific includes only - headers and linker scripts
 TARGET_INCLUDE=$(INCLUDE)$(PATHSEP)target
+TARGET_MAKEFILE_INCLUDE=$(TARGET_INCLUDE)$(PATHSEP)*.inc
 SRC=.$(PATHSEP)src
 SCRIPT=.$(PATHSEP)script
 XML=.$(PATHSEP)xml
@@ -268,7 +270,7 @@ $(all-targets):
 # Call make recursively
 	$(O)$(MAKE) $(ALL-O-FILES) TARGET=$@ CFLAGS="$(CFLAGS) -include $(target-header-file)"
 	@echo Linking... $(MUTE)
-	$(O)$(LD) $(LDFLAGS) -T $(ld-script-target) -o $(outfile) $(all-o-files-with-dir) $(EXTERNAL_LIBS)
+	$(O)$(LD) -T $(ld-script-target) $(LDFLAGS) -o $(outfile) $(all-o-files-with-dir) $(EXTERNAL_LIBS)
 	@echo Stripping binary... $(MUTE)
 	$(O)$(OBJCOPY) $(OBJCOPYFLAGS) $(outfile) $(binfile)
 	$(O)$(MAKE) defs CALID=$@
@@ -358,3 +360,6 @@ endef
 define xml-state-data-format
 $(shell $(PYTHON) -c "import sys,re;print(' '.join(re.findall(r'.{2}', sys.argv[1])))" $(1))
 endef
+
+#Include target specific makefiles, ignore non existent
+-include $(TARGET_MAKEFILE_INCLUDE)

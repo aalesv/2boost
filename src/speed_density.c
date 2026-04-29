@@ -19,7 +19,12 @@ static const float speedDensityConstant = 0.0038728181f;
 float 
 massAirflow_hooked(float mafVoltage, const table_2d_noconv_t *tablePointerMAF)
 {
-    float   iatKelvin;                  //Intake air temperature, Kelvin
+    //Is it really mass airflow calculation call?
+    if (tablePointerMAF != (table_2d_noconv_t *)ORIG_TABLE_MAF_ADDRESS)
+    {
+        return calc_2d_float_to_float (mafVoltage, 
+                                        tablePointerMAF);
+    }
 
     //Set log varibles
     //Mass air flow from MAF sensor
@@ -52,8 +57,8 @@ massAirflow_hooked(float mafVoltage, const table_2d_noconv_t *tablePointerMAF)
         RAM_VARIABLES->mafSdBlendValue = 1;
     }
     
-    //Convert temperature to Kelvin
-    iatKelvin = *P_IAT + 273.15f;
+    //Convert intake air temperature to Kelvin
+    float iatKelvin = *P_IAT + 273.15f;
 
     //Calculate SD mass airflow
     RAM_VARIABLES->airFlowFromSdNotBlended

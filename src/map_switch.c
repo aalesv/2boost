@@ -71,8 +71,12 @@ overtakeMapConditionsMet(void)
 {
 	//Conditions are met if Cruise Cancel button is pressed
 	//and accelerator angle is over minimum level
+	#if defined(P_CRUISE_CANCEL_SWITCH) && defined(P_ACCELERATOR_PEDAL_ANGLE)
 	return (cruiseCancelPressed() == 1) 
 		&& (*P_ACCELERATOR_PEDAL_ANGLE > CFG_OVERTAKE_BUTTON_MIN_ACCELERATOR_PEDAL_VALUE);
+	#else
+	return 0;
+	#endif //P_CRUISE_CANCEL_SWITCH
 }
 
 //Returns overtake map number
@@ -183,6 +187,7 @@ brakePedalPressed(void)
 }
 #endif //P_BRAKE_PEDAL_SWITCH
 
+#if defined(P_CRUISE_STATE)
 #if defined P_CRUISE_STATE_MASK_CRUISE_ENABLED
 //Returns 1 if cruise is enabled, 0 otherwise
 //Straight cruise logic
@@ -232,6 +237,7 @@ cruiseStateEnabled (void)
 	return 0;
 }
 #endif //P_CRUISE_STATE_MASK_CRUISE_DISABLED
+#endif //P_CRUISE_STATE
 
 #if defined P_SI_DRVIE_STATE
 //Return Si-Drive switch state

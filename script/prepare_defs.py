@@ -221,6 +221,8 @@ for row in rows:
     #{name}               name of object
     #{address}            address of object
     #{address_split2}     address split with spaces by groups of two: deadbeef -> de ad be ef
+    #{address_movi20s}    address of object prepared for 'movi20s' instruction:
+    #                     address >> 8. Only addresses up to 0x007FFF00 are supported for now.
     #{size}               size of object in bytes
     #{number_of_elements} number of elements, number_of_elements=size/element_size.
     #                     Doesn't check if they are evenly divisible.
@@ -238,6 +240,13 @@ for row in rows:
         data_vars['name'] = id
         data_vars['address'] = address
         data_vars['address_split2'] = split_2_with_space(address)
+        int_address = int(address, 16)
+        address_movi20s = int_address >> 8
+        if '{address_movi20s}' in output_attribute_value and int_address != address_movi20s << 8:
+            e = f'id-extended="{id}": Error converting address to "movi20s" form - {address} must be divisible by 0x100'
+            raise Exception(e)
+        data_vars['address_movi20s'] = split_2_with_space(f'{address_movi20s:04x}')
+        #data_vars['address_movi20s'] = f'{address_movi20s:04x}'
         data_vars['number_of_elements'] = f'{int(size_bytes / element_size):x}'
         data_vars['size'] = size_bytes
         t.set(output_attribute, output_attribute_value.format(**data_vars))

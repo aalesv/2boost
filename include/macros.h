@@ -26,6 +26,8 @@
  #define NUMBER_OF_REGULAR_TABLES 3
 #elif defined(P_CRUISE_STATE) //P_SI_DRVIE_STATE
  #define NUMBER_OF_REGULAR_TABLES 2
+#else
+ #define NUMBER_OF_REGULAR_TABLES 2
 #endif //P_CRUISE_STATE
 
 //Number of columns in each lookup table
@@ -42,6 +44,8 @@
 #define ROM_ENTRY_POINT_CEL_FLASH		LD_SECTION("ROM_ENTRY_POINT_CEL_FLASH", 4)
 //Main ROM code
 #define ROM_CODE	  		LD_SECTION("ROM_CODE", 4)
+//Speed density ROM code
+#define ROM_CODE_SD	  		LD_SECTION("ROM_CODE_SD", 4)
 //ROM metadata - version etc.
 #define ROM_METADATA		LD_SECTION("ROM_METADATA", 4)
 //ROM internal variables

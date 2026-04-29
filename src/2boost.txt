@@ -19,8 +19,10 @@ SECTIONS
 		*(ROM_TABLE_PTR)
 		*(ROM_OTHER_DATA)
 	}
-	ROM_HOLE_CODE ALIGN(0x4) :
+	code_align = DEFINED(brz) ? 0x100 : 0x4;
+	ROM_HOLE_CODE ALIGN(code_align) :
 	{
+		*(ROM_CODE_SD)
 		*(ROM_CODE)
 		*(ROM_DATA)
 		*(ROM_DATA_CONST)
