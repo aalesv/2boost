@@ -22901,4 +22901,21 @@ is compatible with standard routine. -->
 
   </rom>
 
+  <rom base="2Boost ZA1JA01G 0004">
+      <romid>
+        <xmlid>2Boost ZA1JA02G 0004</xmlid>
+        <internalidaddress>000c1024</internalidaddress>
+        <internalidstring>2Boost ZA1JA02G 0004</internalidstring>
+        <ecuid>8644387107</ecuid>
+        <year>2013</year>
+        <market>AUDM</market>
+        <make>Subaru</make>
+        <model>BRZ</model>
+        <submodel>FA20</submodel>
+        <transmission>MT</transmission>
+        <memmodel>SH72531</memmodel>
+        <flashmethod>subarubrz</flashmethod>
+        <filesize>1280kb</filesize>
+      </romid>
+  </rom>
 </roms>
