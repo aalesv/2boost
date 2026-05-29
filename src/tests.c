@@ -11,10 +11,6 @@
 
 #include "tests.h"
 
-#if defined __INTELLISENSE__
-#define BUILD_TESTS
-#endif
-
 #if defined(BUILD_TESTS)
 //This is test suite
 //Tests LUT lookup
@@ -35,7 +31,7 @@
 
 //Declare debug output
 //Place debug vars right after RAM vars
-debug_variables_t *DEBUG_VARIABLES 
+debug_variables_t *DEBUG_VARIABLES
 			= ((debug_variables_t*)((int)RAM_HOLE+sizeof(ram_variables_t)));
 
 //Set defaults
@@ -90,14 +86,14 @@ test_everything()
 	//Not comfortable to test
 	//Must step in this function
 	test_getPointerFromLut_all_modes();
-	
+
 	test_set_default_ram_vars();
 	DEBUG_VARIABLES->count = 0;
 
 	#if defined(ORIG_TABLE_BASE_TIMING_A_ADDRESS)
 		test_calc_3d_uint_to_float_entry_point_all_tables_and_modes();
 	#endif //ORIG_TABLE_BASE_TIMING_A_ADDRESS
-	
+
 	test_set_default_ram_vars();
 	DEBUG_VARIABLES->count = 0;
 
@@ -158,7 +154,7 @@ test_globalMapSwitch()
 	#if defined(P_SI_DRVIE_STATE)
 		*P_SI_DRVIE_STATE = 1; //Sport
 		DEBUG_VARIABLES->C = globalMapSwitch();
-		
+
 		*P_SI_DRVIE_STATE = 8; //Sport Sharp
 		DEBUG_VARIABLES->D = globalMapSwitch();
 	#endif //P_SI_DRVIE_STATE
@@ -178,7 +174,7 @@ test_getPointerFromLut_all_modes()
 	*P_CRUISE_STATE = CRUISE_ENABLED;
 	test_getPointerFromLut_3d();
   #endif //P_CRUISE_STATE_ADDRESS
-  
+
   //Test Si-Drive if supported
   #if defined(P_SI_DRVIE_STATE)
 	//Intelligent
@@ -197,7 +193,7 @@ test_getPointerFromLut_all_modes()
 	*P_SI_DRVIE_STATE = 8;
 	test_getPointerFromLut_3d();
 
-	//Garbage, must choose orig table 
+	//Garbage, must choose orig table
 	*P_SI_DRVIE_STATE = 0;
 	test_getPointerFromLut_3d();
   #endif //P_SI_DRVIE_STATE
@@ -218,7 +214,7 @@ test_calc_3d_uint_to_float_entry_point_all_tables_and_modes()
 	*P_CRUISE_STATE = CRUISE_ENABLED;
 	test_calc_3d_uint_to_float_entry_point_timing();
   #endif //P_CRUISE_STATE_ADDRESS
-  
+
   //Test Si-Drive if supported
   #if defined(P_SI_DRVIE_STATE)
 	//Intelligent
@@ -237,7 +233,7 @@ test_calc_3d_uint_to_float_entry_point_all_tables_and_modes()
 	*P_SI_DRVIE_STATE = 8;
 	test_calc_3d_uint_to_float_entry_point_timing();
 
-	//Garbage, must choose orig table 
+	//Garbage, must choose orig table
 	*P_SI_DRVIE_STATE = 0;
 	test_calc_3d_uint_to_float_entry_point_timing();
   #endif //P_SI_DRVIE_STATE
@@ -251,7 +247,7 @@ test_calc_3d_uint_to_float_entry_point_all_tables_and_modes()
 	*P_CRUISE_STATE = CRUISE_ENABLED;
 	test_calc_3d_uint_to_float_entry_point_req_torque();
   #endif //P_CRUISE_STATE_ADDRESS
-  
+
   //Test Si-Drive if supported
   #if defined(P_SI_DRVIE_STATE)
 	//Intelligent
@@ -270,7 +266,7 @@ test_calc_3d_uint_to_float_entry_point_all_tables_and_modes()
 	*P_SI_DRVIE_STATE = 8;
 	test_calc_3d_uint_to_float_entry_point_req_torque();
 
-	//Garbage, must choose orig table 
+	//Garbage, must choose orig table
 	*P_SI_DRVIE_STATE = 0;
 	test_calc_3d_uint_to_float_entry_point_req_torque();
   #endif //P_SI_DRVIE_STATE
@@ -312,7 +308,7 @@ test_calc_2d_uint_to_float_entry_point_tip_in()
 		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
 		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
 
-		//Garbage, must choose orig table 
+		//Garbage, must choose orig table
 		*P_SI_DRVIE_STATE = 0;
 		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_min, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
 		DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++]=calc_2d_uint_to_float_entry_point(x_max, (table_2d_uint_t *)ORIG_TABLE_THROTTLE_TIP_IN_ENRICHMENT_A_ADDRESS);
@@ -348,7 +344,7 @@ test_calc_3d_uint_to_float_entry_point_timing()
 	const float y_min = 0.0f;
 	const float x_max = 4.0f;
 	const float y_max = 7000.0f;
-	
+
 	//Call calc_3d_uint_to_float_entry_point with first set
 	//Increment counter
 	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_BASE_TIMING_A_ADDRESS);
@@ -382,7 +378,7 @@ test_calc_3d_uint_to_float_entry_point_req_torque()
 	const float y_min = 0.0f;
 	const float x_max = 100.0f;
 	const float y_max = 6800.0f;
-	
+
 	//Call calc_3d_uint_to_float_entry_point with first set
 	//Increment counter
 	DEBUG_VARIABLES->result[DEBUG_VARIABLES->count++] = calc_3d_uint_to_float_entry_point(x_min, y_min, (table_3d_uint_t *)ORIG_TABLE_REQUESTED_TORQUE_ACCELERATOR_PEDAL_A_ADDRESS);
@@ -407,7 +403,7 @@ test_calc_3d_uint_to_float_entry_point_req_torque()
 void
 test_cruiseCancelPressed()
 {
-	
+
 	*P_CRUISE_CANCEL_SWITCH = 0;
 	DEBUG_VARIABLES->A = cruiseCancelPressed();
 
