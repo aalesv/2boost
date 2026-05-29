@@ -9,6 +9,9 @@
 *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 
+#if !defined(TESTS_H)
+#define TESTS_H
+
 #include "macros.h"
 #include "types.h"
 
@@ -17,12 +20,16 @@
 //Results placed in RAM
 //For emulator testing only
 
+#if defined __INTELLISENSE__
+#define BUILD_TESTS
+#endif
+
 #if defined(BUILD_TESTS)
 
 //CEL ports
 #define PDDR_W ((int*)0xFFFFF746)
 #define PEDR_W ((int*)0xFFFFF754)
-	
+
 	//Declare debug output
 	debug_variables_t *DEBUG_VARIABLES ROM_TESTS_DATA;
 
@@ -72,14 +79,14 @@
 
 #endif //BUILD_TESTS
 
-extern float calc_3d_uint_to_float_entry_point (const float x, 
+extern float calc_3d_uint_to_float_entry_point (const float x,
 							const float y, const table_3d_uint_t *tablePointer);
-extern float calc_2d_uint_to_float_entry_point (const float x, 
+extern float calc_2d_uint_to_float_entry_point (const float x,
 										const table_2d_uint_t *tablePointer);
 extern void test_getLutRowNumber_3d(void);
 extern void test_getLutRowNumber_2d(void);
 extern void test_getPointerFromLut_3d(void);
-extern float massAirflow_entry_point(float mafVoltage, 
+extern float massAirflow_entry_point(float mafVoltage,
 									const table_2d_noconv_t *tablePointerMAF);
 extern uint8 overtakeMapSwitch(void);
 extern uint8 cruiseCancelPressed(void);
@@ -87,3 +94,5 @@ extern uint8 globalMapSwitch(void);
 extern void celFlash_outer_entry_point(void);
 
 extern uint8 CFG_OVERTAKE_BUTTON_SWITCH_SOURCE;
+
+#endif //TESTS_H
