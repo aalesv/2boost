@@ -12,7 +12,7 @@
 #include "global_vars.h"
 
 //Version string
-volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.03.00";
+volatile const char VERSION[] __attribute__((used)) = "2Boost " CALID " 0004.04.00";
 
 volatile const char INFO[] __attribute__((used)) = "Compiled GCC " __VERSION__;
 
@@ -73,14 +73,14 @@ calc_3d_uint_to_float_t calc_3d_uint_to_float =
 //Calc 2D function is located at ORIG_CALC_3D_UINT_TO_FLOAT_FUNCTION_ADDRESS
 //uint only
 //Returns Y axis value converted to float
-calc_2d_uint_to_float_t calc_2d_uint_to_float = 
+calc_2d_uint_to_float_t calc_2d_uint_to_float =
         ((calc_2d_uint_to_float_t)ORIG_CALC_2D_UINT_TO_FLOAT_FUNCTION_ADDRESS); //-V566
 
 #if defined(ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS)
 //This calc 2D function is located at ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS
 //float only
 //Returns Y axis float value without conversion
-calc_2d_float_to_float_t calc_2d_float_to_float = 
+calc_2d_float_to_float_t calc_2d_float_to_float =
         ((calc_2d_float_to_float_t)ORIG_CALC_2D_FLOAT_TO_FLOAT_FUNCTION_ADDRESS); //-V566
 #endif
 
