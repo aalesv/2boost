@@ -1,0 +1,73 @@
+type = obd
+protocolid = 6 ; ISO15765
+mode23txaddrwidth = 4 ; mode23 req format info
+mode23txlenwidth = 1 ; mode23 req format info
+mode23rxaddrwidth = 0 ; mode23 req format info
+mode23uds = 1 ; lets OBD channels know you are using mode23 UDS
+sortpids = 1 ; sort these PIDs by value to potentially make for fewer requests (=faster)
+calcsampinterval = 1000 ; timing parameter - leave as is - will make default for release version
+
+paramname = globalMapSwitch; 0 if must use orig map, 1 if must use 1st mod map and so on
+paramid = 0xFFF8DE00
+
+paramname = mapSelected; Current selected map number
+paramid = 0xFFF8DE01
+
+paramname = mafSdBlendMode; MAF/SD blending mode
+paramid = 0xFFF8DE02
+
+paramname = airFlowFromMaf; Mass airflow from MAF sensor - only if Speed Density enabled
+paramid = 0xFFF8DE04
+isfloat = 1
+
+paramname = volumetricEfficiency; Volumetric efficiency table value - only if Speed Density enabled
+paramid = 0xFFF8DE08
+isfloat = 1
+
+paramname = volumetricEfficiencyTipIn; Volumetric efficiency  tip-in table value - only if Speed Density enabled
+paramid = 0xFFF8DE0C
+isfloat = 1
+
+paramname = mafSdBlendValue; MAF/SD blending table value - only if Speed Density enabled
+paramid = 0xFFF8DE10
+isfloat = 1
+
+paramname = airFlowFromSdNotBlended; SD calculated mass airflow without blending - only if Speed Density enabled
+paramid = 0xFFF8DE14
+isfloat = 1
+
+paramname = airFlowFromSD; SD calculated mass airflow - only if Speed Density enabled
+paramid = 0xFFF8DE18
+isfloat = 1
+
+paramname = OvertakeMode; Overtake mode state
+paramid = 0xFFF8DE19
+
+paramname = MANIFOLD_PRESSURE
+paramid = 0xFFF88F74
+isfloat = 1
+
+paramname = ENGINE_SPEED
+paramid = 0xFFF893F8
+isfloat = 1
+
+paramname = IAT
+paramid = 0xFFF87C64
+isfloat = 1
+
+paramname = THROTTLE_ANGLE_CHANGE
+paramid = 0xFFF89038
+isfloat = 1
+
+paramname = CRUISE_STATE
+paramid = 0xFFF89392
+
+paramname = CRUISE_CANCEL_SWITCH
+paramid = 0xFFF88CD1
+
+paramname = ACCELERATOR_PEDAL_ANGLE
+paramid = 0xFFF8914C
+isfloat = 1
+
+paramname = BRAKE_PEDAL_SWITCH
+paramid = 0xFFF88CC0
