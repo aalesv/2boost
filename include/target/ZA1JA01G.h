@@ -159,4 +159,4 @@
 #define P_BRAKE_PEDAL_SWITCH_MASK (1)
 
 //RAM address for our variables
-#define RAM_HOLE (0xFFFA0000)
+#define RAM_HOLE (0xFFF8DE00)
