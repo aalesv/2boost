@@ -2417,6 +2417,13 @@
    </table>
    <description>This is the maximum allowable engine load. Engine load will be capped at this limit regardless of actual engine load. "Engine Load Limit A (Maximum)" must also be changed as it also impacts the max engine load.</description>
   </table>
+  <table type="2D" name="Engine Load Limit C Maximum (RPM)" category="Mass Airflow / Engine Load" storagetype="uint16" endian="big" sizey="2" userlevel="4">
+   <scaling units="Engine Load (g/rev)" expression="x*.00006103516" to_byte="x/.00006103516" format="0.00" fineincrement=".01" coarseincrement=".1" />
+   <table type="Y Axis" name="Engine Speed" storagetype="float" endian="little" logparam="P8">
+    <scaling units="RPM" expression="x" to_byte="x" format="#" fineincrement="50" coarseincrement="100" />
+   </table>
+   <description>This is the maximum allowable engine load. Engine load will be capped at this limit regardless of actual engine load. "Engine Load Limit A (Maximum)" must also be changed as it also impacts the max engine load.</description>
+  </table>
   <table type="2D" name="Engine Load Limit B (Maximum)" category="Mass Airflow / Engine Load" storagetype="float" endian="little" sizey="1" userlevel="3">
    <scaling units="Engine Load (g/rev)" expression="x" to_byte="x" format="0.00" fineincrement=".01" coarseincrement=".1" />
    <table type="Static Y Axis" name="Capped Limit" sizey="1">
